@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Node Information Editor</title>
+</head>
+<body>
+    <h2>Node Information Editor</h2>
+
+    <form id="editNodeForm">
+        <h3>请填写你要编辑的节点名字和类型</h3>
+        <label for="originalNodeName">节点名字：</label>
+        <input type="text" id="originalNodeName" name="originalNodeName" required><br><br>
+
+        <label for="originalNodeType">节点类型：</label>
+        <input type="text" id="originalNodeType" name="originalNodeType" required><br><br>
+
+        <button type="button" id="findNodeButton">确定</button>
+    </form>
+
+    <p id="nodeExistStatus"></p>
+
+    <h2>修改为：</h2>
+    <form id="editInfoForm">
+        <label for="editedNodeName">修改后的名字：</label>
+        <input type="text" id="editedNodeName" name="editedNodeName" required><br><br>
+
+        <label for="editedNodeType">修改后的类型：</label>
+        <input type="text" id="editedNodeType" name="editedNodeType" required><br><br>
+
+        <button type="button" id="fillEditFieldsButton">填充当前节点信息</button>
+    </form>
+
+    <button type="button" id="saveButton">保存</button>
+
+    <script>
+        document.getElementById("findNodeButton").addEventListener("click", function() {
+            var originalNodeName = document.getElementById("originalNodeName").value;
+            var originalNodeType = document.getElementById("originalNodeType").value;
+
+            // 向后端发送请求来检查节点是否存在
+            fetch("/check_node", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCSRFToken()  // 获取CSRF令牌
+                },
+                body: JSON.stringify({
+                    nodeName: originalNodeName,
+                    nodeType: originalNodeType
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                var statusElement = document.getElementById("nodeExistStatus");
+                if (data.nodeExists) {
+                    statusElement.textContent = "已找到该节点";
+                } else {
+                    statusElement.textContent = "未找到该节点";
+                }
+            })
+            .catch(error => {
+                console.error("请求错误: ", error);
+            });
+        });
+
+        document.getElementById("fillEditFieldsButton").addEventListener("click", function() {
+            var storedOriginalNodeName = localStorage.getItem("originalNodeName");
+            var storedOriginalNodeType = localStorage.getItem("originalNodeType");
+
+            document.getElementById("editedNodeName").value = storedOriginalNodeName;
+            document.getElementById("editedNodeType").value = storedOriginalNodeType;
+        });
+
+        document.getElementById("saveButton").addEventListener("click", function() {
+            var editedNodeName = document.getElementById("editedNodeName").value;
+            var editedNodeType = document.getElementById("editedNodeType").value;
+
+            alert("已修改节点：\n修改后的名字：" + editedNodeName + "\n修改后的类型：" + editedNodeType);
+        });
+
+        // 获取CSRF令牌
+        function getCSRFToken() {
+            var cookieValue = null;
+            var name = "csrftoken";
+            var cookies = document.cookie.split(";");
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + "=")) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+</body>
+</html>

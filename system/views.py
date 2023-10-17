@@ -24,7 +24,7 @@ def login(request):
 
         if corr_email is not None and email == corr_email.email and password == corr_email.password:
             print('登录成功')
-            return redirect(reverse('course'))
+            return redirect(reverse('home'))
         else:
             print('登录失败')
             return HttpResponse('登录失败')
@@ -251,3 +251,6 @@ def search_relation(request):
 
 def course(request):
     return render(request, './system/course.html')
+
+def home(request):
+    return render(request, './system/home.html')

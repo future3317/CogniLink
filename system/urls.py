@@ -1,4 +1,4 @@
-from .views import logout,logon,login,graph,edit_node,check_node,course,search_course_knowledgepoint,search_question_knowledgepoint,search_relation
+from .views import logout,logon,login,graph,edit_node,check_node,home,course,search_course_knowledgepoint,search_question_knowledgepoint,search_relation
 from django.urls import path
 from django.conf.urls import url
 
@@ -13,4 +13,5 @@ urlpatterns = [
     path('search_relation/', search_relation, name='search_relation'),
     path('edit_node/', edit_node, name='edit_node'),
     path('course/', course, name='course'),
+    path('home/', home, name='home'),
 ]

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -135,16 +136,20 @@
                            </label>
                 </div>
 
-
                     <div class="container-1">
-                        <label for="title1">
-                            <p>开始节点</p>
-                             <input type="text" id="StartPoint" placeholder="请输入内容">
-                             <p>结束节点</p>
-                             <input type="text" id="EndPoint" placeholder="请输入内容">
-                             <button id="searchButton">查询</button> <!-- 用于查询节点之间的关系 -->
-                               </label>
+                        <!-- Added form element with method="POST" and action URL -->
+                        <form method="POST" action="{% url 'basic' %}" >
+                         {% csrf_token %}
+                            <label for="title1">
+                                <p>开始节点</p>
+                                <input type="text" name="StartPoint" id="StartPoint" placeholder="请输入内容">
+                                <p>结束节点</p>
+                                <input type="text" name="EndPoint" id="EndPoint" placeholder="请输入内容">
+                                <button type="submit" id="searchButton">查询</button> <!-- 用于查询节点之间的关系 -->
+                            </label>
+                        </form>
                     </div>
+
 
 
 
@@ -179,8 +184,6 @@
                     </div>
 
              </div> 
-
-             
 
 
 </body>

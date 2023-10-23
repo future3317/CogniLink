@@ -253,7 +253,64 @@ def course(request):
     return render(request, './system/course.html')
 
 def home(request):
-    return render(request, './system/home.html')
+    if request.method == 'POST':
+        # Get the new subject name from the POST request.
+        new_subject_name = request.POST.get('new_subject')
 
+        # Connect to the Neo4j database.
+        graph = neo4jconn()
+
+        # Check if the subject already exists to prevent duplicates.
+        if not graph.run(f"MATCH (s:Subject {{name: '{new_subject_name}'}}) RETURN s").data():
+            # If the subject doesn't exist, create a new node.
+            new_subject_node = Node("Subject", name=new_subject_name)
+            graph.create(new_subject_node)
+            msg = f"学科 {new_subject_name} 已成功添加!"
+        else:
+            msg = f"学科 {new_subject_name} 已经存在!"
+
+        # Return a message to inform the user of the result.
+        return render(request, './system/home.html', {"message": msg})
+    else:
+        # If the request is not a POST, just render the home page.
+        return render(request, './system/home.html')
+
+
+
+#输入两个节点的名字，查询他们的关系
 def basic(request):
-    return render(request, './system/basic.html')
+    ctx = {}
+    if request.method == "POST":
+        # 实体1
+        entity1 = request.POST.get('StartPoint')
+                # 实体2
+        entity2 = request.POST.get('EndPoint')
+
+
+        print(entity1)
+        print(entity2)
+
+        if entity1 in course_dict.keys():
+            entity1 = course_dict.get(entity1)
+        if entity2 in course_dict.keys():
+            entity2 = course_dict.get(entity2)
+
+        # 保存返回结果
+        searchResult = {}
+        # 1.若只输入entity1,则输出与entity1有直接关系的实体和关系
+        if (len(entity1) != 0  and len(entity2) == 0):
+            searchResult = neo4jconn.findRelationByEntity1(entity1)
+            if (len(searchResult) > 0):
+                return render(request, './system/graph.html',
+                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
+
+        if (len(entity1) != 0 and len(entity2) != 0):
+            searchResult = neo4jconn.findRelationByEntities(entity1, entity2)
+            if (len(searchResult) > 0):
+                return render(request, './system/basic.html',
+                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
+
+        ctx = {'title': '<h1>暂未找到相应的匹配</h1>'}
+        return render(request, './system/basic.html', {'ctx': ctx})
+
+    return render(request, './system/basic.html', {'ctx': ctx})

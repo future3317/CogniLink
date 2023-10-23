@@ -25,47 +25,29 @@
                 <!-- 侧边栏的标题 结束-->
                 
                 <!-- 每一项导航 -->
-<div class="menu-item">
+                <div class="menu-item">
                     <input type="checkbox" id="menu-item1">
-                    <label for="menu-item1" onclick="homeToURL()">
+                    <label for="menu-item1">
                         <i class="fa-solid fa-home"></i>
                         <span>首页</span>
                     </label>
                 </div>
 
-                <script>
-                    function homeToURL() {
-                        window.location.href = "http://127.0.0.1:8000/system/home/";
-                    }
-                </script>
-
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item2">
-                    <label for="menu-item2" onclick="redirectToURL()">
+                    <label for="menu-item2">
                         <i class="fa-solid fa-edit"></i>
                         <span>图谱编辑</span>
                     </label>
                 </div>
 
-                <script>
-                    function redirectToURL() {
-
-                    }
-                </script>
-
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3"  onclick="roamToURL()">
+                    <label for="menu-item3">
                         <i class="fa-solid fa-eye"></i>
                         <span>图谱漫游</span>
                     </label>
                 </div>
-
-                <script>
-                    function roamToURL() {
-                        window.location.href = "http://127.0.0.1:8000/system/basic/";
-                    }
-                </script>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
@@ -98,6 +80,8 @@
           </div>
 
           <div class="container">
+            <form method="POST" action="{% url 'handle_buttons' %}">
+                {% csrf_token %}
             <input type="text" placeholder="Search...">
             <div class="overlay"></div>
             
@@ -113,6 +97,8 @@
             </div>
        
             <div class="container1">
+                <form method="POST" action="{% url 'handle_buttons' %}">
+                    {% csrf_token %}
                 <div class="card">
                 </div>
                 
@@ -128,43 +114,47 @@
 
 
             <div class="containerlim">
-                
+                <form method="POST" action="{% url 'handle_buttons' %}">
+                    {% csrf_token %}
+
+
                 <div class="container-0">
                     <label for="title0">
-                         <span>知识图谱查询 </span>
+                         <span id="n0">知识图谱查询 </span>
                          <i class="fa-solid fa-angle-right"></i>
+                         <span id="n1">图谱漫游</span>
                            </label>
                 </div>
 
-                    <div class="container-1">
-                        <!-- Added form element with method="POST" and action URL -->
-                        <form method="POST" action="{% url 'basic' %}" >
-                         {% csrf_token %}
-                            <label for="title1">
-                                <p>开始节点</p>
-                                <input type="text" name="StartPoint" id="StartPoint" placeholder="请输入内容">
-                                <p>结束节点</p>
-                                <input type="text" name="EndPoint" id="EndPoint" placeholder="请输入内容">
-                                <button type="submit" id="searchButton">查询</button> <!-- 用于查询节点之间的关系 -->
-                            </label>
-                        </form>
-                    </div>
 
+                    <div class="container-1">
+                        <form method="POST" action="{% url 'handle_buttons' %}">
+                            {% csrf_token %}
+                        <label for="title1">
+                            <p id="begin">开始节点</p>
+                             <input type="text" id="StartPoint" placeholder="请输入内容">
+                             <p id="end">结束节点</p>
+                             <input type="text" id="EndPoint" placeholder="请输入内容">
+                             <button id="searchButton">查询</button> <!-- 用于查询节点之间的关系 -->
+                               </label>
+                    </div>
 
 
 
                     <div class="container-2-0">
                         <span>图谱展示 </span>
-                        
                     </div>
 
 
                     <div class="container-2">
+                        <form method="POST" action="{% url 'handle_buttons' %}">
+                            {% csrf_token %}
                         <label for="title2">
                             <button id="addButton">节点新增</button> <!-- 新增节点 -->
                             <button id="addRelation">关系新增</button> <!-- 新增关系 -->
                         </label>
                     </div>
+
 
 
                     <div class="container-3-0">
@@ -174,8 +164,9 @@
 
                     
                     <div class="container-3">
+                        <form method="POST" action="{% url 'handle_buttons' %}">
+                            {% csrf_token %}
                         <label for="title3">
-                            <span>查询节点或关系查看详情</span>
                             <input type="text" placeholder="输入查询节点或关系">
                             <button id="editButton">编辑</button> <!-- 用于编辑节点或关系 -->
                             <button id="deleteButton">删除</button> <!-- 用于删除节点或关系 -->
@@ -184,6 +175,8 @@
                     </div>
 
              </div> 
+
+             
 
 
 </body>

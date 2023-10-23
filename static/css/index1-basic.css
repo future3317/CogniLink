@@ -36,6 +36,7 @@
     
 }
 
+
 .menu-box {
     position:fixed;
     margin-bottom: 0;
@@ -362,7 +363,7 @@
     left:340px;
     right:100px;
     width: 1290px;
-    height:1530px;
+    height:1770px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -371,10 +372,8 @@
     border-style: solid;
     border-color: #5f5d5d;
     z-index: 999;
-    
-    
-}
 
+}
 
 
 .container-1{
@@ -383,25 +382,156 @@
     left:340px;
     right:10px;
     width: 1225px;
-    height: 300px;
+    height: 330px;
     margin: 30px;
     position: fixed;
     display: flex;
     background-color: #F5F8F8;
     box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
     border-radius: 15px;
+    text-align: center;
     transition: 0.3s;
-    z-index: 999;
     opacity: 1;
 }
 
+.container-1 p[id=begin]{
+    
+    display: block;
+    margin-top:80px;
+    margin-left:-370px;
+    margin-bottom: 12px;
+    padding: 1em 2em 2em;
+    font-size: 1.2rem;
+    padding:0 15px;
+}
+
+.container-1 p[id=end]{
+    
+    display: block;
+    margin-top:65px;
+    margin-left:-370px;
+    margin-bottom: 12px;
+    padding: 1em 2em 2em;
+    font-size: 1.2rem;
+    padding:0 15px;
+}
+
+.container-1 input[id=StartPoint]{
+    margin-top:0px;
+    position: absolute;
+    left:100px;
+    right: 100px;
+    padding: 10px;
+    width: 1000px;
+    height: 35px;
+    box-sizing: border-box;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    outline: none;
+    padding: 0 15px;
+    color: #606266;
+    z-index: 50;
+
+
+}
+
+.container-1 input[id=EndPoint]{
+    margin-top:0px;
+    position: absolute;
+    left:100px;
+    right: 100px;
+    padding: 10px;
+    width: 1000px;
+    height: 35px;
+    box-sizing: border-box;
+    border: 1px solid #c2c6cf;
+    border-radius: 4px;
+    outline: none;
+    padding: 0 15px;
+    color: #606266;
+    z-index: 50;
+
+
+}
+
+.container-1 button[id=searchButton]{
+    
+    margin-left:550px;
+    margin-top:80px;
+    width: 110px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    letter-spacing: 1rem;
+    text-indent: 1rem;
+    border-radius: 5px;
+    border-color: #676161;
+    box-sizing: border-box;
+    z-index: 50;
+
+}
+
+
+
+
+.container-0{
+    
+    top:100px;
+    bottom:150px;
+    left:340px;
+    right:10px;
+    width: 1225px;
+    height: 70px;
+    margin: 30px;
+    position: fixed;
+    display: flex;
+    background-color: #DEEBF5;
+    border-radius: 15px;
+    transition: 0.3s;
+    z-index: 50;
+    font-size: 1.5rem;
+    opacity: 1;
+}
+
+
+.container-0 span[id=n0]{
+    display: inline-block;
+    margin-top:-2px;
+    margin-left:0px;
+    margin-bottom: 10px;
+    padding: 1em 2em 2em;
+    font-size: 1.4rem;
+}
+
+.container-0 span[id=n1]{
+    display: inline-block;
+    margin-top:-2px;
+    margin-left:-80px;
+    margin-bottom: 10px;
+    padding: 1em 2em 2em;
+    font-size: 1.4rem;
+}
+
+.container-0 i{
+    display: inline-block;
+    margin-top:-2px;
+    margin-left:-80px;
+    margin-bottom: 10px;
+    padding: 1em 2em 2em;
+    font-size: 1.4rem;
+}
+
 .container-2 {
-    top:330px;
+    top:57px;
     bottom:150px;
     left:-3px;
     right:15px;
     width: 1225px;
-    height: 550px;
+    height: 930px;
     margin: 30px;
     position: fixed;
     position:relative;
@@ -410,22 +540,55 @@
     box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
     border-radius: 15px;
     transition: 0.3s;
-    z-index: 999;
 }
 
 
+
+.container-2-0 {
+    top:360px;
+    bottom:150px;
+    left:-3px;
+    right:15px;
+    width: 1225px;
+    height: 70px;
+    margin: 30px;
+    position: fixed;
+    position:relative;
+    display: flex;
+    background-color: #DEEBF5;
+    border-radius: 15px;
+    transition: 0.3s;
+    z-index: 999;
+}
+
 .container-3 {
-    top:1010px;
+    top:1430px;
     bottom:150px;
     left:340px;
     right:10px;
     width: 1225px;
-    height: 550px;
+    height: 380px;
     margin: 30px;
     position: fixed;
     display: flex;
     background-color: #F5F8F8;
     box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
+    border-radius: 15px;
+    transition: 0.3s;
+    
+}
+
+.container-3-0 {
+    top:-141px;
+    left:-7px;
+    right:10px;
+    width: 1225px;
+    height: 70px;
+    margin: 30px;
+    position: fixed;
+    position:relative;
+    display: flex;
+    background-color: #DEEBF5;
     border-radius: 15px;
     transition: 0.3s;
     z-index: 999;

@@ -80,7 +80,7 @@
           </div>
 
           <div class="container">
-            <form method="POST" action="{% url 'handle_buttons' %}">
+            <form method="POST" action="{% url 'basic' %}">
                 {% csrf_token %}
             <input type="text" placeholder="Search...">
             <div class="overlay"></div>
@@ -97,7 +97,7 @@
             </div>
        
             <div class="container1">
-                <form method="POST" action="{% url 'handle_buttons' %}">
+                <form method="POST" action="{% url 'basic' %}">
                     {% csrf_token %}
                 <div class="card">
                 </div>
@@ -114,7 +114,7 @@
 
 
             <div class="containerlim">
-                <form method="POST" action="{% url 'handle_buttons' %}">
+                <form method="POST" action="{% url 'basic' %}">
                     {% csrf_token %}
 
 
@@ -128,7 +128,7 @@
 
 
                     <div class="container-1">
-                        <form method="POST" action="{% url 'handle_buttons' %}">
+                        <form method="POST" action="{% url 'basic' %}">
                             {% csrf_token %}
                         <label for="title1">
                             <p id="begin">开始节点</p>
@@ -147,7 +147,7 @@
 
 
                     <div class="container-2">
-                        <form method="POST" action="{% url 'handle_buttons' %}">
+                        <form method="POST" action="{% url 'basic' %}">
                             {% csrf_token %}
                         <label for="title2">
                             <button id="addButton">节点新增</button> <!-- 新增节点 -->
@@ -164,7 +164,7 @@
 
                     
                     <div class="container-3">
-                        <form method="POST" action="{% url 'handle_buttons' %}">
+                        <form method="POST" action="{% url 'basic' %}">
                             {% csrf_token %}
                         <label for="title3">
                             <input type="text" placeholder="输入查询节点或关系">

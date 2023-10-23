@@ -306,6 +306,7 @@ def basic(request):
 
         if (len(entity1) != 0 and len(entity2) != 0):
             searchResult = neo4jconn.findRelationByEntities(entity1, entity2)
+            print(searchResult)
             if (len(searchResult) > 0):
                 return render(request, './system/basic.html',
                               {'searchResult': json.dumps(searchResult, ensure_ascii=False)})

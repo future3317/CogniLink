@@ -26,27 +26,45 @@
                 <!-- 每一项导航 -->
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item1">
-                    <label for="menu-item1">
+                    <label for="menu-item1" onclick="homeToURL()">
                         <i class="fa-solid fa-home"></i>
                         <span>首页</span>
                     </label>
                 </div>
 
+                <script>
+                    function homeToURL() {
+                        window.location.href = "http://127.0.0.1:8000/system/home/";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item2">
-                    <label for="menu-item2">
+                    <label for="menu-item2" onclick="redirectToURL()">
                         <i class="fa-solid fa-edit"></i>
                         <span>图谱编辑</span>
                     </label>
                 </div>
 
+                <script>
+                    function redirectToURL() {
+
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3"  onclick="roamToURL()">
                         <i class="fa-solid fa-eye"></i>
                         <span>图谱漫游</span>
                     </label>
                 </div>
+
+                <script>
+                    function roamToURL() {
+                        window.location.href = "http://127.0.0.1:8000/system/basic/";
+                    }
+                </script>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">

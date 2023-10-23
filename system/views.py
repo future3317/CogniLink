@@ -254,3 +254,6 @@ def course(request):
 
 def home(request):
     return render(request, './system/home.html')
+
+def basic(request):
+    return render(request, './system/basic.html')

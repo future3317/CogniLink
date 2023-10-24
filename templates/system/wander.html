@@ -132,9 +132,9 @@
                         {% csrf_token %}
                         <label for="title1">
                             <p id="begin">开始节点</p>
-                             <input type="text" id="StartPoint" placeholder="请输入内容">
+                             <input type="text" id="StartPoint" name="StartPoint" placeholder="请输入内容">
                              <p id="end">结束节点</p>
-                             <input type="text" id="EndPoint" placeholder="请输入内容">
+                             <input type="text" id="EndPoint" name="EndPoint" placeholder="请输入内容">
                              <button type="submit" id="searchButton">查询</button> <!-- 用于查询节点之间的关系 -->
                         </label>
                     </div>
@@ -171,7 +171,7 @@
                         <form method="POST" action="{% url 'wander' %}" >
                         {% csrf_token %}
                         <label for="title3">
-                            <input type="text" id="NodeName" placeholder="输入查询节点或关系">
+                            <input type="text" id="NodeName" name="NodeName" placeholder="输入查询节点或关系">
                             <button type="submit" id="editButton">编辑</button> <!-- 用于编辑节点或关系 -->
                             <button type="submit" id="deleteButton">删除</button> <!-- 用于删除节点或关系 -->
                             <button type="submit" id="studyButton">查看详情</button> <!-- 用于查看节点详情 -->

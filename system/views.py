@@ -21,6 +21,7 @@ def login(request):
         print(email)
         print(password)
         print(corr_email)
+        print(len(email))
 
         if corr_email is not None and email == corr_email.email and password == corr_email.password:
             print('登录成功')
@@ -278,7 +279,7 @@ def home(request):
 
 
 #输入两个节点的名字，查询他们的关系
-def basic(request):
+def wander(request):
     ctx = {}
     if request.method == "POST":
         # 实体1
@@ -298,20 +299,21 @@ def basic(request):
         # 保存返回结果
         searchResult = {}
         # 1.若只输入entity1,则输出与entity1有直接关系的实体和关系
+
         if (len(entity1) != 0  and len(entity2) == 0):
             searchResult = neo4jconn.findRelationByEntity1(entity1)
             if (len(searchResult) > 0):
-                return render(request, './system/graph.html',
+                return render(request, './system/wander.html',
                               {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
 
         if (len(entity1) != 0 and len(entity2) != 0):
             searchResult = neo4jconn.findRelationByEntities(entity1, entity2)
             print(searchResult)
             if (len(searchResult) > 0):
-                return render(request, './system/basic.html',
+                return render(request, './system/wander.html',
                               {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
 
         ctx = {'title': '<h1>暂未找到相应的匹配</h1>'}
-        return render(request, './system/basic.html', {'ctx': ctx})
+        return render(request, './system/wander.html', {'ctx': ctx})
 
-    return render(request, './system/basic.html', {'ctx': ctx})
+    return render(request, './system/wander.html', {'ctx': ctx})

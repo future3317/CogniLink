@@ -80,6 +80,7 @@
           </div>
 
           <div class="container">
+            
             <input type="text" placeholder="Search...">
             <div class="overlay"></div>
             
@@ -95,6 +96,7 @@
             </div>
        
             <div class="container1">
+                <form method="POST" action="{% url 'wander' %}" >
                 <div class="card">
                 </div>
                 
@@ -110,7 +112,7 @@
 
 
             <div class="containerlim">
-                
+                <form method="POST" action="{% url 'wander' %}" >
                 <div class="container-0">
                     <label for="title0">
                          <span id="n0">知识图谱查询 </span>
@@ -122,12 +124,11 @@
 
                     <div class="container-1">
                         <form method="POST" action="{% url 'wander' %}" >
-                        {% csrf_token %}
                         <label for="title1">
                             <p id="begin">开始节点</p>
-                             <input type="text" id="StartPoint" name="StartPoint" placeholder="请输入内容">
+                             <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容">
                              <p id="end">结束节点</p>
-                             <input type="text" id="EndPoint" name="EndPoint" placeholder="请输入内容">
+                             <input type="text"  id="EndPoint"  name="EndPoint"   placeholder="请输入内容">
                              <button type="submit" id="searchButton">查询</button> <!-- 用于查询节点之间的关系 -->
                         </label>
                     </div>
@@ -141,12 +142,12 @@
 
                     <div class="container-2">
                         <form method="POST" action="{% url 'wander' %}" >
-                        {% csrf_token %}
                         <label for="title2">
+
                             <div class="container-2-1">
                                 <form method="POST" action="{% url 'wander' %}" >
-                                {% csrf_token %}
                             </div>
+
                             <button type="submit" id="addButton">节点新增</button> <!-- 新增节点 -->
                             <button type="submit" id="addRelation">关系新增</button> <!-- 新增关系 -->
                         </label>
@@ -162,9 +163,8 @@
                     
                     <div class="container-3">
                         <form method="POST" action="{% url 'wander' %}" >
-                        {% csrf_token %}
                         <label for="title3">
-                            <input type="text" id="NodeName" name="NodeName" placeholder="输入查询节点或关系">
+                            <input type="text"    id="NodeName"  name="NodeName"  id="NodeName"  placeholder="输入查询节点或关系">
                             <button type="submit" id="editButton">编辑</button> <!-- 用于编辑节点或关系 -->
                             <button type="submit" id="deleteButton">删除</button> <!-- 用于删除节点或关系 -->
                             <button type="submit" id="studyButton">查看详情</button> <!-- 用于查看节点详情 -->

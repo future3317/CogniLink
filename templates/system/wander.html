@@ -80,8 +80,6 @@
           </div>
 
           <div class="container">
-            <form method="POST" action="{% url 'wander' %}" >
-                {% csrf_token %}
             <input type="text" placeholder="Search...">
             <div class="overlay"></div>
             
@@ -97,8 +95,6 @@
             </div>
        
             <div class="container1">
-                <form method="POST" action="{% url 'wander' %}" >
-                    {% csrf_token %}
                 <div class="card">
                 </div>
                 
@@ -114,10 +110,7 @@
 
 
             <div class="containerlim">
-                <form method="POST" action="{% url 'wander' %}" >
-                    {% csrf_token %}
-
-                    
+                
                 <div class="container-0">
                     <label for="title0">
                          <span id="n0">知识图谱查询 </span>

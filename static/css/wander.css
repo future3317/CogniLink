@@ -240,6 +240,13 @@
     overflow: hidden;
   }
   
+.tabs a{
+
+      color:#3b3b3b;
+      border-width: 0.5px;
+
+  }
+
   .buttons label {
     position:related;
     margin-left:25px;

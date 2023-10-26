@@ -490,8 +490,8 @@
 }
 
 
-.container-1 button[id=searchButton]{
-    margin-left:550px;
+.container-1 button[id=SAVEButton]{
+    margin-left:350px;
     margin-top:70px;
     width: 110px;
     height: 30px;
@@ -506,10 +506,28 @@
     border-radius: 5px;
     border-color: #676161;
     box-sizing: border-box;
-    z-index: 50;
+  
 }
 
-
+.container-1 button[id=quitButton]{
+   
+    margin-left:700px;
+    margin-top:-28px;
+    width: 110px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    letter-spacing: 1rem;
+    text-indent: 1rem;
+    border-radius: 5px;
+    border-color: #676161;
+    box-sizing: border-box;
+ 
+}
 
 
 .container-0{

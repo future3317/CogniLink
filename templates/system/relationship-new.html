@@ -8,7 +8,7 @@
     <!-- 导入阿里的图标样式文件 -->
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="iconfont.css">
-    <link rel="stylesheet" href="E:\Users\Aresgruis\Desktop\relationship-new\realtionship-new.css">
+    <link rel="stylesheet" href="/static/css/relationship-new.css">
 </head>
 <body>
     <div class="content">
@@ -66,9 +66,9 @@
             <input type="radio" id="settings" name="tabsMenu" />
             <input type="radio" id="notifications" name="tabsMenu" />
 
-            <div class="buttons">
+             <div class="buttons">
                 <label for="home">
-                    <a href="file:///E:/Users/Aresgruis/Desktop/home.html"> <i class="fa-solid fa-house"></i> </a>
+                    <a href="{%url 'home'% }"> <i class="fa-solid fa-house"></i> </a>
                     
                 </label>
                 <label for="profile"><i class="fa-solid fa-user"></i></label>
@@ -76,7 +76,7 @@
                 <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
                 <label for="notifications">
                     
-                   <a href="file:///E:/Users/Aresgruis/Desktop/Untitled-2.html"><i class="fa-solid fa-power-off"></i></a> 
+                   <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a> 
                 
                 </label>
             </div>
@@ -102,7 +102,7 @@
             </div>
        
             <div class="container1">
-                <form method="POST" action="{% url 'wander' %}" >
+                <form method="POST" action="{% url 'relationship-new' %}" >
                 <div class="card">
                 </div>
                 
@@ -118,7 +118,7 @@
 
 
             <div class="containerlim">
-                <form method="POST" action="{% url 'wander' %}" >
+                 <form method="POST" action="{% url 'relationship-new' %}" >
                 <div class="container-0">
                     <label for="title0">
                          <span id="n0">知识图谱 </span>
@@ -129,7 +129,7 @@
 
 
                     <div class="container-1">
-                        <form method="POST" action="{% url 'wander' %}" >
+                        <form method="POST" action="{% url 'relationship-new' %}" >
                         <label for="title1">
                             <p id="begin">开始节点</p>
                              <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容">
@@ -141,7 +141,9 @@
                                 <p id="relationship">关系</p>
                                 <input type="text" id="Relationship" name="Relationship" placeholder="请输入内容" >
                                 
-                             <button type="submit" id="searchButton">查询</button> <!-- 用于查询节点之间的关系 -->
+                                <button type="submit" id="SAVEButton">保存</button> <!-- 用于查询节点之间的关系 -->
+                                <button type="submit" id="quitButton">取消</button> <!-- 用于查询节点之间的关系 -->
+   
                         </label>
                     </div>
 
@@ -153,11 +155,11 @@
 
 
                     <div class="container-2">
-                        <form method="POST" action="{% url 'wander' %}" >
+                        <form method="POST" action="{% url 'relationship-new' %}" >
                         <label for="title2">
 
                             <div class="container-2-1">
-                                <form method="POST" action="{% url 'wander' %}" >
+                                <form method="POST" action="{% url 'relationship-new' %}" >
                             </div>
 
                             <button type="submit" id="addButton">节点新增</button> <!-- 新增节点 -->
@@ -174,7 +176,7 @@
 
                     
                     <div class="container-3">
-                        <form method="POST" action="{% url 'wander' %}" >
+                        <form method="POST" action="{% url 'relationship-new' %}" >
                         <label for="title3">
                             <input type="text"    id="NodeName"  name="NodeName"  id="NodeName"  placeholder="输入查询节点或关系">
                             <button type="submit" id="editButton">编辑</button> <!-- 用于编辑节点或关系 -->

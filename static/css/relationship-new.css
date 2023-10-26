@@ -472,6 +472,7 @@
 }
 
 .container-1 input[name=Relationship]{
+    background-color:#F5F8F8;
     margin-top:0px;
     margin-left:-60px;
     position: absolute;
@@ -623,7 +624,7 @@
     top: 80px;
     left: 30px;
     width: 1120px;
-    height: 750px;
+    height: 850px;
     margin: 20px;
     position: fixed;
     position:relative;
@@ -632,44 +633,6 @@
     box-shadow: none;
     border-radius: 15px;
     transition: 0.3s;
-}
-
-.container-2 button[id=addButton]{
-    margin-left:320px;
-    margin-top:150px;
-    width: 150px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 0.2rem;
-    text-indent: 0.2rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}
-
-.container-2 button[id=addRelation]{
-    margin-left:680px;
-    margin-top:-40px;
-    width: 150px;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 0.2rem;
-    text-indent: 0.2rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
 }
 
 

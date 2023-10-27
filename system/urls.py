@@ -1,4 +1,4 @@
-from .views import logout,logon,login,wander,graph,edit_node,check_node,home,course,search_course_knowledgepoint,search_question_knowledgepoint,search_relation
+from .views import logout,logon,login,wander,graph,edit_node,add_book,detail_edit,check_node,home,course,search_course_knowledgepoint,search_question_knowledgepoint,search_relation
 from django.urls import path
 from django.conf.urls import url
 
@@ -15,4 +15,7 @@ urlpatterns = [
     path('course/', course, name='course'),
     path('home/', home, name='home'),
     path('wander/', wander, name='wander'),
+    path('detail_edit/', detail_edit, name='detail_edit'),
+    path('add-book/', add_book, name='add-book'),
+
 ]

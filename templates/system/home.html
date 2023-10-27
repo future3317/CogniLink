@@ -48,7 +48,7 @@
 
                 <script>
                     function redirectToURL() {
-
+                        window.location.href = "http://127.0.0.1:8000/system/detail_edit/";
                     }
                 </script>
 
@@ -68,11 +68,17 @@
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3" onclick="addBook()">
                         <i class="fa-solid fa-book"></i>
                         <span>新增图谱</span>
                     </label>
                 </div>
+
+                <script>
+                    function addBook() {
+                        window.location.href = "http://127.0.0.1:8000/system/add-book/";
+                    }
+                </script>
 
                 <div class="set-line"></div>
             </div>

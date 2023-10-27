@@ -317,3 +317,10 @@ def wander(request):
         return render(request, './system/wander.html', {'ctx': ctx})
 
     return render(request, './system/wander.html', {'ctx': ctx})
+
+
+
+def detail_edit(request):
+    return render(request, './system/detail_edit.html')
+def add_book(request):
+    return render(request, './system/add_book.html')

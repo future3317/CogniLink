@@ -369,7 +369,7 @@
     left:340px;
     right:100px;
     width: 1290px;
-    height:1820px;
+    height:1490px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -403,7 +403,7 @@
 .container-1 p[id=begin]{
     display: block;
     margin-top:85px;
-    margin-left:-640px;
+    margin-left:-680px;
     margin-bottom: 10px;
     padding: 1em 2em 2em;
     font-size: 1.2rem;
@@ -415,7 +415,7 @@
     
     display: block;
     margin-top:70px;
-    margin-left:-640px;
+    margin-left:-680px;
     margin-bottom: 10px;
     padding: 1em 2em 2em;
     font-size: 1.2rem;
@@ -463,7 +463,7 @@
 .container-1 p[id=relationship]{
     display: block;
     margin-top:60px;
-    margin-left:-680px;
+    margin-left:-720px;
     margin-bottom: 10px;
     padding: 1em 2em 2em;
     font-size: 1.2rem;
@@ -576,179 +576,115 @@
     font-size: 1.4rem;
 }
 
-.container-2-0 span{
-    display: block;
-    margin-top:-2px;
-    margin-left:0px;
-    margin-bottom: 8px;
-    padding: 1em 2em 2em;
-    font-size: 1.4rem;
-}
+.container-0 select[id=editpoint]{
+    width: 150px; /*宽*/
+    height: 32px; /*高*/
+    background-color: #ffffff; /*元素背景颜色*/
+    border: 1px solid #242323;/*边框线*/
+    color: #000000;/*字体颜色*/
+    outline:none;    /*去掉黑框*/
+    margin: 0px -20px 30px; /*外边距*/
+    font-size: 16px;/*字体大小*/
+    form option{
+    width: 160px;
+    height: 40px;
+     }
+    }
 
-.container-2-0 {
-    top:437px;
-    bottom:150px;
-    left:-3px;
-    right:15px;
-    width: 1225px;
-    height: 70px;
-    margin: 30px;
-    position: fixed;
-    position:relative;
-    display: flex;
-    background-color: #DEEBF5;
-    border-radius: 15px;
-    transition: 0.3s;
-    z-index: 999;
-}
-
-.container-2 {
-    top:140px;
-    bottom:150px;
-    left:-3px;
-    right:15px;
-    width: 1225px;
-    height: 1000px;
-    margin: 30px;
-    position: fixed;
-    position:relative;
-    display: flex;
-    background-color: #F5F8F8;
-    box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
-    border-radius: 15px;
-    transition: 0.3s;
-}
-
-.container-2-1 {
-    top: 80px;
-    left: 30px;
-    width: 1120px;
-    height: 850px;
-    margin: 20px;
-    position: fixed;
-    position:relative;
-    display: flex;
-    background-color: #FFFFFF;
-    box-shadow: none;
-    border-radius: 15px;
-    transition: 0.3s;
-}
-
-
-.container-3 {
-    top:1585px;
-    bottom:150px;
-    left:340px;
-    right:10px;
-    width: 1225px;
-    height: 280px;
-    margin: 30px;
-    position: fixed;
-    display: flex;
-    background-color: #F5F8F8;
-    box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
-    border-radius: 15px;
-    transition: 0.3s;
+    .container-2-0 span{
+        display: block;
+        margin-top:-2px;
+        margin-left:0px;
+        margin-bottom: 8px;
+        padding: 1em 2em 2em;
+        font-size: 1.4rem;
+    }
     
-}
-
-.container-3-0 {
-    top:-43px;
-    left:-7px;
-    right:10px;
-    width: 1225px;
-    height: 70px;
-    margin: 30px;
-    position: fixed;
-    position:relative;
-    display: flex;
-    background-color: #DEEBF5;
-    border-radius: 15px;
-    transition: 0.3s;
-    z-index: 999;
-}
-
-.container-3-0 span{
-    display: block;
-    margin-top:-2px;
-    margin-left:0px;
-    margin-bottom: 8px;
-    padding: 1em 2em 2em;
-    font-size: 1.4rem;
-}
-
-.container-3 input[name=NodeName]{
-    margin-top:100px;
-    margin-left:-60px;
-    position: absolute;
-    left:100px;
-    right: 100px;
-    padding: 10px;
-    width: 1100px;
-    height: 60px;
-    box-sizing: border-box;
-    border: 1px solid #dcdfe6;
-    border-radius: 4px;
-    outline: none;
-    padding: 0 15px;
-    color: #606266;
-    z-index: 50;
-
-}
-
-.container-3 button[id=editButton]{
-    margin-left:330px;
-    margin-top:220px;
-    width: 110px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 1rem;
-    text-indent: 1rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}
-
-.container-3 button[id=deleteButton]{
-    margin-left:530px;
-    margin-top:-30px;
-    width: 110px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 1rem;
-    text-indent: 1rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}
-
-.container-3 button[id=studyButton]{
-    margin-left:730px;
-    margin-top:-30px;
-    width: 110px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 0.2rem;
-    text-indent: 0.2rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}
+    .container-2-0 {
+        top:430px;
+        bottom:150px;
+        left:-3px;
+        right:15px;
+        width: 1225px;
+        height: 70px;
+        margin: 30px;
+        position: fixed;
+        position:relative;
+        display: flex;
+        background-color: #DEEBF5;
+        border-radius: 15px;
+        transition: 0.3s;
+        z-index: 999;
+    }
+    
+    .container-2 {
+        top:150px;
+        left:-3px;
+        right:15px;
+        width: 1225px;
+        height: 1000px;
+        margin: 30px;
+        position: fixed;
+        position:relative;
+        display: flex;
+        background-color: #F5F8F8;
+        box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
+        border-radius: 15px;
+        transition: 0.3s;
+    }
+    
+    .container-2-1 {
+        top: 80px;
+        left: 30px;
+        width: 1120px;
+        height: 850px;
+        margin: 20px;
+        position: fixed;
+        position:relative;
+        display: flex;
+        background-color: #FFFFFF;
+        box-shadow: none;
+        border-radius: 15px;
+        transition: 0.3s;
+    }
+    
+    .container-2 button[id=addButton]{
+        margin-left:320px;
+        margin-top:150px;
+        width: 150px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.9rem;
+        cursor: pointer;
+        user-select: none;
+        letter-spacing: 0.2rem;
+        text-indent: 0.2rem;
+        border-radius: 5px;
+        border-color: #676161;
+        box-sizing: border-box;
+        z-index: 50;
+    }
+    
+    .container-2 button[id=addRelation]{
+        margin-left:680px;
+        margin-top:-40px;
+        width: 150px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.9rem;
+        cursor: pointer;
+        user-select: none;
+        letter-spacing: 0.2rem;
+        text-indent: 0.2rem;
+        border-radius: 5px;
+        border-color: #676161;
+        box-sizing: border-box;
+        z-index: 50;
+    }
+    
+    
+    

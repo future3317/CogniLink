@@ -27,6 +27,7 @@
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item1">
+
                     <label for="menu-item1" onclick="homeToURL()">
                         <i class="fa-solid fa-home"></i>
                         <span>首页</span>
@@ -70,7 +71,7 @@
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3" onclick="roamToURL()">
                         <i class="fa-solid fa-book"></i>
                         <span>新增图谱</span>
                     </label>
@@ -141,7 +142,7 @@
 
 
             <div class="containerlim">
-              <form method="POST" action="{% url 'add_book' %}" >
+              <form method="POST" action="{% url 'add-book' %}" >
                 <div class="container-0">
                   <span id="n0">新增知识图谱 </span>
                 </div>

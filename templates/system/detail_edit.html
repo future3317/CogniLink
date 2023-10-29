@@ -26,34 +26,34 @@
                 <div class="set-line"></div>
                 <!-- 每一项导航 -->
                 <div class="menu-item">
-                    <input type="checkbox" id="menu-item1">
                     <label for="menu-item1">
-                        <i class="fa-solid fa-home"></i>
-                        <span>首页</span>
+                        <a href="{%url 'home'% }"><i class="fa-solid fa-home"></i> </a>
+                        <a href="{%url 'home'% }"> <span>首页</span>  </a>
                     </label>
                 </div>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item2">
                     <label for="menu-item2">
-                        <i class="fa-solid fa-edit"></i>
-                        <span>图谱编辑</span>
+                        
+                        <a href="{%url 'node_edit'% }"><i class="fa-solid fa-edit"></i></a> 
+                        <a href="{%url 'node_edit'% }"><span>图谱编辑</span></a> 
                     </label>
                 </div>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
                     <label for="menu-item3">
-                        <i class="fa-solid fa-eye"></i>
-                        <span>图谱漫游</span>
+                        <a href="{%url 'wander'% }"> <i class="fa-solid fa-eye"></i> </a>
+                        <a href="{%url 'wander'% }"> <span>图谱漫游</span></a>
                     </label>
                 </div>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
                     <label for="menu-item3">
-                        <i class="fa-solid fa-book"></i>
-                        <span>新增图谱</span>
+                        <a href="{%url 'add_book'% }"> <i class="fa-solid fa-book"></i></a>
+                        <a href="{%url 'add_book'% }"> <span>新增图谱</span></a>
                     </label>
                 </div>
 
@@ -118,16 +118,16 @@
               <form method="POST" action="{% url 'detail_edit' %}" >
                 <div class="container-0">
                     <label for="title0">
-                         <span id="n0">知识图谱编辑 </span>
-                         <i class="fa-solid fa-angle-right"></i>
-                         <select id="editpoint" name="editpoint">
-                            <option value="editpoint">编辑节点</option>
-                            <option value="editpointdetail">编辑节点详情</option>
-                            <option value="editconnection">编辑关系</option>
-                            <option value="buildpoint">新建节点</option>
-                            <option value="buildconnection">新建关系</option>
-                        </select>
-                           </label>
+                        <span id="n0">知识图谱编辑 </span>
+                        <i class="fa-solid fa-angle-right"></i>
+                           <select id="editpoint" name="editpoint"  onchange="location.href=this.options[this.selectedIndex].value;" >
+                            <option value="{% url 'node_edit'}">编辑节点</option>
+                            <option value="{% url 'detail_edit'}"selected>编辑节点详情</option>
+                            <option value="{% url 'relationship_edit'}" >编辑关系</option>
+                            <option value="{% url 'node_new'}">新建节点</option>
+                            <option value="{% url 'relationship_new'}" selected>新建关系</option>
+                             </select>
+                    </label>
                 </div>
 
 
@@ -176,21 +176,6 @@
                     </div>        
 
 
-                    <div class="container-3-0">
-                        <span>查询节点或关系查看详情</span>
-                    </div>
-
-
-                    
-                    <div class="container-3">
-                        <form method="POST" action="{% url 'detail_edit' %}" >
-                        <label for="title3">
-                            <input type="text"    id="NodeName"  name="NodeName"  id="NodeName"  placeholder="输入查询节点或关系">
-                            <button type="submit" id="editButton">编辑</button> <!-- 用于编辑节点或关系 -->
-                            <button type="submit" id="deleteButton">删除</button> <!-- 用于删除节点或关系 -->
-                            <button type="submit" id="studyButton">查看详情</button> <!-- 用于查看节点详情 -->
-                        </label>
-                    </div>
 
                
             </div> 

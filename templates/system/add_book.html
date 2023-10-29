@@ -24,6 +24,7 @@
                 <!-- 侧边栏的标题 结束-->
                 
                 <!-- 每一项导航 -->
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item1">
                     <label for="menu-item1" onclick="homeToURL()">
@@ -32,9 +33,10 @@
                     </label>
                 </div>
 
+                <!-- js实现的页面重定向 -->
                 <script>
                     function homeToURL() {
-                        window.location.href = "../../home/home.html";
+                        window.location.href = "{%url 'home'% }";
                     }
                 </script>
 
@@ -45,10 +47,10 @@
                         <span>图谱编辑</span>
                     </label>
                 </div>
-
+                <!-- js实现的页面重定向 -->
                 <script>
                     function redirectToURL() {
-
+                        window.location.href = "{%url 'node_edit'% }";
                     }
                 </script>
 
@@ -59,10 +61,10 @@
                         <span>图谱漫游</span>
                     </label>
                 </div>
-
+                  <!-- js实现的页面重定向 -->
                 <script>
                     function roamToURL() {
-                        window.location.href = "http://127.0.0.1:8000/system/wander/";
+                        window.location.href = "{%url 'wander'% }";
                     }
                 </script>
 
@@ -73,10 +75,18 @@
                         <span>新增图谱</span>
                     </label>
                 </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function roamToURL() {
+                        window.location.href = "{%url 'add_book'% }";
+                    }
+                </script>
 
                 <div class="set-line"></div>
             </div>
         </div>
+
+        <!-- 页面右上角图标 -->
         <div class="tabs">
             <input type="radio" id="home" name="tabsMenu" checked />
             <input type="radio" id="profile" name="tabsMenu" />
@@ -85,19 +95,19 @@
             <input type="radio" id="notifications" name="tabsMenu" />
 
             <div class="buttons">
-              <label for="home">
-                  <a href="{%url 'home'% }"> <i class="fa-solid fa-house"></i> </a>
-                  
-              </label>
-              <label for="profile"><i class="fa-solid fa-user"></i></label>
-              <label for="likes"><i class="fa-solid fa-bell"></i></label>
-              <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
-              <label for="notifications">
-                  
-                 <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a> 
-              
-              </label>
-          </div>
+                <label for="home">
+                    <a href="{%url 'home'% }"> <i class="fa-solid fa-house"></i> </a>
+                    
+                </label>
+                <label for="profile"><i class="fa-solid fa-user"></i></label>
+                <label for="likes"><i class="fa-solid fa-bell"></i></label>
+                <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
+                <label for="notifications">
+                    
+                   <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a> 
+                
+                </label>
+            </div>
 
           </div>
 

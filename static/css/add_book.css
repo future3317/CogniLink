@@ -237,6 +237,13 @@
     overflow: hidden;
   }
   
+  .tabs a{
+
+      color:#3b3b3b;
+      border-width: 0.5px;
+
+  }
+
   .buttons label {
     position:related;
     margin-left:25px;
@@ -262,7 +269,6 @@
     opacity: 1;
     filter: drop-shadow(0 0 10px #0a0a0a) drop-shadow(0 0 20px #020202);
   }
-  
   
  
 .container {

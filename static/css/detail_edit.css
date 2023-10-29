@@ -132,7 +132,7 @@
 .menu-item>label{
     position: relative;
     text-align: center;
-    top:70px;
+    top:10px;
     margin-left: 30px;
     width: 100%;
     height: 60px;
@@ -141,6 +141,29 @@
     align-items: center;
     
 
+}
+/* 菜单跳转*/
+ .menu-item>label>a>i{
+    color:#000000;
+    flex: none;
+    margin-left:10px;
+    margin-right: 110px;
+    font-size: 24px;
+ }
+ a:link, a:visited, a:hover, a:active {
+    text-decoration: none; 
+}
+ .menu-item>label>a>span{
+    color:#000000;
+    margin-left:-40px;
+    flex: 1;
+    a:link { text-decoration: none;color: blue}
+ }
+
+ /*菜单跳转结束*/
+
+.menu-item>label:hover {
+    color: var(--font-color-mi-hover);
 }
 
 .menu-item>label:hover {
@@ -212,7 +235,7 @@
 }
 
 .set-line {
-    margin-top: 80px;
+    margin-top: 62px;
     left:0;
     width: 600px;
     height: 2px;
@@ -239,6 +262,7 @@
     background:rgba(208, 208, 208, 0.75);
     overflow: hidden;
   }
+  
   
 .tabs a{
 
@@ -370,7 +394,7 @@
     left:340px;
     right:100px;
     width: 1290px;
-    height:1770px;
+    height:1300px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -537,7 +561,7 @@
 
 .container-0 select[id=editpoint]{
         width: 162px;                 /*宽*/
-        height: 40px;                 /*高*/
+        height: 32px;                 /*高*/
         background-color: #ffffff;  /*元素背景颜色*/
         border: 1px solid #242323;  /*边框线*/
         color: #000000;             /*字体颜色*/
@@ -569,7 +593,7 @@
 }
 
 .container-2 {
-    top:300px;
+    top:275px;
     bottom:150px;
     left:-3px;
     right:0px;
@@ -640,7 +664,7 @@
 }
 
 .container-2-0 {
-    top:390px;
+    top:375px;
     bottom:150px;
     left:-3px;
     right:15px;
@@ -657,7 +681,7 @@
 }
 
 .container-4 {
-    top:250px;
+    top:170px;
     bottom:10px;
     left:-3px;
     right:0px;
@@ -675,7 +699,7 @@
 }
 
 .container-4-0 {
-    top:340px;
+    top:270px;
     bottom:150px;
     left:-3px;
     right:0px;
@@ -724,7 +748,7 @@
 
 
 .container-4 button[id=save]{
-    margin-left:360px;
+    margin-left:370px;
     margin-top:350px;
     width: 110px;
     height: 30px;
@@ -743,7 +767,7 @@
 }
 
 .container-4 button[id=cancel]{
-    margin-left:630px;
+    margin-left:650px;
     margin-top:-30px;
     width: 110px;
     height: 30px;
@@ -761,120 +785,4 @@
     z-index: 2050;
 }
 
-.container-3 {
-    top:1505px;
-    bottom:150px;
-    left:340px;
-    right:10px;
-    width: 1225px;
-    height: 280px;
-    margin: 30px;
-    position: fixed;
-    display: flex;
-    background-color: #F5F8F8;
-    box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
-    border-radius: 15px;
-    transition: 0.3s;
-    
-}
 
-.container-3-0 {
-    top:290px;
-    left:-7px;
-    right:10px;
-    width: 1225px;
-    height: 70px;
-    margin: 30px;
-    position: fixed;
-    position:relative;
-    display: flex;
-    background-color: #DEEBF5;
-    border-radius: 15px;
-    transition: 0.3s;
-    z-index: 1100;
-}
-
-.container-3-0 span{
-    display: block;
-    margin-top:-2px;
-    margin-left:0px;
-    margin-bottom: 8px;
-    padding: 1em 2em 2em;
-    font-size: 1.4rem;
-}
-
-.container-3 input[name=NodeName]{
-    margin-top:100px;
-    margin-left:-60px;
-    position: absolute;
-    left:100px;
-    right: 100px;
-    padding: 10px;
-    width: 1100px;
-    height: 60px;
-    box-sizing: border-box;
-    border: 1px solid #dcdfe6;
-    border-radius: 4px;
-    outline: none;
-    padding: 0 15px;
-    color: #606266;
-    z-index: 50;
-
-}
-
-.container-3 button[id=editButton]{
-    margin-left:330px;
-    margin-top:220px;
-    width: 110px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 1rem;
-    text-indent: 1rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}
-
-.container-3 button[id=deleteButton]{
-    margin-left:530px;
-    margin-top:-30px;
-    width: 110px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 1rem;
-    text-indent: 1rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}
-
-.container-3 button[id=studyButton]{
-    margin-left:730px;
-    margin-top:-30px;
-    width: 110px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 0.2rem;
-    text-indent: 0.2rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}

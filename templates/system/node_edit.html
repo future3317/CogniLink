@@ -26,35 +26,61 @@
                 <!-- 每一项导航 -->
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item1">
-                    <label for="menu-item1">
+
+                   <label for="menu-item1" onclick="homeToURL()">
                         <i class="fa-solid fa-home"></i>
                         <span>首页</span>
                     </label>
                 </div>
 
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function homeToURL() {
+                        window.location.href = "{%url 'home'% }";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item2">
-                    <label for="menu-item2">
+                    <label for="menu-item2" onclick="redirectToURL()">
                         <i class="fa-solid fa-edit"></i>
                         <span>图谱编辑</span>
                     </label>
                 </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function redirectToURL() {
+                        window.location.href = "{%url 'node_edit'% }";
+                    }
+                </script>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3"  onclick="roamToURL()">
                         <i class="fa-solid fa-eye"></i>
                         <span>图谱漫游</span>
                     </label>
                 </div>
+                  <!-- js实现的页面重定向 -->
+                <script>
+                    function roamToURL() {
+                        window.location.href = "{%url 'wander'% }";
+                    }
+                </script>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3" onclick="roamToURL()">
                         <i class="fa-solid fa-book"></i>
                         <span>新增图谱</span>
                     </label>
                 </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function roamToURL() {
+                        window.location.href = "{%url 'add_book'% }";
+                    }
+                </script>
 
                 <div class="set-line"></div>
             </div>
@@ -102,7 +128,7 @@
             </div>
        
             <div class="container1">
-                <form method="POST" action="{% url 'relationship-edit' %}" >
+                <form method="POST" action="{% url 'node_edit' %}" >
                 <div class="card">
                 </div>
                 
@@ -118,18 +144,25 @@
 
 
             <div class="containerlim">
-                <form method="POST" action="{% url 'relationship-edit' %}" >
-                <div class="container-0">
-                    <label for="title0">
-                         <span id="n0">知识图谱 </span>
-                         <i class="fa-solid fa-angle-right"></i>
-                         <span id="n1">节点编辑</span>
-                           </label>
-                </div>
+                <form method="POST" action="{% url 'node_edit' %}" >
+                    <div class="container-0">
+                    
+                        <label for="title0">
+                            <span id="n0">知识图谱编辑 </span>
+                            <i class="fa-solid fa-angle-right"></i>
+                               <select id="editpoint" name="editpoint"  onchange="location.href=this.options[this.selectedIndex].value;" >
+                                <option value="{% url 'node_edit'}">编辑节点</option>
+                                <option value="{% url 'detail_edit'}">编辑节点详情</option>
+                                <option value="{% url 'relationship_edit'}" >编辑关系</option>
+                                <option value="{% url 'node_new'}">新建节点</option>
+                                <option value="{% url 'relationship_new'}" selected>新建关系</option>
+                                 </select>
+                        </label>
+                    </div>
 
 
                     <div class="container-1">
-                        <form method="POST" action="{% url 'relationship-edit' %}" >
+                        <form method="POST" action="{% url 'node_edit' %}" >
                         <label for="title1">
                             <p id="begin">节点名称</p>
                              <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容">
@@ -149,30 +182,12 @@
 
 
                     <div class="container-2">
-                        <form method="POST" action="{% url 'relationship-edit' %}" >
+                        <form method="POST" action="{% url 'node_edit' %}" >
                         <label for="title2">
 
                             <div class="container-2-1">
-                                <form method="POST" action="{% url 'relationship-edit' %}" >
+                                <form method="POST" action="{% url 'node_edit' %}" >
                             </div>
-                        </label>
-                    </div>
-
-
-
-                    <div class="container-3-0">
-                        <span>查询节点或关系查看详情</span>
-                    </div>
-
-
-                    
-                    <div class="container-3">
-                        <form method="POST" action="{% url relationship-edit' %}" >
-                        <label for="title3">
-                            <input type="text"    id="NodeName"  name="NodeName"  id="NodeName"  placeholder="输入查询节点或关系">
-                            <button type="submit" id="editButton">编辑</button> <!-- 用于编辑节点或关系 -->
-                            <button type="submit" id="deleteButton">删除</button> <!-- 用于删除节点或关系 -->
-                            <button type="submit" id="studyButton">查看详情</button> <!-- 用于查看节点详情 -->
                         </label>
                     </div>
 

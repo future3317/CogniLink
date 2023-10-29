@@ -25,37 +25,39 @@
                 <!-- 侧边栏的标题 结束-->
                 <div class="set-line"></div>
                 <!-- 每一项导航 -->
+    
                 <div class="menu-item">
-                    <input type="checkbox" id="menu-item1">
-                    <label for="menu-item1">
-                        <i class="fa-solid fa-home"></i>
-                        <span>首页</span>
-                    </label>
-                </div>
+                <input type="checkbox" id="menu-item1">
+                <label for="menu-item1">
+                    <i class="fa-solid fa-home"></i>
+                    <span>首页</span>
+                </label>
+            </div>
 
-                <div class="menu-item">
-                    <input type="checkbox" id="menu-item2">
-                    <label for="menu-item2">
-                        <i class="fa-solid fa-edit"></i>
-                        <span>图谱编辑</span>
-                    </label>
-                </div>
+            <div class="menu-item">
+                <input type="checkbox" id="menu-item2">
+                <label for="menu-item2">
+                    <i class="fa-solid fa-edit"></i>
+                    <span>图谱编辑</span>
+                </label>
+            </div>
 
-                <div class="menu-item">
-                    <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
-                        <i class="fa-solid fa-eye"></i>
-                        <span>图谱漫游</span>
-                    </label>
-                </div>
+            <div class="menu-item">
+                <input type="checkbox" id="menu-item3">
+                <label for="menu-item3">
+                    <i class="fa-solid fa-eye"></i>
+                    <span>图谱漫游</span>
+                </label>
+            </div>
 
-                <div class="menu-item">
-                    <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
-                        <i class="fa-solid fa-book"></i>
-                        <span>新增图谱</span>
-                    </label>
-                </div>
+            <div class="menu-item">
+                <input type="checkbox" id="menu-item3">
+                <label for="menu-item3">
+                    <i class="fa-solid fa-book"></i>
+                    <span>新增图谱</span>
+                </label>
+            </div>
+               
 
                 <div class="set-line"></div>
             </div>
@@ -68,18 +70,11 @@
             <input type="radio" id="notifications" name="tabsMenu" />
 
             <div class="buttons">
-                <label for="home">
-                    <a href="{%url 'home'% }"> <i class="fa-solid fa-house"></i> </a>
-                    
-                </label>
+                <label for="home"><i class="fa-solid fa-house"></i></label>
                 <label for="profile"><i class="fa-solid fa-user"></i></label>
                 <label for="likes"><i class="fa-solid fa-bell"></i></label>
                 <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
-                <label for="notifications">
-                    
-                   <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a> 
-                
-                </label>
+                <label for="notifications"><i class="fa-solid fa-power-off"></i></label>
             </div>
 
             
@@ -116,7 +111,7 @@
 
 
             <div class="containerlim">
-              <form method="POST" action="{% url 'detail' %}" >
+                <form method="POST" action="{% url 'wander' %}" >
                 <div class="container-0">
                     <label for="title0">
                          <span id="n0">知识图谱查询 </span>
@@ -124,6 +119,7 @@
                          <span id="n1">图谱漫游</span>
                            </label>
                 </div>
+
 
 
                     <div class="container-1">

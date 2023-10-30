@@ -324,3 +324,9 @@ def detail_edit(request):
     return render(request, './system/detail_edit.html')
 def add_book(request):
     return render(request, './system/add_book.html')
+
+def node_new(request):
+    return render(request, './system/node_new.html')
+
+def node_edit(request):
+    return render(request, './system/node_edit.html')

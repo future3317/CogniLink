@@ -80,7 +80,8 @@ def graph(request):
             name2 = request.POST.get('node2')
             node1 = Node('Person', name=name1)
             node2 = Node('Person', name=name2)
-            relation = Relationship(node1, relation, node2)
+
+
             graph.create(node1)
             graph.create(node2)
             graph.create(relation)
@@ -323,15 +324,48 @@ def wander(request):
 def detail_edit(request):
     return render(request, './system/detail_edit.html')
 def add_book(request):
+    if request.method == 'POST':
+        BookName = request.POST.get("BookName")
+        print(BookName)
+
     return render(request, './system/add_book.html')
 
 def node_new(request):
     return render(request, './system/node_new.html')
 
 def node_edit(request):
+    if request.method == 'POST':
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+        StartPoint = request.POST.get("StartPoint")
+        EndPoint = request.POST.get("EndPoint")
+        node1 = Node(EndPoint, name=StartPoint)
+        graph.create(node1)
+        print(StartPoint)
+        print(EndPoint)
+
     return render(request, './system/node_edit.html')
 def relationship_edit(request):
     return render(request, './system/relationship_edit.html')
 
 def relationship_new(request):
+    if request.method == 'POST':
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+
+        # 从请求中获取节点和关系信息
+        start_point = request.POST.get("StartPoint")
+        end_point = request.POST.get("EndPoint")
+        relationship_type = request.POST.get("Relationship")
+
+        node1 = graph.nodes.match(name=start_point).first()
+        node2 = graph.nodes.match(name=end_point).first()
+
+        if node1 and node2:
+            # 创建关系
+            relation = Relationship(node1, relationship_type, node2)
+            graph.create(relation)
+
+        print(start_point)
+        print(end_point)
+        print(relationship_type)
+
     return render(request, './system/relationship_new.html')

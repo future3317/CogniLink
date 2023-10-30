@@ -143,6 +143,7 @@
 
             <div class="containerlim">
               <form method="POST" action="{% url 'add_book' %}" >
+                  {% csrf_token %}
                 <div class="container-0">
                   <span id="n0">新增知识图谱 </span>
                 </div>

@@ -121,11 +121,11 @@
                         <span id="n0">知识图谱编辑 </span>
                         <i class="fa-solid fa-angle-right"></i>
                            <select id="editpoint" name="editpoint"  onchange="location.href=this.options[this.selectedIndex].value;" >
-                            <option value="{% url 'node_edit'}">编辑节点</option>
-                            <option value="{% url 'detail_edit'}"selected>编辑节点详情</option>
-                            <option value="{% url 'relationship_edit'}" >编辑关系</option>
-                            <option value="{% url 'node_new'}">新建节点</option>
-                            <option value="{% url 'relationship_new'}" selected>新建关系</option>
+                            <option value="{% url 'node_edit'%}">编辑节点</option>
+                            <option value="{% url 'detail_edit'%}"selected>编辑节点详情</option>
+                            <option value="{% url 'relationship_edit'%}" >编辑关系</option>
+                            <option value="{% url 'node_new'%}">新建节点</option>
+                            <option value="{% url 'relationship_new'%}" selected>新建关系</option>
                              </select>
                     </label>
                 </div>
@@ -133,6 +133,7 @@
 
                     <div class="container-1">
                         <form method="POST" action="{% url 'detail_edit' %}" >
+                            {% csrf_token %}
                         <label for="title1">
                             <p id="Pointname">节点名称</p>
                              <input type="text"  id="Pointname" name="Pointname"  placeholder="请输入内容">
@@ -141,6 +142,7 @@
                              <button type="submit" id="save">保存</button> <!-- 用于保存节点名称和节点类型 -->
                              <button type="submit" id="cancel">取消</button> <!-- 用于返回上级  -->
                         </label>
+                            <form>
                     </div>
 
 

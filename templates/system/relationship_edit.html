@@ -8,7 +8,7 @@
     <!-- 导入阿里的图标样式文件 -->
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="iconfont.css">
-    <link rel="stylesheet" href="/static/css/relationship-edit.css">
+    <link rel="stylesheet" href="/static/css/relationship_edit.css">
 </head>
 <body>
     <div class="content">
@@ -26,35 +26,59 @@
                 <!-- 每一项导航 -->
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item1">
-                    <label for="menu-item1">
+                    <label for="menu-item1" onclick="homeToURL()">
                         <i class="fa-solid fa-home"></i>
                         <span>首页</span>
                     </label>
                 </div>
 
+                <script>
+                    function homeToURL() {
+                        window.location.href = "http://127.0.0.1:8000/system/home/";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item2">
-                    <label for="menu-item2">
+                    <label for="menu-item2" onclick="redirectToURL()">
                         <i class="fa-solid fa-edit"></i>
                         <span>图谱编辑</span>
                     </label>
                 </div>
 
+                <script>
+                    function redirectToURL() {
+                        window.location.href = "http://127.0.0.1:8000/system/detail_edit/";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3"  onclick="roamToURL()">
                         <i class="fa-solid fa-eye"></i>
                         <span>图谱漫游</span>
                     </label>
                 </div>
 
+                <script>
+                    function roamToURL() {
+                        window.location.href = "http://127.0.0.1:8000/system/wander/";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3" onclick="addBook()">
                         <i class="fa-solid fa-book"></i>
                         <span>新增图谱</span>
                     </label>
                 </div>
+
+                <script>
+                    function addBook() {
+                        window.location.href = "http://127.0.0.1:8000/system/add_book/";
+                    }
+                </script>
 
                 <div class="set-line"></div>
             </div>
@@ -68,7 +92,7 @@
 
             <div class="buttons">
                 <label for="home">
-                    <a href="{%url 'home'% }"> <i class="fa-solid fa-house"></i> </a>
+                    <a href="{%url 'home'%}"> <i class="fa-solid fa-house"></i> </a>
                     
                 </label>
                 <label for="profile"><i class="fa-solid fa-user"></i></label>
@@ -76,7 +100,7 @@
                 <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
                 <label for="notifications">
                     
-                   <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a> 
+                   <a href="{%url 'login'%}"><i class="fa-solid fa-power-off"></i></a>
                 
                 </label>
             </div>
@@ -126,10 +150,10 @@
                         <i class="fa-solid fa-angle-right"></i>
                            <select id="editpoint" name="editpoint"  onchange="location.href=this.options[this.selectedIndex].value;" >
                             <option value="editpoint">编辑节点</option>
-                            <option value="{% url 'detail_edit'}">编辑节点详情</option>
-                            <option value="editconnection" selected>编辑关系</option>
-                            <option value="{% url 'node_new'}">新建节点</option>
-                            <option value="{% url 'relationship_new'}" >新建关系</option>
+                            <option value="{% url 'detail_edit'%}">编辑节点详情</option>
+                            <option value="{% url 'relationship_edit'%}" >编辑关系</option>
+                            <option value="{% url 'node_new'%}">新建节点</option>
+                            <option value="{% url 'relationship_new'%}" >新建关系</option>
                              </select>
                     </label>
                 </div>
@@ -137,6 +161,7 @@
 
                     <div class="container-1">
                         <form method="POST" action="{% url 'relationship_edit' %}" >
+                            {% csrf_token %}
                         <label for="title1">
                             <p id="begin">开始节点</p>
                              <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容">
@@ -152,6 +177,7 @@
                              <button type="submit" id="quitButton">取消</button> <!-- 用于查询节点之间的关系 -->
 
                         </label>
+                        </form>>
                     </div>
 
 

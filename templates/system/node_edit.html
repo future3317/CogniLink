@@ -8,7 +8,7 @@
     <!-- 导入阿里的图标样式文件 -->
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="iconfont.css">
-    <link rel="stylesheet" href="/static/css/node-edit.css">
+    <link rel="stylesheet" href="/static/css/node_edit.css">
 </head>
 <body>
     <div class="content">
@@ -36,7 +36,7 @@
                 <!-- js实现的页面重定向 -->
                 <script>
                     function homeToURL() {
-                        window.location.href = "{%url 'home'% }";
+                        window.location.href = "{%url 'home'%}";
                     }
                 </script>
 
@@ -50,7 +50,7 @@
                 <!-- js实现的页面重定向 -->
                 <script>
                     function redirectToURL() {
-                        window.location.href = "{%url 'node_edit'% }";
+                        window.location.href = "{%url 'node_edit'%}";
                     }
                 </script>
 
@@ -64,7 +64,7 @@
                   <!-- js实现的页面重定向 -->
                 <script>
                     function roamToURL() {
-                        window.location.href = "{%url 'wander'% }";
+                        window.location.href = "{%url 'wander'%}";
                     }
                 </script>
 
@@ -78,7 +78,7 @@
                 <!-- js实现的页面重定向 -->
                 <script>
                     function roamToURL() {
-                        window.location.href = "{%url 'add_book'% }";
+                        window.location.href = "{%url 'add_book'%}";
                     }
                 </script>
 
@@ -94,7 +94,7 @@
 
             <div class="buttons">
                 <label for="home">
-                    <a href="{%url 'home'% }"> <i class="fa-solid fa-house"></i> </a>
+                    <a href="{%url 'home'%}"> <i class="fa-solid fa-house"></i> </a>
                     
                 </label>
                 <label for="profile"><i class="fa-solid fa-user"></i></label>
@@ -102,7 +102,7 @@
                 <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
                 <label for="notifications">
                     
-                   <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a> 
+                   <a href="{%url 'login'%}"><i class="fa-solid fa-power-off"></i></a>
                 
                 </label>
             </div>
@@ -151,11 +151,11 @@
                             <span id="n0">知识图谱编辑 </span>
                             <i class="fa-solid fa-angle-right"></i>
                                <select id="editpoint" name="editpoint"  onchange="location.href=this.options[this.selectedIndex].value;" >
-                                <option value="{% url 'node_edit'}">编辑节点</option>
-                                <option value="{% url 'detail_edit'}">编辑节点详情</option>
-                                <option value="{% url 'relationship_edit'}" >编辑关系</option>
-                                <option value="{% url 'node_new'}">新建节点</option>
-                                <option value="{% url 'relationship_new'}" selected>新建关系</option>
+                                <option value="{% url 'node_edit'%}">编辑节点</option>
+                                <option value="{% url 'detail_edit'%}">编辑节点详情</option>
+                                <option value="{% url 'relationship_edit'%}" >编辑关系</option>
+                                <option value="{% url 'node_new'%}">新建节点</option>
+                                <option value="{% url 'relationship_new'%}" selected>新建关系</option>
                                  </select>
                         </label>
                     </div>
@@ -163,6 +163,7 @@
 
                     <div class="container-1">
                         <form method="POST" action="{% url 'node_edit' %}" >
+                            {% csrf_token %}
                         <label for="title1">
                             <p id="begin">节点名称</p>
                              <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容">
@@ -172,6 +173,7 @@
                              <button type="submit" id="quitButton">取消</button> <!-- 用于查询节点之间的关系 -->
 
                         </label>
+                        </form>>
                     </div>
 
 

@@ -330,3 +330,8 @@ def node_new(request):
 
 def node_edit(request):
     return render(request, './system/node_edit.html')
+def relationship_edit(request):
+    return render(request, './system/relationship_edit.html')
+
+def relationship_new(request):
+    return render(request, './system/relationship_new.html')

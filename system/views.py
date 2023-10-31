@@ -322,15 +322,81 @@ def wander(request):
 
 
 def detail_edit(request):
+    if request.method == 'POST':
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+        Pointname = request.POST.get("Pointname")
+        Pointtype = request.POST.get("Pointtype")
+        Pointdetail = request.POST.get("detail")
+
+        matcher = NodeMatcher(graph)
+        person = matcher.match(Pointtype, name=Pointname).first()
+        person["detail"] = Pointdetail
+        graph.push(person)
+
     return render(request, './system/detail_edit.html')
 def add_book(request):
     if request.method == 'POST':
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         BookName = request.POST.get("BookName")
+        BookIntro = request.POST.get("BookIntro")
+        InitNode = request.POST.get("InitNode")
+        InitNodeType = request.POST.get("InitNodeType")
+        InitNodeDetail = request.POST.get("InitNodeDetail")
+
+        zero_node = Node(BookName, name=BookName,detail=BookIntro)
+        graph.create(zero_node)
+
+        init_node = Node(BookName, name=InitNode,detail=InitNodeDetail)
+        graph.create(init_node)
+
+        relationship_type = "对应"
+
+        if zero_node and init_node:
+            # 创建关系
+            relation = Relationship(zero_node, relationship_type, init_node)
+            graph.create(relation)
+
         print(BookName)
+        print(BookIntro)
+        print(InitNode)
+        print(InitNodeType)
+        print(InitNodeDetail)
+
+        # 指定标签
+        label = BookName
+
+        # 查询相同标签下的所有节点和关系
+        subgraph = graph.run(f"MATCH (n:{label})-[*0..]->(m:{label}) RETURN n, m").to_subgraph()
+
+        # 转换为字典格式
+        data = {
+            "nodes": [],
+            "relationships": []
+        }
+
+        for node in subgraph.nodes:
+            data["nodes"].append(dict(node))
+
+        for relationship in subgraph.relationships:
+            data["relationships"].append(dict(relationship))
+
+        # 将数据保存到JSON文件
+        with open("output_小学数学.json", "w") as file:
+            json.dump(data, file)
 
     return render(request, './system/add_book.html')
-
 def node_new(request):
+    if request.method == 'POST':
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+        NodeName = request.POST.get("NodeName")
+        NodeType = request.POST.get("NodeType")
+        NodeDetail = request.POST.get("NodeDetail")
+
+        node1 = Node(NodeType, name=NodeName,detail=NodeDetail)
+        graph.create(node1)
+        print(NodeName)
+        print(NodeType)
+        print(NodeDetail)
     return render(request, './system/node_new.html')
 
 def node_edit(request):
@@ -344,7 +410,37 @@ def node_edit(request):
         print(EndPoint)
 
     return render(request, './system/node_edit.html')
+
 def relationship_edit(request):
+    if request.method == 'POST':
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+        start_point = request.POST.get("StartPoint")
+        end_point = request.POST.get("EndPoint")
+        relationship_type = request.POST.get("Relationship")
+
+        node_matcher = NodeMatcher(graph)  # 节点匹配器
+        relation_matcher = RelationshipMatcher(graph)  # 关系匹配器
+
+        # 找到查询关系中的两个节点，
+        start_node = node_matcher.match(name=start_point).first()
+        end_node = node_matcher.match(name=end_point).first()
+
+        result = relation_matcher.match({start_node, end_node}, r_type=None).first()
+        print(result)  # 打印结果，格式一般是 (节点一)-[关系]->(节点二)
+        print(result.nodes)  # 打印节点
+
+        graph.separate(result)  # 删除关系
+
+        # 创建新关系
+        if start_node and end_node:
+            new_relationship = Relationship(start_node, relationship_type, end_node)
+            graph.create(new_relationship)
+
+        # 将新关系添加到图数据库中
+        print(start_point)
+        print(end_point)
+        print(relationship_type)
+
     return render(request, './system/relationship_edit.html')
 
 def relationship_new(request):

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 
 <head>
@@ -10,8 +11,7 @@
     <link rel="stylesheet" href="/static/css/iconfont.css">
     <link rel="stylesheet" href="/static/css/wander.css">
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
-    <link rel="stylesheet" href="iconfont.css">
-    <link rel="stylesheet" href="wander.css">
+
 </head>
 
 <body>
@@ -25,32 +25,60 @@
                 </div>
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item1">
-                    <label for="menu-item1">
+                    <label for="menu-item1" onclick="homeToURL()">
                         <i class="fa-solid fa-home"></i>
                         <span>首页</span>
                     </label>
                 </div>
+
+                <script>
+                    function homeToURL() {
+                        window.location.href = "{%url 'home'%}";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item2">
-                    <label for="menu-item2">
+                    <label for="menu-item2" onclick="redirectToURL()">
                         <i class="fa-solid fa-edit"></i>
                         <span>图谱编辑</span>
                     </label>
                 </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function redirectToURL() {
+                        window.location.href = "{%url 'node_edit'%}";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3"  onclick="roamToURL()">
                         <i class="fa-solid fa-eye"></i>
                         <span>图谱漫游</span>
                     </label>
                 </div>
+                  <!-- js实现的页面重定向 -->
+                <script>
+                    function roamToURL() {
+                        window.location.href = "{%url 'wander'%}";
+                    }
+                </script>
+
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
+                    <label for="menu-item3" onclick="addbookToURL()">
                         <i class="fa-solid fa-book"></i>
                         <span>新增图谱</span>
                     </label>
                 </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function addbookToURL() {
+                        window.location.href = "{%url 'add_book'%}";
+                    }
+                </script>
+
                 <div class="set-line"></div>
             </div>
         </div>
@@ -94,8 +122,11 @@
                 <span style="--i:2"> </span>
                 <span style="--i:3"> </span>
             </div>
+
             <div class="containerlim">
+
                 <form method="POST" action="{% url 'wander' %}">
+
                     <div class="container-0">
                         <label for="title0">
                             <span id="n0">知识图谱查询 </span>
@@ -103,8 +134,10 @@
                             <span id="n1">图谱漫游</span>
                         </label>
                     </div>
+
                     <div class="container-1">
                         <form method="POST" action="{% url 'wander' %}">
+                            {% csrf_token %}
                             <label for="title1">
                                 <p id="begin">开始节点</p>
                                 <input type="text" id="StartPoint" name="StartPoint" placeholder="请输入内容">
@@ -114,9 +147,11 @@
                             </label>
                         </form>
                     </div>
+
                     <div class="container-2-0">
                         <span>图谱展示 </span>
                     </div>
+
                     <div class="container-2">
                         <form method="POST" action="{% url 'wander' %}">
                             <label for="title2">
@@ -128,47 +163,125 @@
                             </label>
                         </form>
                     </div>
+
                     <div class="container-3-0">
                         <span>查询节点或关系查看详情</span>
                     </div>
+
                     <div class="container-3">
                         <form method="POST" action="{% url 'wander' %}">
                             <label for="title3">
-                                <input type="text" id="NodeName" name="NodeName" id="NodeName" placeholder="输入查询节点或关系">
+                                <input type="text" id="NodeName" name="NodeName"  placeholder="输入查询节点或关系">
                                 <button type="submit" id="editButton">编辑</button>
                                 <button type="submit" id="deleteButton">删除</button>
                                 <button type="submit" id="studyButton">查看详情</button>
                             </label>
                         </form>
                     </div>
+
                 </form>
             </div>
+
+    <div id="menu" class="menu-mouse">
+        <form method="POST" action="{% url 'wander' %}">
+            <div class="menu__item">  新增节点</div>
+            <div class="menu__item">  新增关系</div>
+        </form>
+    </div>
+
+    <div class="dialog" id="dialog1" style="display: none;">
+        <div class="dialogContent"></div>
+        <div class="dialogBtn">
+            <form method="POST" action="{% url 'wander' %}">
+                <button type="submit" id="editButton">编辑</button>
+                <button type="button" onclick="openDialog('dialog3')">删除</button>
+                <button type="submit" id="studyButton">查看详情</button>
+                <button type="button" onclick="closeDialog('dialog1')">取消</button>
+            </form>
         </div>
     </div>
+
+    <div class="dialog" id="dialog2" style="display: none;">
+        <div class="dialogContent"></div>
+        <div class="dialogBtn">
+            <form method="POST" action="{% url 'wander' %}">
+                <button type="submit" id="editButton">编辑</button>
+                <button type="button" onclick="openDialog('dialog3')">删除</button>
+                <button type="button" onclick="closeDialog('dialog2')">取消</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="dialog" id="dialog3" style="display: none;">
+        <div class="dialogContent">
+            <p>
+                是否确定删除？
+            </p>
+        </div>
+        <div class="dialogBtn">
+            <form method="POST" action="{% url 'wander' %}">
+                <button type="submit" id="deleteButton">确定</button>
+                <button type="button" onclick="closeDialog('dialog3')">取消</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const menu=document.getElementById('menu');
+          
+            window.oncontextmenu=function(e){
+                //取消默认的浏览器自带右键
+                e.preventDefault();
+                let x = e.clientX;                //触发点到页面窗口左边的距离
+                let y = e.clientY;
+                let winWidth = window.innerWidth; //窗口的内部宽度（包括滚动条）
+                let winHeight = window.innerHeight;
+                let menuWidth = menu.offsetWidth; //菜单宽度
+                let menuHeight = menu.offsetHeight;
+                x = winWidth - menuWidth >= x ? x : winWidth -menuWidth;
+                y = winHeight - menuHeight >= y ? y : winHeight - menuHeight;
+                menu.style.top = y+'px';
+                menu.style.left = x +'px';
+                menu.classList.add('active');
+            }
+            // 关闭右键菜单
+            window.addEventListener('click', function() {
+                menu.classList.remove('active');
+            })
+        }
+        // 菜单功能测试
+        function log(i){
+            alert("Hello world!");
+        }
+        
+    </script>
 
     <script type="text/javascript">
         // 在代码1的脚本中初始化 ECharts 图表
         var myChart = echarts.init(document.getElementById('echarts-container'));
+        var neo4j_data = [{{ neo4j_data|safe }}]
+        var data1 = neo4j_data[0]['data']
+        var links1 = neo4j_data[0]['links']
+        console.log(data1)
+        console.log(links1)
 
         // 以下是代码2中的图表配置和数据
         var categories = [];
-        
+
     for (var i = 0; i < 2; i++) {
         categories[i] = {
             name: '类目' + i
         };
     }
     option = {
-        // 图的标题
-        title: {
-            text: 'ECharts 关系图'
-        },
-        // 提示框的配置
+
+        //提示框的配置
         tooltip: {
             formatter: function (x) {
                 return x.data.des;
-            }
-        },
+           }
+       },
         // 工具箱
         toolbox: {
             // 显示工具箱
@@ -187,12 +300,7 @@
                 }
             }
         },
-        legend: [{
-            // selectedMode: 'single',
-            data: categories.map(function (a) {
-                return a.name;
-            })
-        }],
+11.2
         series: [{
             type: 'graph', // 类型:关系图
             layout: 'force', //图的布局，类型为力导图
@@ -232,60 +340,87 @@
                     textStyle: {}
                 }
             },
- 
+
             // 数据
-            data: [{
-                name: 'node01',
-                des: 'nodedes01',
-                symbolSize: 70,
-                category: 0,
-            }, {
-                name: 'node02',
-                des: 'nodedes02',
-                symbolSize: 50,
-                category: 1,
-            }, {
-                name: 'node03',
-                des: 'nodedes3',
-                symbolSize: 50,
-                category: 1,
-            }, {
-                name: 'node04',
-                des: 'nodedes04',
-                symbolSize: 50,
-                category: 1,
-            }, {
-                name: 'node05',
-                des: 'nodedes05',
-                symbolSize: 50,
-                category: 1,
-            }],
-            links: [{
-                source: 'node01',
-                target: 'node02',
-                name: 'link01',
-                des: 'link01des'
-            }, {
-                source: 'node01',
-                target: 'node03',
-                name: 'link02',
-                des: 'link02des'
-            }, {
-                source: 'node01',
-                target: 'node04',
-                name: 'link03',
-                des: 'link03des'
-            }, {
-                source: 'node01',
-                target: 'node05',
-                name: 'link04',
-                des: 'link05des'
-            }],
+            data: data1,
+            links: links1,
             categories: categories,
         }]
     };
+
+    myChart.on('dblclick', function (params) {
+     if (params.seriesType === 'graph' && params.dataType === 'node') {
+        var nodeName = params.data.name;
+        var nodedetail = params.data.des;
+        // 弹出选择框
+        var option = prompt('名称：'+nodeName+'\n详情:' + nodedetail+'\n选项：\n1. 编辑\n2. 删除', '1');
+
+        if (option === '1') {
+            // 存储 nodeName 到 sessionStorage
+            sessionStorage.setItem('StartPoint', nodeName);
+
+            // 构建跳转的 URL
+            var url = '{% url "node_edit" %}';
+
+            // 跳转到 'node_edit' 页面
+            window.location.href = url;
+
+        } else if (option === '2') {
+            // 处理删除操作
+            deleteNode(nodeName);
+        }
+     }
+        else if (params.seriesType === 'graph' && params.dataType === 'edge') {
+        var linkName = params.data.name;
+        var linkDes = params.data.des;
+
+        var content = linkName + ':' + linkDes + '\n\nOptions:\n1. Edit\n2. Delete';
+
+        // Display alert with options
+        var option = prompt(content, '1');
+
+        if (option === '1') {
+            editEdge(linkName);
+        } else if (option === '2') {
+            deleteEdge(linkName);
+        }
+    }
+});
+
+function editNode(nodeName) {
+    window.location.href = 'node_edit_page?nodeName=' + nodeName;
+}
+
+function deleteNode(nodeName) {
+    console.log('Deleting node: ' + nodeName);
+}
+
+function editEdge(linkName) {
+    window.location.href = 'relationship_edit_page?linkName=' + linkName;
+}
+
+function deleteEdge(linkName) {
+    console.log('Deleting edge: ' + linkName);
+}
+
     myChart.setOption(option);
+  
     </script>
+    
+    <script>
+        function closeDialog(dialogId) {
+            // 隐藏对应的对话框
+            document.getElementById(dialogId).style.display = 'none';
+        }
+    </script>
+
+    <script>
+        function openDialog(dialogId) {
+            // 隐藏对应的对话
+            document.getElementById(dialogId).style.display = 'block';
+        }
+    </script>
+
 </body>
 
 </html>

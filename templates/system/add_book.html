@@ -162,10 +162,31 @@
                       <input type="text"  id="InitNodeDetail"  name="InitNodeDetail"   placeholder="请输入内容">
                     </label>
                     <label for="title2">
-                      <button type="submit" id="Save">保存</button>
+                      <button type="submit" id="Save" onclick="saveAndRedirect()">保存</button>
                       <button type="submit" id="Cancel">取消</button>
                     </label>
                 </div>
+
+
+
+                  <script>
+  function saveAndRedirect() {
+    // Get the value of InitNodeType input
+    var InitNodeTypeValue = document.getElementById("InitNodeType").value;
+    var InitNodeValue = document.getElementById("InitNode").value;
+    console.log(InitNodeTypeValue)
+      console.log(InitNodeValue)
+    // Store the values in sessionStorage
+    sessionStorage.setItem('InitNodeType', InitNodeTypeValue);
+    sessionStorage.setItem('InitNode', InitNodeValue);
+    // Construct the redirect URL (modify this based on your actual URL structure)
+    var url = 'wander.html';
+
+    // Redirect to the Wander webpage
+    window.location.href = url;
+  }
+</script>
+
               </form>
             </div>
 

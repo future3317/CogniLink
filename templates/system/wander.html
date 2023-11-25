@@ -101,9 +101,24 @@
             </div>
         </div>
         <div class="container">
-            <input type="text" placeholder="请选择学科">
-            <div class="overlay"></div>
-        </div>
+  <input type="text" id="subjectInput" placeholder="请选择学科">
+  <div class="overlay"></div>
+</div>
+
+<script>
+  // 从sessionStorage中获取InitNodeType的值
+    var initNodeType = sessionStorage.getItem('InitNodeType');
+    var initNode = sessionStorage.getItem('InitNode');
+    console.log(initNodeType)
+    console.log(initNode)
+  // 设置subjectInput元素的值
+    document.getElementById('subjectInput').value = initNodeType;
+
+  // 发送异步请求以使用InitNodeType值更新后端
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET', '{% url "wander" %}?init_node_name=' + encodeURIComponent(initNode), true);
+    xhr.send();
+</script>
         <div class="TUPU">
             <div class="text-part1">
                 <label for="menu-item1">
@@ -226,7 +241,9 @@
     <script type="text/javascript">
         // 在代码1的脚本中初始化 ECharts 图表
         var myChart = echarts.init(document.getElementById('echarts-container'));
+        console.log('wojinlail')
         var neo4j_data = [{{ neo4j_data|safe }}]
+        console.log(neo4j_data)
         var data1 = neo4j_data[0]['data']
         var links1 = neo4j_data[0]['links']
         console.log(data1)
@@ -266,7 +283,6 @@
                 }
             }
         },
-11.2
         series: [{
             type: 'graph', // 类型:关系图
             layout: 'force', //图的布局，类型为力导图

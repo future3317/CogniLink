@@ -9,6 +9,7 @@ from util.pre_load import neo4jconn, course_dict
 import json
 
 
+yes = 0
 bookname = "Hello World"
 # Create your views here.
 
@@ -95,7 +96,6 @@ def home(request):
 #输入两个节点的名字，漫游查询他们的路径
 def wander(request):
     neo4j_data = {'data': [], 'links': []}
-
     if request.method == "POST":
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         StartPoint = request.POST.get("StartPoint")
@@ -191,7 +191,6 @@ def wander(request):
 
 
 
-
 def detail_edit(request):
     neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
@@ -206,7 +205,7 @@ def detail_edit(request):
         graph.push(person)
 
         label = person.labels
-
+        print(label)
         # 定义data数组，存放节点信息
         data = []
         # 定义关系数组，存放节点间的关系
@@ -270,10 +269,10 @@ def add_book(request):
         InitNodeType = request.POST.get("InitNodeType")
         InitNodeDetail = request.POST.get("InitNodeDetail")
 
-        zero_node = Node(BookName, name=BookName,detail=BookIntro)
+        zero_node = Node(InitNodeType, name=BookName,detail=BookIntro)
         graph.create(zero_node)
 
-        init_node = Node(BookName, name=InitNode,detail=InitNodeDetail)
+        init_node = Node(InitNodeType, name=InitNode,detail=InitNodeDetail)
         graph.create(init_node)
 
         relationship_type = "对应"
@@ -291,7 +290,7 @@ def add_book(request):
 
 
         # 输入要查询的标签
-        label = BookName
+        label = InitNodeType
 
         # 定义data数组，存放节点信息
         data = []
@@ -337,12 +336,8 @@ def add_book(request):
             'data': data,
             'links': links
         }
-
-        # 将数据保存到JSON文件
-        with open("output_新建图谱.json", "w", encoding='utf-8') as file:
-            json.dump(neo4j_data, file, ensure_ascii=False)
-        return render(request, './system/wander.html')
-
+        neo4j_data = json.dumps(neo4j_data)
+        return render(request, './system/wander.html', {'neo4j_data': neo4j_data})
     return render(request, './system/add_book.html')
 def node_new(request):
     neo4j_data = {'data': [], 'links': []}

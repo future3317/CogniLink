@@ -9,19 +9,20 @@ from util.pre_load import neo4jconn, course_dict
 import json
 
 
+bookname = "Hello World"
 # Create your views here.
 
 def login(request):
     if request.method == 'POST':
-        print("进入页面")
+        #print("进入页面")
         email = request.POST.get('username')
         password = request.POST.get('password')
         corr_email = Account.objects.filter(email=email).first()
-        print("获取到信息")
-        print(email)
-        print(password)
-        print(corr_email)
-        print(len(email))
+        #print("获取到信息")
+        #print(email)
+        #print(password)
+        #print(corr_email)
+        #print(len(email))
 
         if corr_email is not None and email == corr_email.email and password == corr_email.password:
             print('登录成功')
@@ -333,11 +334,63 @@ def detail_edit(request):
         person["detail"] = Pointdetail
         graph.push(person)
 
+        label = person.labels
+
+        # 定义data数组，存放节点信息
+        data = []
+        # 定义关系数组，存放节点间的关系
+        links = []
+
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name
+            node_name = record["n"]["name"]
+            # 构造字典，存储单个节点信息
+            dict = {
+                'name': node_name,
+                'symbolSize': 50,
+                'category': '1'
+            }
+            # 将单个节点信息存放在data数组中
+            data.append(dict)
+
+        # 查询指定标签的所有关系，并将关系信息存放在links数组中
+        query = f"MATCH (n{label})-[r]->() RETURN r"
+        result = graph.run(query)
+        for record in result:
+            # 取出开始节点的name
+            source = record["r"].start_node["name"]
+            # 取出结束节点的name
+            target = record["r"].end_node["name"]
+            # 取出开始节点的结束节点之间的关系
+            name = type(record["r"]).__name__
+            # 构造字典存储单个关系信息
+            dict = {
+                'source': source,
+                'target': target,
+                'name': name
+            }
+            # 将单个关系信息存放进links数组中
+            links.append(dict)
+
+        # 将所有的节点信息和关系信息存放在一个字典中
+        neo4j_data = {
+            'data': data,
+            'links': links,
+        }
+
+        # 将数据保存到JSON文件
+        with open("output_编辑节点详情.json", "w", encoding='utf-8') as file:
+            json.dump(neo4j_data, file, ensure_ascii=False)
+
     return render(request, './system/detail_edit.html')
 def add_book(request):
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         BookName = request.POST.get("BookName")
+        bookname = BookName;
         BookIntro = request.POST.get("BookIntro")
         InitNode = request.POST.get("InitNode")
         InitNodeType = request.POST.get("InitNodeType")
@@ -362,27 +415,135 @@ def add_book(request):
         print(InitNodeType)
         print(InitNodeDetail)
 
-        # 指定标签
+# 最终能跑代码
+
+        # 输入要查询的标签
         label = BookName
 
-        # 查询相同标签下的所有节点和关系
-        subgraph = graph.run(f"MATCH (n:{label})-[*0..]->(m:{label}) RETURN n, m").to_subgraph()
+        # 定义data数组，存放节点信息
+        data = []
+        # 定义关系数组，存放节点间的关系
+        links = []
 
-        # 转换为字典格式
-        data = {
-            "nodes": [],
-            "relationships": []
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n:{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name
+            node_name = record["n"]["name"]
+            # 构造字典，存储单个节点信息
+            dict = {
+                'name': node_name,
+                'symbolSize': 50,
+                'category': '1'
+            }
+            # 将单个节点信息存放在data数组中
+            data.append(dict)
+
+        # 查询指定标签的所有关系，并将关系信息存放在links数组中
+        query = f"MATCH (n:{label})-[r]->() RETURN r"
+        result = graph.run(query)
+        for record in result:
+            # 取出开始节点的name
+            source = record["r"].start_node["name"]
+            # 取出结束节点的name
+            target = record["r"].end_node["name"]
+            # 取出开始节点的结束节点之间的关系
+            name = type(record["r"]).__name__
+            # 构造字典存储单个关系信息
+            dict = {
+                'source': source,
+                'target': target,
+                'name': name
+            }
+            # 将单个关系信息存放进links数组中
+            links.append(dict)
+
+        # 将所有的节点信息和关系信息存放在一个字典中
+        neo4j_data = {
+            'data': data,
+            'links': links
         }
 
-        for node in subgraph.nodes:
-            data["nodes"].append(dict(node))
-
-        for relationship in subgraph.relationships:
-            data["relationships"].append(dict(relationship))
-
         # 将数据保存到JSON文件
-        with open("output_小学数学.json", "w") as file:
-            json.dump(data, file)
+        with open("output_新建图谱.json", "w", encoding='utf-8') as file:
+            json.dump(neo4j_data, file, ensure_ascii=False)
+
+    #     #第一版能跑代码
+    #     # 定义data数组，存放节点信息
+    #     data = []
+    #     # 定义关系数组，存放节点间的关系
+    #     links = []
+    #
+    #     # 查询所有节点，并将节点信息取出存放在data数组中
+    #     for n in graph.nodes:
+    #         # 将节点信息转化为json格式，否则中文会不显示
+    #         nodesStr = json.dumps(graph.nodes[n], ensure_ascii=False)
+    #         # 取出节点的name
+    #         node_name = json.loads(nodesStr)['name']
+    #         # 构造字典，存储单个节点信息
+    #         dict = {
+    #             'name': node_name,
+    #             'symbolSize': 50,
+    #             'category': '1',
+    #         }
+    #         # 将单个节点信息存放在data数组中
+    #         data.append(dict)
+    #         # 查询所有关系，并将所有的关系信息存放在links数组中
+    #         rps = graph.relationships
+    #         for r in rps:
+    #             # 取出开始节点的name
+    #             source = str(rps[r].start_node['name'])
+    #             # 取出结束节点的name
+    #             target = str(rps[r].end_node['name'])
+    #             # 取出开始节点的结束节点之间的关系
+    #             name = str(type(rps[r]).__name__)
+    #             # 构造字典存储单个关系信息
+    #             dict = {
+    #                 'source': source,
+    #                 'target': target,
+    #                 'name': name
+    #             }
+    #             # 将单个关系信息存放进links数组中
+    #             links.append(dict)
+    #         # 输出所有节点信息
+    #         for item in data:
+    #             print(item)
+    #         # 输出所有关系信息
+    #         for item in links:
+    #             print(item)
+    #         # 将所有的节点信息和关系信息存放在一个字典中
+    #         neo4j_data = {
+    #             'data': data,
+    #             'links': links
+    #         }
+    # # 将数据保存到JSON文件
+    # with open("output_新建图谱3.json", "w") as file:
+    #     json.dump(neo4j_data, file)
+
+
+            # # 将字典转化json格式
+            # neo4j_data = json.dumps(neo4j_data)
+            # # return neo4j_data
+
+       #  # 指定标签
+       #  label = BookName
+       #
+       #  # 查询相同标签下的所有节点和关系
+       #  query = f"MATCH (n:{label})-[r]-(m:{label}) RETURN n, r, m"
+       #  subgraph = graph.run(query).to_subgraph()
+       #
+       #  print(subgraph)
+       #
+       #  # 转换为字典格式
+       #  data = {
+       #      "nodes": [dict(node) for node in subgraph.nodes],
+       #      "relationships": [dict(relationship) for relationship in subgraph.relationships]
+       # }
+       #
+       # 将数据保存到JSON文件
+       # with open("output_新建图谱2.json", "w") as file:
+       #     json.dump(data, file)
 
     return render(request, './system/add_book.html')
 def node_new(request):
@@ -397,6 +558,59 @@ def node_new(request):
         print(NodeName)
         print(NodeType)
         print(NodeDetail)
+
+        # 输入要查询的标签
+        label = NodeType
+
+        # 定义data数组，存放节点信息
+        data = []
+        # 定义关系数组，存放节点间的关系
+        links = []
+
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n:{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name
+            node_name = record["n"]["name"]
+            # 构造字典，存储单个节点信息
+            dict = {
+                'name': node_name,
+                'symbolSize': 50,
+                'category': '1'
+            }
+            # 将单个节点信息存放在data数组中
+            data.append(dict)
+
+        # 查询指定标签的所有关系，并将关系信息存放在links数组中
+        query = f"MATCH (n:{label})-[r]->() RETURN r"
+        result = graph.run(query)
+        for record in result:
+            # 取出开始节点的name
+            source = record["r"].start_node["name"]
+            # 取出结束节点的name
+            target = record["r"].end_node["name"]
+            # 取出开始节点的结束节点之间的关系
+            name = type(record["r"]).__name__
+            # 构造字典存储单个关系信息
+            dict = {
+                'source': source,
+                'target': target,
+                'name': name
+            }
+            # 将单个关系信息存放进links数组中
+            links.append(dict)
+
+        # 将所有的节点信息和关系信息存放在一个字典中
+        neo4j_data = {
+            'data': data,
+            'links': links,
+        }
+
+        # 将数据保存到JSON文件
+        with open("output_新建节点.json", "w", encoding='utf-8') as file:
+            json.dump(neo4j_data, file, ensure_ascii=False)
+
     return render(request, './system/node_new.html')
 
 def node_edit(request):
@@ -408,6 +622,7 @@ def node_edit(request):
         graph.create(node1)
         print(StartPoint)
         print(EndPoint)
+
 
     return render(request, './system/node_edit.html')
 
@@ -441,6 +656,57 @@ def relationship_edit(request):
         print(end_point)
         print(relationship_type)
 
+        label = start_node.labels
+
+        # 定义data数组，存放节点信息
+        data = []
+        # 定义关系数组，存放节点间的关系
+        links = []
+
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name
+            node_name = record["n"]["name"]
+            # 构造字典，存储单个节点信息
+            dict = {
+                'name': node_name,
+                'symbolSize': 50,
+                'category': '1'
+            }
+            # 将单个节点信息存放在data数组中
+            data.append(dict)
+
+        # 查询指定标签的所有关系，并将关系信息存放在links数组中
+        query = f"MATCH (n{label})-[r]->() RETURN r"
+        result = graph.run(query)
+        for record in result:
+            # 取出开始节点的name
+            source = record["r"].start_node["name"]
+            # 取出结束节点的name
+            target = record["r"].end_node["name"]
+            # 取出开始节点的结束节点之间的关系
+            name = type(record["r"]).__name__
+            # 构造字典存储单个关系信息
+            dict = {
+                'source': source,
+                'target': target,
+                'name': name
+            }
+            # 将单个关系信息存放进links数组中
+            links.append(dict)
+
+        # 将所有的节点信息和关系信息存放在一个字典中
+        neo4j_data = {
+            'data': data,
+            'links': links,
+        }
+
+        # 将数据保存到JSON文件
+        with open("output_编辑关系.json", "w", encoding='utf-8') as file:
+            json.dump(neo4j_data, file, ensure_ascii=False)
+
     return render(request, './system/relationship_edit.html')
 
 def relationship_new(request):
@@ -464,4 +730,62 @@ def relationship_new(request):
         print(end_point)
         print(relationship_type)
 
+        # 指定标签
+        label = node1.labels
+
+        # 定义data数组，存放节点信息
+        data = []
+        # 定义关系数组，存放节点间的关系
+        links = []
+
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name
+            node_name = record["n"]["name"]
+            # 构造字典，存储单个节点信息
+            dict = {
+                'name': node_name,
+                'symbolSize': 50,
+                'category': '1'
+            }
+            # 将单个节点信息存放在data数组中
+            data.append(dict)
+
+        # 查询指定标签的所有关系，并将关系信息存放在links数组中
+        query = f"MATCH (n{label})-[r]->() RETURN r"
+        result = graph.run(query)
+        for record in result:
+            # 取出开始节点的name
+            source = record["r"].start_node["name"]
+            # 取出结束节点的name
+            target = record["r"].end_node["name"]
+            # 取出开始节点的结束节点之间的关系
+            name = type(record["r"]).__name__
+            # 构造字典存储单个关系信息
+            dict = {
+                'source': source,
+                'target': target,
+                'name': name
+            }
+            # 将单个关系信息存放进links数组中
+            links.append(dict)
+
+        # 将所有的节点信息和关系信息存放在一个字典中
+        neo4j_data = {
+            'data': data,
+            'links': links,
+        }
+
+        # 将数据保存到JSON文件
+        with open("output_新建关系.json", "w", encoding='utf-8') as file:
+            json.dump(neo4j_data, file, ensure_ascii=False)
+
     return render(request, './system/relationship_new.html')
+
+def wander_1(request):
+    if request.method == 'POST':
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+
+    return render(request, './system/wander_1.html')

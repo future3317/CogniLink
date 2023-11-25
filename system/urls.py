@@ -1,4 +1,4 @@
-from .views import logout,logon,login,node_new,node_edit,relationship_edit,relationship_new,wander,graph,edit_node,add_book,detail_edit,check_node,home,course,search_course_knowledgepoint,search_question_knowledgepoint,search_relation
+from .views import logout,logon,login,node_new,wander_1,node_edit,relationship_edit,relationship_new,wander,graph,edit_node,add_book,detail_edit,check_node,home,course,search_course_knowledgepoint,search_question_knowledgepoint,search_relation
 from django.urls import path
 from django.conf.urls import url
 
@@ -21,4 +21,5 @@ urlpatterns = [
     path('node_edit/', node_edit, name='node_edit'),
     path('relationship_edit/', relationship_edit, name='relationship_edit'),
     path('relationship_new/', relationship_new, name='relationship_new'),
+    path('wander_1/', wander_1, name='wander_1'),
 ]

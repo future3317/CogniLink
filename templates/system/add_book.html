@@ -71,14 +71,14 @@
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3" onclick="roamToURL()">
+                    <label for="menu-item3" onclick="addbookToURL()">
                         <i class="fa-solid fa-book"></i>
                         <span>新增图谱</span>
                     </label>
                 </div>
                 <!-- js实现的页面重定向 -->
                 <script>
-                    function roamToURL() {
+                    function addbookToURL() {
                         window.location.href = "{%url 'add_book'%}";
                     }
                 </script>

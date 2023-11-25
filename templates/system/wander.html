@@ -101,7 +101,7 @@
             </div>
         </div>
         <div class="container">
-            <input type="text" placeholder="Search...">
+            <input type="text" placeholder="请选择学科">
             <div class="overlay"></div>
         </div>
         <div class="TUPU">
@@ -182,12 +182,7 @@
                 </form>
             </div>
 
-    <div id="menu" class="menu-mouse">
-        <form method="POST" action="{% url 'wander' %}">
-            <div class="menu__item">  新增节点</div>
-            <div class="menu__item">  新增关系</div>
-        </form>
-    </div>
+
 
     <div class="dialog" id="dialog1" style="display: none;">
         <div class="dialogContent"></div>
@@ -226,36 +221,7 @@
         </div>
     </div>
 
-    <script>
-        window.onload = function() {
-            const menu=document.getElementById('menu');
-          
-            window.oncontextmenu=function(e){
-                //取消默认的浏览器自带右键
-                e.preventDefault();
-                let x = e.clientX;                //触发点到页面窗口左边的距离
-                let y = e.clientY;
-                let winWidth = window.innerWidth; //窗口的内部宽度（包括滚动条）
-                let winHeight = window.innerHeight;
-                let menuWidth = menu.offsetWidth; //菜单宽度
-                let menuHeight = menu.offsetHeight;
-                x = winWidth - menuWidth >= x ? x : winWidth -menuWidth;
-                y = winHeight - menuHeight >= y ? y : winHeight - menuHeight;
-                menu.style.top = y+'px';
-                menu.style.left = x +'px';
-                menu.classList.add('active');
-            }
-            // 关闭右键菜单
-            window.addEventListener('click', function() {
-                menu.classList.remove('active');
-            })
-        }
-        // 菜单功能测试
-        function log(i){
-            alert("Hello world!");
-        }
-        
-    </script>
+
 
     <script type="text/javascript">
         // 在代码1的脚本中初始化 ECharts 图表

@@ -76,7 +76,8 @@
 
                 <script>
                     function addBook() {
-                        window.location.href = "/system/add_book/";
+                        window.location.href = "/system/add_book/"
+
                     }
                 </script>
 
@@ -200,6 +201,7 @@
 
           notes.push(noteObject);
           saveNotes(notes);
+          window.location.href = "/system/add_book/"
         }
 
         function updateNote(id, newContent) {

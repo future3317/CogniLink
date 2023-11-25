@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- 导入阿里的图标样式文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="iconfont.css">
     <link rel="stylesheet" href="/static/css/relationship_new.css">
@@ -93,19 +94,19 @@
             <div class="buttons">
                 <label for="home">
                     <a href="{%url 'home'% }"> <i class="fa-solid fa-house"></i> </a>
-                    
+
                 </label>
                 <label for="profile"><i class="fa-solid fa-user"></i></label>
                 <label for="likes"><i class="fa-solid fa-bell"></i></label>
                 <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
                 <label for="notifications">
-                    
-                   <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a> 
-                
+
+                   <a href="{%url 'login'% }"><i class="fa-solid fa-power-off"></i></a>
+
                 </label>
             </div>
 
-            
+
 
           </div>
 
@@ -113,7 +114,7 @@
 
             <input type="text" placeholder="Search...">
             <div class="overlay"></div>
-            
+
           </div>
 
 
@@ -124,12 +125,12 @@
                   <span>图谱笔记</span>
                     </label>
             </div>
-       
+
             <div class="container1">
                 <form method="POST" action="{% url 'relationship_new' %}" >
                 <div class="card">
                 </div>
-                
+
             </div>
 
             <div class="card1">
@@ -145,7 +146,7 @@
                 <form method="POST" action="{% url 'relationship_new' %}" >
 
                 <div class="container-0">
-                    
+
                     <label for="title0">
                         <span id="n0">知识图谱编辑 </span>
                         <i class="fa-solid fa-angle-right"></i>
@@ -169,14 +170,14 @@
                              <p id="end">结束节点</p>
                              <input type="text"  id="EndPoint"  name="EndPoint"   placeholder="请输入内容">
 
-                             
+
 
                                 <p id="relationship">关系</p>
                                 <input type="text" id="Relationship" name="Relationship" placeholder="请输入内容" >
-                                
+
                                 <button type="submit" id="SAVEButton">保存</button> <!-- 用于查询节点之间的关系 -->
                                 <button type="submit" id="quitButton">取消</button> <!-- 用于查询节点之间的关系 -->
-   
+
                         </label>
                         </form>>
                     </div>
@@ -194,15 +195,117 @@
 
                             <div class="container-2-1">
                                 <form method="POST" action="{% url 'relationship_new' %}" >
+                                    <div id="echarts-container" style="width: 100%; height: 100%;"></div>
                             </div>
 
-                        
+
                         </label>
                     </div>
 
-             </div> 
+             </div>
+<script type="text/javascript">
+        // 在代码1的脚本中初始化 ECharts 图表
+        var myChart = echarts.init(document.getElementById('echarts-container'));
+        var neo4j_data = [{{ neo4j_data|safe }}]
+        var data1 = neo4j_data[0]['data']
+        var links1 = neo4j_data[0]['links']
+        console.log(data1)
+        console.log(links1)
 
-             
+        // 以下是代码2中的图表配置和数据
+        var categories = [];
+
+    for (var i = 0; i < 2; i++) {
+        categories[i] = {
+            name: '类目' + i
+        };
+    }
+    option = {
+        // 图的标题
+        title: {
+            text: 'ECharts 关系图'
+        },
+        // 提示框的配置
+        //tooltip: {
+           // formatter: function (x) {
+            //    return x.data.des;
+          //  }
+      //  },
+        // 工具箱
+        toolbox: {
+            // 显示工具箱
+            show: true,
+            feature: {
+                mark: {
+                    show: true
+                },
+                // 还原
+                restore: {
+                    show: true
+                },
+                // 保存为图片
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
+        legend: [{
+            // selectedMode: 'single',
+            data: categories.map(function (a) {
+                return a.name;
+            })
+        }],
+        series: [{
+            type: 'graph', // 类型:关系图
+            layout: 'force', //图的布局，类型为力导图
+            symbolSize: 40, // 调整节点的大小
+            roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+            edgeSymbol: ['circle', 'arrow'],
+            edgeSymbolSize: [2, 10],
+            edgeLabel: {
+                normal: {
+                    textStyle: {
+                        fontSize: 20
+                    }
+                }
+            },
+            force: {
+                repulsion: 2500,
+                edgeLength: [10, 50]
+            },
+            draggable: true,
+            lineStyle: {
+                normal: {
+                    width: 2,
+                    color: '#4b565b',
+                }
+            },
+            edgeLabel: {
+                normal: {
+                    show: true,
+                    formatter: function (x) {
+                        return x.data.name;
+                    }
+                }
+            },
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {}
+                }
+            },
+
+            // 数据
+            data: data1,
+            links: links1,
+            categories: categories,
+        }]
+    };
+    myChart.setOption(option);
+    </script>
+
+</div>
+
 
 
 </body>

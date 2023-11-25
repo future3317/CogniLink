@@ -370,7 +370,7 @@
     left:340px;
     right:100px;
     width: 1290px;
-    height:1770px;
+    height:800px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -384,14 +384,14 @@
 
 
 .container-1{
-    top:100px;
+    top:-70px;
     bottom:150px;
-    left:340px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 330px;
     margin: 30px;
-    position: fixed;
+    position: relative;
     display: flex;
     background-color: #F5F8F8;
     box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
@@ -486,14 +486,14 @@
 
 
 .container-0{
-    top:100px;
+    top:30px;
     bottom:150px;
-    left:340px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 70px;
     margin: 30px;
-    position: fixed;
+    position: relative;
     display: flex;
     background-color: #DEEBF5;
     border-radius: 15px;
@@ -541,14 +541,13 @@
 }
 
 .container-2 {
-    top:90px;
+    top:-90px;
     bottom:150px;
-    left:-3px;
+    left:-70px;
     right:15px;
     width: 1225px;
     height: 1000px;
     margin: 30px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #F5F8F8;
@@ -611,14 +610,13 @@
 }
 
 .container-2-0 {
-    top:370px;
+    top:0px;
     bottom:150px;
-    left:-3px;
+    left:-70px;
     right:15px;
     width: 1225px;
     height: 70px;
     margin: 30px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #DEEBF5;
@@ -628,14 +626,14 @@
 }
 
 .container-3 {
-    top:1530px;
+    top:-90px;
     bottom:150px;
-    left:340px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 280px;
     margin: 30px;
-    position: fixed;
+    position: relative;
     display: flex;
     background-color: #F5F8F8;
     box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
@@ -645,13 +643,12 @@
 }
 
 .container-3-0 {
-    top:-70px;
-    left:-7px;
+    top:0px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 70px;
     margin: 30px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #DEEBF5;
@@ -743,4 +740,93 @@
     border-color: #676161;
     box-sizing: border-box;
     z-index: 50;
+}
+
+.menu-mouse{
+    position: absolute;
+    top:0px;
+    left: 0px;
+    background: #F5F8F8;
+    border: 1px solid #5a6376;
+    border-radius: 5px;
+    visibility: hidden;
+    z-index: 999;
+    opacity: 0.9;
+    text-align: left;
+}
+.active{
+    visibility: visible;
+}
+.menu__item, .submenu__item{
+    width: 160px;
+    height: 40px;
+}
+.menu__item:hover, .submenu__item:hover{
+    background-color: #6d7686;
+}
+.menu__item:hover .submenu{
+    opacity: 1;
+}
+.submenu{
+    position: relative;
+    top:-20px;
+    left: 170px;
+    opacity: 0;
+    border-radius: 5px;
+    background: #F5F8F8;
+    border: 1px solid #758097;
+}
+.icon{
+    position: absolute;
+    right: 3px;
+}
+
+.dialog{
+    background: #fff;
+    padding: 15px;
+    position: fixed;
+    z-index: 999;
+    left:50%;
+    top:50%;
+    transform: translateX(-50%) translateY(-50%);
+    box-shadow: 0 0 20px 0 rgba(0,0,0,0.3);
+    border-radius:15px;
+}
+div.mask{
+    position: fixed;
+    z-index: 999;
+    left:0;
+    right:0;
+    bottom:0;
+    top:0;
+    background: rgba(0,0,100,0.6);
+}
+.dialogBtn{
+    text-align: center;
+    padding-top: 15px;
+}
+.dialogBtn button{
+    cursor: pointer;
+    margin-left: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 30px;
+    background: #3f74e3;
+    color: #fff;
+    font-size: 14px;
+    text-shadow: 1px -1px 0 rgba(0,0,0,0.5);
+    border:none;
+    border-radius: 5px;
+}
+.dialogBtn button:hover{
+    background: #1846a8;
+}
+.dialogContent{
+    min-width: 300px;
+    min-height:80px;
+    font-size: 16px;
+    line-height: 1.5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

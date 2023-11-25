@@ -7,8 +7,9 @@
     <title>Document</title>
     <!-- 导入阿里的图标样式文件 -->
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="iconfont-basic.css">
+    <link rel="stylesheet" href="/static/css/iconfont-basic.css">
     <link rel="stylesheet" href="/static/css/detail_edit.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
 </head>
 <body>
     <div class="content">
@@ -155,7 +156,7 @@
                         <label for="title2">
 
                             <div class="container-2-1">
-                                <form method="POST" action="{% url 'detail_edit' %}" >
+                               <div id="echarts-container" style="width: 100%; height: 100%;"></div>
                             </div>
 
 
@@ -169,7 +170,7 @@
                     <div class="container-4">
                         <form method="POST" action="{% url 'detail_edit' %}" >
                         <label for="title4">
-                            <input type="text" id="detail" name="detail" value="律诗是" >
+                            <input type="text" id="detail" name="detail"  >
                             <button type="submit" id="save">保存</button> <!-- 用于保存节点详情并返回查看详情 -->
                             <button type="submit" id="cancel">取消</button> <!-- 用于返回查看详情 -->
                         </label>
@@ -179,7 +180,168 @@
 
 
             </div>
+<script type="text/javascript">
+        // 在代码1的脚本中初始化 ECharts 图表
+        var myChart = echarts.init(document.getElementById('echarts-container'));
+        var neo4j_data = [{{ neo4j_data|safe }}]
+        var data1 = neo4j_data[0]['data']
+        var links1 = neo4j_data[0]['links']
+        console.log(data1)
+        console.log(links1)
 
+        // 以下是代码2中的图表配置和数据
+        var categories = [];
+
+    for (var i = 0; i < 2; i++) {
+        categories[i] = {
+            name: '类目' + i
+        };
+    }
+    option = {
+
+        //提示框的配置
+        tooltip: {
+            formatter: function (x) {
+                return x.data.des;
+           }
+       },
+        // 工具箱
+        toolbox: {
+            // 显示工具箱
+            show: true,
+            feature: {
+                mark: {
+                    show: true
+                },
+                // 还原
+                restore: {
+                    show: true
+                },
+                // 保存为图片
+                saveAsImage: {
+                    show: true
+                }
+            }
+        },
+            series: [{
+            type: 'graph', // 类型:关系图
+            layout: 'force', //图的布局，类型为力导图
+            symbolSize: 40, // 调整节点的大小
+            roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+            edgeSymbol: ['circle', 'arrow'],
+            edgeSymbolSize: [2, 10],
+            edgeLabel: {
+                normal: {
+                    textStyle: {
+                        fontSize: 20
+                    }
+                }
+            },
+            force: {
+                repulsion: 2500,
+                edgeLength: [10, 50]
+            },
+            draggable: true,
+            lineStyle: {
+                normal: {
+                    width: 2,
+                    color: '#4b565b',
+                }
+            },
+            edgeLabel: {
+                normal: {
+                    show: true,
+                    formatter: function (x) {
+                        return x.data.name;
+                    }
+                }
+            },
+            label: {
+                normal: {
+                    show: true,
+                    textStyle: {}
+                }
+            },
+
+            // 数据
+            data: data1,
+            links: links1,
+            categories: categories,
+        }]
+    };
+
+    myChart.on('dblclick', function (params) {
+     if (params.seriesType === 'graph' && params.dataType === 'node') {
+        var nodeName = params.data.name;
+
+        // 弹出选择框
+        var option = prompt(nodeName + '：选项：\n1. 编辑\n2. 删除', '1');
+
+        if (option === '1') {
+            // 存储 nodeName 到 sessionStorage
+            sessionStorage.setItem('StartPoint', nodeName);
+
+            // 构建跳转的 URL
+            var url = '{% url "node_edit" %}';
+
+            // 跳转到 'node_edit' 页面
+            window.location.href = url;
+
+        } else if (option === '2') {
+            // 处理删除操作
+            deleteNode(nodeName);
+        }
+     }
+        else if (params.seriesType === 'graph' && params.dataType === 'edge') {
+        var linkName = params.data.name;
+        var linkDes = params.data.des;
+
+        var content = linkName + ':' + linkDes + '\n\nOptions:\n1. Edit\n2. Delete';
+
+        // Display alert with options
+        var option = prompt(content, '1');
+
+        if (option === '1') {
+            editEdge(linkName);
+        } else if (option === '2') {
+            deleteEdge(linkName);
+        }
+    }
+});
+
+function editNode(nodeName) {
+    window.location.href = 'node_edit_page?nodeName=' + nodeName;
+}
+
+function deleteNode(nodeName) {
+    console.log('Deleting node: ' + nodeName);
+}
+
+function editEdge(linkName) {
+    window.location.href = 'relationship_edit_page?linkName=' + linkName;
+}
+
+function deleteEdge(linkName) {
+    console.log('Deleting edge: ' + linkName);
+}
+
+    myChart.setOption(option);
+
+    </script>
+
+    <script>
+        function closeDialog(dialogId) {
+            // 隐藏对应的对话框
+            document.getElementById(dialogId).style.display = 'none';
+        }
+    </script>
+
+    <script>
+        function openDialog(dialogId) {
+            // 隐藏对应的对话
+            document.getElementById(dialogId).style.display = 'block';
+        }
+    </script>
 
 </body>
 </html>

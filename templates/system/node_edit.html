@@ -70,14 +70,14 @@
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3" onclick="roamToURL()">
+                    <label for="menu-item3" onclick="roamToAddbook()">
                         <i class="fa-solid fa-book"></i>
                         <span>新增图谱</span>
                     </label>
                 </div>
                 <!-- js实现的页面重定向 -->
                 <script>
-                    function roamToURL() {
+                    function roamToAddbook() {
                         window.location.href = "{%url 'add_book'%}";
                     }
                 </script>
@@ -166,11 +166,11 @@
                             {% csrf_token %}
                         <label for="title1">
                             <p id="begin">节点名称</p>
-                             <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容">
+                             <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容" value="{{ start_point }}">
                              <p id="end">节点类型</p>
                              <input type="text"  id="EndPoint"  name="EndPoint"   placeholder="请输入内容">
                              <button type="submit" id="SAVEButton">保存</button> <!-- 用于查询节点之间的关系 -->
-                             <button type="submit" id="quitButton">取消</button> <!-- 用于查询节点之间的关系 -->
+                             <button type="button" id="quitButton">取消</button> <!-- 用于查询节点之间的关系 -->
 
                         </label>
                         </form>>
@@ -181,7 +181,20 @@
                     <div class="container-2-0">
                         <span>图谱展示 </span>
                     </div>
+                    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 从 sessionStorage 中获取 StartPoint 值
+            var startPoint = sessionStorage.getItem('StartPoint');
 
+            // 将 StartPoint 值填充到节点编辑页面的输入框中
+            if (startPoint) {
+                document.getElementById('StartPoint').value = startPoint;
+            }
+
+            // 清除 sessionStorage 中的 StartPoint 值
+            sessionStorage.removeItem('StartPoint');
+        });
+    </script>
 
                     <div class="container-2">
                         <form method="POST" action="{% url 'node_edit' %}" >

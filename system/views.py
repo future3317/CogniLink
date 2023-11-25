@@ -64,194 +64,6 @@ def index(request):
     return redirect(reverse('login'))
 
 
-def graph(request):
-    if request.method == 'POST':
-        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
-
-        if 'query_nodes' in request.POST:
-            name1 = request.POST.get('node1')
-            node_matcher = NodeMatcher(graph)  # 节点匹配器
-
-        elif 'create_node' in request.POST:
-            name1 = request.POST.get('node1')
-        elif 'create_relation' in request.POST:
-
-            name1 = request.POST.get('node1')
-            relation = request.POST.get('relation')
-            name2 = request.POST.get('node2')
-            node1 = Node('Person', name=name1)
-            node2 = Node('Person', name=name2)
-
-
-            graph.create(node1)
-            graph.create(node2)
-            graph.create(relation)
-        elif 'edit_nodes' in request.POST:
-            return redirect(reverse('edit_node'))
-    return render(request, './system/graph.html')
-
-
-def edit_node(request):
-    if request.method == "POST":
-        originalNodeName = request.POST.get("originalNodeName")
-        originalNodeType = request.POST.get("originalNodeType")
-
-        # 建立与Neo4j数据库的连接
-        graph = Graph("http://localhost:7474/", username="neo4j", password="futureneo")
-
-        # 根据编辑后的节点名字和类型查询要更新的节点
-        node = graph.nodes.match(name=originalNodeName, type=originalNodeType).first()
-
-        edited_node_name = request.POST.get("editedNodeName")
-        edited_node_type = request.POST.get("editedNodeType")
-        if node:
-            # 更新节点的属性
-            node["name"] = edited_node_name
-            node["type"] = edited_node_type
-            node.push()  # 将更新后的节点保存回数据库
-
-            updated_node = {
-                "name": edited_node_name,
-                "type": edited_node_type
-            }
-
-        else:
-            # 节点不存在的处理逻辑
-            return HttpResponse('节点不存在')
-
-    return render(request, "./system/edit_node.html")
-
-
-def check_node(request):
-    if request.method == "POST":
-        data = json.loads(request.body)
-        edited_node_name = data.get("nodeName")
-        edited_node_type = data.get("nodeType")
-
-        # 建立与Neo4j数据库的连接
-        graph = Graph("http://localhost:7474/", username="neo4j", password="futureneo")
-
-        # 在Neo4j数据库中查询是否存在匹配的节点
-        node = graph.nodes.match(name=edited_node_name, type=edited_node_type).first()
-
-        if node:
-            return JsonResponse({"nodeExists": True})
-        else:
-            return JsonResponse({"nodeExists": False})
-
-    return JsonResponse({"error": "Invalid request method"})
-
-
-def search_course_knowledgepoint(request):
-    ctx = {}
-    # 根据传入的实体名称搜索出关系
-    if (request.GET):
-        entity = request.GET['user_text']
-        if entity in course_dict.keys():
-            entity = course_dict.get(entity)
-        entityRelation = neo4jconn.course_knowledgepoint(entity)
-        if len(entityRelation) == 0:
-            # 若数据库中无法找到该实体，则返回数据库中无该实体
-            ctx = {'title': '<h2>知识库中暂未添加该实体</h1>'}
-            return render(request, './system/course.html', {'ctx': json.dumps(ctx, ensure_ascii=False)})
-        else:
-            return render(request, './system/course.html',
-                          {'entityRelation': json.dumps(entityRelation, ensure_ascii=False)})
-    # 需要进行类型转换
-    return render(request, './system/course.html', {'ctx': ctx})
-
-
-# 题目知识点查询
-def search_question_knowledgepoint(request):
-    ctx = {}
-    # 根据传入的实体名称搜索出关系
-    if (request.GET):
-        entity = request.GET['user_text']
-        entityRelation = neo4jconn.question_knowledgepoint(entity)
-        if len(entityRelation) == 0:
-            # 若数据库中无法找到该实体，则返回数据库中无该实体
-            ctx = {'title': '<h2>知识库中暂未添加该实体</h1>'}
-            return render(request, './system/question.html', {'ctx': json.dumps(ctx, ensure_ascii=False)})
-        else:
-            return render(request, './system/question.html',
-                          {'entityRelation': json.dumps(entityRelation, ensure_ascii=False)})
-    # 需要进行类型转换
-    return render(request, './system/question.html', {'ctx': ctx})
-
-
-# 知识点关系查询
-def search_relation(request):
-    ctx = {}
-    if (request.GET):
-        # 实体1
-        entity1 = request.GET['entity1_text']
-        # 关系
-        relation = request.GET['relation_name_text']
-        # 实体2
-        entity2 = request.GET['entity2_text']
-        # 将关系名转为大写
-        relation = relation.upper()
-
-        if entity1 in course_dict.keys():
-            entity1 = course_dict.get(entity1)
-        if entity2 in course_dict.keys():
-            entity2 = course_dict.get(entity2)
-
-        # 保存返回结果
-        searchResult = {}
-
-        # 1.若只输入entity1,则输出与entity1有直接关系的实体和关系
-        if (len(entity1) != 0 and len(relation) == 0 and len(entity2) == 0):
-            searchResult = neo4jconn.findRelationByEntity1(entity1)
-            if (len(searchResult) > 0):
-                return render(request, './system/graph.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
-
-        # 2.若只输入entity2则,则输出与entity2有直接关系的实体和关系
-        if (len(entity2) != 0 and len(relation) == 0 and len(entity1) == 0):
-            searchResult = neo4jconn.findRelationByEntity2(entity2)
-            if (len(searchResult) > 0):
-                return render(request, './system/graph.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
-
-        # 3.若输入entity1和relation，则输出与entity1具有relation关系的其他实体
-        if (len(entity1) != 0 and len(relation) != 0 and len(entity2) == 0):
-            searchResult = neo4jconn.findOtherEntities(entity1, relation)
-            if (len(searchResult) > 0):
-                return render(request, './system/graph.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
-
-        # 4.若输入entity2和relation，则输出与entity2具有relation关系的其他实体
-        if (len(entity2) != 0 and len(relation) != 0 and len(entity1) == 0):
-            searchResult = neo4jconn.findOtherEntities2(entity2, relation)
-            if (len(searchResult) > 0):
-                return render(request, './system/graph.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
-
-        # 5.若输入entity1和entity2,则输出entity1和entity2之间的关系
-        if (len(entity1) != 0 and len(relation) == 0 and len(entity2) != 0):
-            searchResult = neo4jconn.findRelationByEntities(entity1, entity2)
-            if (len(searchResult) > 0):
-                return render(request, './system/graph.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
-
-        # 6.若输入entity1,entity2和relation,则输出entity1、entity2是否具有相应的关系
-        if (len(entity1) != 0 and len(entity2) != 0 and len(relation) != 0):
-            print(relation)
-            searchResult = neo4jconn.findEntityRelation(entity1, relation, entity2)
-            if (len(searchResult) > 0):
-                return render(request, './system/graph.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
-
-        # 7.若全为空
-        if (len(entity1) != 0 and len(relation) != 0 and len(entity2) != 0):
-            pass
-
-        ctx = {'title': '<h1>暂未找到相应的匹配</h1>'}
-        return render(request, './system/graph.html', {'ctx': ctx})
-
-    return render(request, './system/graph.html', {'ctx': ctx})
-
 def course(request):
     return render(request, './system/course.html')
 
@@ -280,49 +92,108 @@ def home(request):
 
 
 
-#输入两个节点的名字，查询他们的关系
+#输入两个节点的名字，漫游查询他们的路径
 def wander(request):
-    ctx = {}
+    neo4j_data = {'data': [], 'links': []}
+
     if request.method == "POST":
-        # 实体1
-        entity1 = request.POST.get('StartPoint')
-                # 实体2
-        entity2 = request.POST.get('EndPoint')
+        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+        StartPoint = request.POST.get("StartPoint")
+        EndPoint = request.POST.get("EndPoint")
+        node_matcher = NodeMatcher(graph)  # 节点匹配器
+        relation_matcher = RelationshipMatcher(graph)  # 关系匹配器
 
+        # 找到查询关系中的两个节点，
+        start_node = node_matcher.match(name=StartPoint).first()
+        end_node = node_matcher.match(name=EndPoint).first()
 
-        print(entity1)
-        print(entity2)
+        # 定义data数组，存放节点信息
+        data = []
+        # 定义关系数组，存放节点间的关系
+        links = []
 
-        if entity1 in course_dict.keys():
-            entity1 = course_dict.get(entity1)
-        if entity2 in course_dict.keys():
-            entity2 = course_dict.get(entity2)
+        # 定义开始节点和结束节点的名称
+        start_node_name = StartPoint
+        end_node_name = EndPoint
 
-        # 保存返回结果
-        searchResult = {}
-        # 1.若只输入entity1,则输出与entity1有直接关系的实体和关系
+        # 获取需要查询的标签
 
-        if (len(entity1) != 0  and len(entity2) == 0):
-            searchResult = neo4jconn.findRelationByEntity1(entity1)
-            if (len(searchResult) > 0):
-                return render(request, './system/wander.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
+        label = start_node.labels
 
-        if (len(entity1) != 0 and len(entity2) != 0):
-            searchResult = neo4jconn.findRelationByEntities(entity1, entity2)
-            print(searchResult)
-            if (len(searchResult) > 0):
-                return render(request, './system/wander.html',
-                              {'searchResult': json.dumps(searchResult, ensure_ascii=False)})
+        # 执行Cypher查询
+        query = """
+        MATCH p = (a)-[r*]-(b)
+        WHERE a.name = $start_node_name and b.name = $end_node_name
+        AND ALL(n1 in nodes(p) WHERE size([n2 in nodes(p) WHERE id(n1) = id(n2)])=1)
+        RETURN p
+        """
+        result = graph.run(query, start_node_name=start_node_name, end_node_name=end_node_name)
 
-        ctx = {'title': '<h1>暂未找到相应的匹配</h1>'}
-        return render(request, './system/wander.html', {'ctx': ctx})
+        print(result)
 
-    return render(request, './system/wander.html', {'ctx': ctx})
+        # node_name = [node["name"] for record in result for node in record["p"].nodes]
+
+        # 从路径p中取出所有的节点名称
+        data1 = []
+        node_detail=[]
+        for record in result:
+            data1= [node["name"] for node in record["p"].nodes]
+            node_detail = [node["detail"] for node in record["p"].nodes]
+
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        for i in range(len(data1) ):
+            # 构造字典，存储单个节点信息
+            dict = {
+                'name': data1[i],
+                'symbolSize': 80 if data1[i] in [start_node_name, end_node_name] else 50,
+                'category': 0 if data1[i] in [start_node_name, end_node_name] else 1,
+                'des': node_detail[i]
+            }
+            # 将单个节点信息存放在data数组中
+            data.append(dict)
+
+            # 查询指定标签的所有关系，并将关系信息存放在links数组中
+        query = """
+        MATCH p = (a)-[r*]-(b)
+        WHERE a.name = $start_node_name and b.name = $end_node_name
+        AND ALL(n1 in nodes(p) WHERE size([n2 in nodes(p) WHERE id(n1) = id(n2)]) = 1)
+        RETURN relationships(p) AS relationships
+        """
+        result = graph.run(query, start_node_name=start_node_name, end_node_name=end_node_name)
+
+        # 从结果中提取关系
+        result_data = result.data()
+        if result_data:
+            relationships_list = result_data[0]['relationships']
+
+            # 遍历关系并提取必要的信息
+            for relationship in relationships_list:
+                source = relationship.start_node['name']
+                target = relationship.end_node['name']
+                name = type(relationship).__name__
+
+                # 为每个关系构造字典并添加到links中
+                dict = {
+                    'source': source,
+                    'target': target,
+                    'name': name,
+
+                }
+                links.append(dict)
+        # 将所有的节点信息和关系信息存放在一个字典中
+        neo4j_data = {
+            'data': data,
+            'links': links,
+        }
+        neo4j_data = json.dumps(neo4j_data)
+
+    return render(request, './system/wander.html', {'neo4j_data': neo4j_data})
+
 
 
 
 def detail_edit(request):
+    neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         Pointname = request.POST.get("Pointname")
@@ -347,11 +218,13 @@ def detail_edit(request):
         for record in result:
             # 取出节点的name
             node_name = record["n"]["name"]
+            node_detail = record["n"]["detail"]
             # 构造字典，存储单个节点信息
             dict = {
                 'name': node_name,
                 'symbolSize': 50,
-                'category': '1'
+                'category': 1,
+                'des': node_detail
             }
             # 将单个节点信息存放在data数组中
             data.append(dict)
@@ -376,17 +249,18 @@ def detail_edit(request):
             links.append(dict)
 
         # 将所有的节点信息和关系信息存放在一个字典中
+
         neo4j_data = {
             'data': data,
             'links': links,
         }
+        neo4j_data = json.dumps(neo4j_data)
+    return render(request, './system/detail_edit.html', {'neo4j_data': neo4j_data})
 
-        # 将数据保存到JSON文件
-        with open("output_编辑节点详情.json", "w", encoding='utf-8') as file:
-            json.dump(neo4j_data, file, ensure_ascii=False)
 
-    return render(request, './system/detail_edit.html')
+
 def add_book(request):
+    neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         BookName = request.POST.get("BookName")
@@ -415,7 +289,6 @@ def add_book(request):
         print(InitNodeType)
         print(InitNodeDetail)
 
-# 最终能跑代码
 
         # 输入要查询的标签
         label = BookName
@@ -468,85 +341,11 @@ def add_book(request):
         # 将数据保存到JSON文件
         with open("output_新建图谱.json", "w", encoding='utf-8') as file:
             json.dump(neo4j_data, file, ensure_ascii=False)
-
-    #     #第一版能跑代码
-    #     # 定义data数组，存放节点信息
-    #     data = []
-    #     # 定义关系数组，存放节点间的关系
-    #     links = []
-    #
-    #     # 查询所有节点，并将节点信息取出存放在data数组中
-    #     for n in graph.nodes:
-    #         # 将节点信息转化为json格式，否则中文会不显示
-    #         nodesStr = json.dumps(graph.nodes[n], ensure_ascii=False)
-    #         # 取出节点的name
-    #         node_name = json.loads(nodesStr)['name']
-    #         # 构造字典，存储单个节点信息
-    #         dict = {
-    #             'name': node_name,
-    #             'symbolSize': 50,
-    #             'category': '1',
-    #         }
-    #         # 将单个节点信息存放在data数组中
-    #         data.append(dict)
-    #         # 查询所有关系，并将所有的关系信息存放在links数组中
-    #         rps = graph.relationships
-    #         for r in rps:
-    #             # 取出开始节点的name
-    #             source = str(rps[r].start_node['name'])
-    #             # 取出结束节点的name
-    #             target = str(rps[r].end_node['name'])
-    #             # 取出开始节点的结束节点之间的关系
-    #             name = str(type(rps[r]).__name__)
-    #             # 构造字典存储单个关系信息
-    #             dict = {
-    #                 'source': source,
-    #                 'target': target,
-    #                 'name': name
-    #             }
-    #             # 将单个关系信息存放进links数组中
-    #             links.append(dict)
-    #         # 输出所有节点信息
-    #         for item in data:
-    #             print(item)
-    #         # 输出所有关系信息
-    #         for item in links:
-    #             print(item)
-    #         # 将所有的节点信息和关系信息存放在一个字典中
-    #         neo4j_data = {
-    #             'data': data,
-    #             'links': links
-    #         }
-    # # 将数据保存到JSON文件
-    # with open("output_新建图谱3.json", "w") as file:
-    #     json.dump(neo4j_data, file)
-
-
-            # # 将字典转化json格式
-            # neo4j_data = json.dumps(neo4j_data)
-            # # return neo4j_data
-
-       #  # 指定标签
-       #  label = BookName
-       #
-       #  # 查询相同标签下的所有节点和关系
-       #  query = f"MATCH (n:{label})-[r]-(m:{label}) RETURN n, r, m"
-       #  subgraph = graph.run(query).to_subgraph()
-       #
-       #  print(subgraph)
-       #
-       #  # 转换为字典格式
-       #  data = {
-       #      "nodes": [dict(node) for node in subgraph.nodes],
-       #      "relationships": [dict(relationship) for relationship in subgraph.relationships]
-       # }
-       #
-       # 将数据保存到JSON文件
-       # with open("output_新建图谱2.json", "w") as file:
-       #     json.dump(data, file)
+        return render(request, './system/wander.html')
 
     return render(request, './system/add_book.html')
 def node_new(request):
+    neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         NodeName = request.POST.get("NodeName")
@@ -577,7 +376,7 @@ def node_new(request):
             dict = {
                 'name': node_name,
                 'symbolSize': 50,
-                'category': '1'
+                'category': 1
             }
             # 将单个节点信息存放在data数组中
             data.append(dict)
@@ -606,12 +405,9 @@ def node_new(request):
             'data': data,
             'links': links,
         }
+        neo4j_data = json.dumps(neo4j_data)
 
-        # 将数据保存到JSON文件
-        with open("output_新建节点.json", "w", encoding='utf-8') as file:
-            json.dump(neo4j_data, file, ensure_ascii=False)
-
-    return render(request, './system/node_new.html')
+    return render(request, './system/node_new.html', {'neo4j_data': neo4j_data})
 
 def node_edit(request):
     if request.method == 'POST':
@@ -627,6 +423,7 @@ def node_edit(request):
     return render(request, './system/node_edit.html')
 
 def relationship_edit(request):
+    neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         start_point = request.POST.get("StartPoint")
@@ -641,8 +438,8 @@ def relationship_edit(request):
         end_node = node_matcher.match(name=end_point).first()
 
         result = relation_matcher.match({start_node, end_node}, r_type=None).first()
-        print(result)  # 打印结果，格式一般是 (节点一)-[关系]->(节点二)
-        print(result.nodes)  # 打印节点
+        #print(result)  # 打印结果，格式一般是 (节点一)-[关系]->(节点二)
+        #print(result.nodes)  # 打印节点
 
         graph.separate(result)  # 删除关系
 
@@ -652,9 +449,9 @@ def relationship_edit(request):
             graph.create(new_relationship)
 
         # 将新关系添加到图数据库中
-        print(start_point)
-        print(end_point)
-        print(relationship_type)
+        #print(start_point)
+        #print(end_point)
+        #print(relationship_type)
 
         label = start_node.labels
 
@@ -672,8 +469,8 @@ def relationship_edit(request):
             # 构造字典，存储单个节点信息
             dict = {
                 'name': node_name,
-                'symbolSize': 50,
-                'category': '1'
+                'symbolSize': 80 if node_name in [start_point, end_point] else 50,
+                'category': 0 if node_name in [start_point, end_point] else 1
             }
             # 将单个节点信息存放在data数组中
             data.append(dict)
@@ -702,14 +499,15 @@ def relationship_edit(request):
             'data': data,
             'links': links,
         }
+        print("**************************")
+        print(neo4j_data)
+        print("**************************")
+        neo4j_data = json.dumps(neo4j_data)
+    return render(request, './system/relationship_edit.html', {'neo4j_data': neo4j_data})
 
-        # 将数据保存到JSON文件
-        with open("output_编辑关系.json", "w", encoding='utf-8') as file:
-            json.dump(neo4j_data, file, ensure_ascii=False)
-
-    return render(request, './system/relationship_edit.html')
 
 def relationship_new(request):
+    neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
 
@@ -748,7 +546,7 @@ def relationship_new(request):
             dict = {
                 'name': node_name,
                 'symbolSize': 50,
-                'category': '1'
+                'category': 1
             }
             # 将单个节点信息存放在data数组中
             data.append(dict)
@@ -778,11 +576,9 @@ def relationship_new(request):
             'links': links,
         }
 
-        # 将数据保存到JSON文件
-        with open("output_新建关系.json", "w", encoding='utf-8') as file:
-            json.dump(neo4j_data, file, ensure_ascii=False)
+        neo4j_data = json.dumps(neo4j_data)
 
-    return render(request, './system/relationship_new.html')
+    return render(request, './system/relationship_new.html', {'neo4j_data': neo4j_data})
 
 def wander_1(request):
     if request.method == 'POST':

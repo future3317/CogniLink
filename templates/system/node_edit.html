@@ -166,9 +166,9 @@
                         <form method="POST" action="{% url 'node_edit' %}" >
                             {% csrf_token %}
                         <label for="title1">
-                            <p id="begin">节点名称 </p>
+                            <p id="begin">原节点名称 </p>
                              <input type="text"  id="StartPoint" name="StartPoint"  placeholder="请输入内容" value="{{ start_point }}">
-                             <p id="end">节点类型</p>
+                             <p id="end">新节点名称</p>
                              <input type="text"  id="EndPoint"  name="EndPoint"   placeholder="请输入内容">
                              <button type="submit" id="SAVEButton">保存</button> <!-- 用于查询节点之间的关系 -->
                              <button type="button" id="quitButton">取消</button> <!-- 用于查询节点之间的关系 -->
@@ -209,7 +209,7 @@
             </span>
             </div>
             </div>
-             </div> 
+             </div>
  <script type="text/javascript">
         // 在代码1的脚本中初始化 ECharts 图表
         var myChart = echarts.init(document.getElementById('echarts-container'));

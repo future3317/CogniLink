@@ -120,6 +120,7 @@
     var newValue = subjectInput.value;
     sessionStorage.setItem('InitNodeType', newValue);
   });
+
 </script>
         <div class="TUPU">
             <div class="text-part1">
@@ -163,7 +164,7 @@
                                 <input type="text" id="StartPoint" name="StartPoint" placeholder="请输入内容">
                                 <p id="end">结束节点</p>
                                 <input type="text" id="EndPoint" name="EndPoint" placeholder="请输入内容">
-                                <button type="submit" id="searchButton">查询</button>
+                                <button type="submit" id="searchButton" name="searchButton">查询</button>
                             </label>
 
                     </div>
@@ -174,12 +175,23 @@
 
                     <div class="container-2">
                         <form method="POST" action="{% url 'wander' %}">
+                            {% csrf_token %}
                             <label for="title2">
                                 <div class="container-2-1">
                                     <div id="echarts-container" style="width: 100%; height: 100%;"></div>
                                 </div>
-                                <button type="submit" id="addButton">节点新增</button>
-                                <button type="submit" id="addRelation">关系新增</button>
+                                <button type="button" id="addButton" onclick="redirectToNodeNew()">节点新增</button>
+<button type="button" id="addRelation" onclick="redirectToRelationshipNew()">关系新增</button>
+
+<script>
+    function redirectToNodeNew() {
+        window.location.href = "{% url 'node_new' %}";
+    }
+
+    function redirectToRelationshipNew() {
+        window.location.href = "{% url 'relationship_new' %}";
+    }
+</script>
                             </label>
                         </form>
                     </div>
@@ -190,11 +202,12 @@
 
                     <div class="container-3">
                         <form method="POST" action="{% url 'wander' %}">
+                            {% csrf_token %}
                             <label for="title3">
                                 <input type="text" id="NodeName" name="NodeName"  placeholder="输入查询节点或关系">
-                                <button type="submit" id="editButton">编辑</button>
-                                <button type="submit" id="deleteButton">删除</button>
-                                <button type="submit" id="studyButton">查看详情</button>
+                                <button type="submit" id="editButton" >编辑</button>
+                                <button type="submit" id="deleteButton" name="delete">删除</button>
+
                             </label>
                         </form>
                     </div>
@@ -211,24 +224,15 @@
         <div class="dialogContent"></div>
         <div class="dialogBtn">
             <form method="POST" action="{% url 'wander' %}">
-                <button type="submit" id="editButton">编辑</button>
-                <button type="button" onclick="openDialog('dialog3')">删除</button>
-                <button type="submit" id="studyButton">查看详情</button>
+                {% csrf_token %}
+                <button type="submit" id="editButton" onclick="editNode(event)">编辑</button>
+                <button type="button" onclick="deleteNode(event)">删除</button>
+
                 <button type="button" onclick="closeDialog('dialog1')">取消</button>
             </form>
         </div>
     </div>
 
-    <div class="dialog" id="dialog2" style="display: none;">
-        <div class="dialogContent"></div>
-        <div class="dialogBtn">
-            <form method="POST" action="{% url 'wander' %}">
-                <button type="submit" id="editButton">编辑</button>
-                <button type="button" onclick="openDialog('dialog3')">删除</button>
-                <button type="button" onclick="closeDialog('dialog2')">取消</button>
-            </form>
-        </div>
-    </div>
 
     <div class="dialog" id="dialog3" style="display: none;">
         <div class="dialogContent">
@@ -238,7 +242,8 @@
         </div>
         <div class="dialogBtn">
             <form method="POST" action="{% url 'wander' %}">
-                <button type="submit" id="deleteButton">确定</button>
+                {% csrf_token %}
+                <button type="submit" id="deleteButton" name="delete2" onclick="deleteNode(event)">确定</button>
                 <button type="button" onclick="closeDialog('dialog3')">取消</button>
             </form>
         </div>
@@ -337,66 +342,87 @@
             categories: categories,
         }]
     };
+    </script>
+<script>
+    var nodeName
+    myChart.on('click', function (params) {
+        if (params.seriesType === 'graph' && params.dataType === 'node')
+        {
+            // 获取节点的名称和描述
+            nodeName = params.data.name;
+            var nodeDes = params.data.des;
 
-    myChart.on('dblclick', function (params) {
-     if (params.seriesType === 'graph' && params.dataType === 'node') {
-        var nodeName = params.data.name;
-        var nodedetail = params.data.des;
-        // 弹出选择框
-        var option = prompt('名称：'+nodeName+'\n详情:' + nodedetail+'\n选项：\n1. 编辑\n2. 删除', '1');
+            // 获取对话框内容的容器
+            var contentContainer = document.getElementById('dialog1').querySelector('.dialogContent');
+            contentContainer.innerHTML = '名称:'+nodeName+'\n详情:'+nodeDes;
 
-        if (option === '1') {
-            // 存储 nodeName 到 sessionStorage
-            sessionStorage.setItem('StartPoint', nodeName);
+            // 在这里添加你的右击响应逻辑，可以是弹出菜单、展示信息等
+            sessionStorage.setItem('deletePoint', nodeName);
 
-            // 构建跳转的 URL
-            var url = '{% url "node_edit" %}';
+        // 获取输入框元素
+        var nodeNameInput = document.getElementById('NodeName');
 
-            // 跳转到 'node_edit' 页面
-            window.location.href = url;
-
-        } else if (option === '2') {
-            // 处理删除操作
-            deleteNode(nodeName);
+        // 将nodeName填充到输入框中
+        if (nodeNameInput) {
+            nodeNameInput.value = nodeName;
         }
-     }
-        else if (params.seriesType === 'graph' && params.dataType === 'edge') {
-        var linkName = params.data.name;
-        var linkDes = params.data.des;
 
-        var content = linkName + ':' + linkDes + '\n\nOptions:\n1. Edit\n2. Delete';
+        console.log(nodeName);
+        }
+        // 判断是否右击在边上
 
-        // Display alert with options
-        var option = prompt(content, '1');
+    });
 
-        if (option === '1') {
-            editEdge(linkName);
-        } else if (option === '2') {
-            deleteEdge(linkName);
+    function deleteNode(event) {
+    event.preventDefault();
+    if (nodeName) {
+        sessionStorage.setItem('deletePoint', nodeName);
+
+        // 获取输入框元素
+        var nodeNameInput = document.getElementById('NodeName');
+
+        // 将nodeName填充到输入框中
+        if (nodeNameInput) {
+            nodeNameInput.value = nodeName;
+        }
+
+        console.log(nodeName);
+    }
+    closeDialog('dialog1');
+}
+
+    function editNode(event) {
+        event.preventDefault();
+        if (nodeName) {
+            // Set the nodeName in sessionStorage
+            sessionStorage.setItem('StartPoint', nodeName);
+            console.log(nodeName)
+            // Construct the URL
+            var url = '{% url "node_edit" %}';
+            console.log(url)
+            // Redirect to 'node_edit' page
+            window.location.href = url;
         }
     }
-});
-
-function editNode(nodeName) {
-    window.location.href = 'node_edit_page?nodeName=' + nodeName;
-}
-
-function deleteNode(nodeName) {
-    console.log('Deleting node: ' + nodeName);
-}
-
-function editEdge(linkName) {
-    window.location.href = 'relationship_edit_page?linkName=' + linkName;
-}
-
-function deleteEdge(linkName) {
-    console.log('Deleting edge: ' + linkName);
-}
-
     myChart.setOption(option);
-  
+
+    function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            // Check if this cookie string begins with the name we want
+            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
     </script>
-    
+
     <script>
         function closeDialog(dialogId) {
             // 隐藏对应的对话框
@@ -406,7 +432,7 @@ function deleteEdge(linkName) {
 
     <script>
         function openDialog(dialogId) {
-            // 隐藏对应的对话
+            // 隐藏对应的对话框
             document.getElementById(dialogId).style.display = 'block';
         }
     </script>

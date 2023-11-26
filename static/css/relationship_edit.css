@@ -319,17 +319,16 @@
   }
 
   .TUPU{
-    position: fixed;
+    position: relative;
     font-size: 1.5rem;
-    top:19px;
-    left: 350px;
+    top:-25px;
+    left: 310px;
     width: 150px;
     height: 9px;
-    background:rgba(208, 208, 208,0.5);
+    background:rgba(208, 208, 208,0.2);
     padding:50px 50px;
     margin-left: 0;
     z-index: 1;
-    
 }
 
 .container1 .card{

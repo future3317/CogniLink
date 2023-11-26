@@ -686,7 +686,7 @@
 }
 
 .container-3 button[id=editButton]{
-    margin-left:330px;
+    left:500px;
     margin-top:220px;
     width: 110px;
     height: 30px;
@@ -705,7 +705,7 @@
 }
 
 .container-3 button[id=deleteButton]{
-    margin-left:530px;
+    margin-left:730px;
     margin-top:-30px;
     width: 110px;
     height: 30px;
@@ -723,24 +723,6 @@
     z-index: 50;
 }
 
-.container-3 button[id=studyButton]{
-    margin-left:730px;
-    margin-top:-30px;
-    width: 110px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 0.9rem;
-    cursor: pointer;
-    user-select: none;
-    letter-spacing: 0.2rem;
-    text-indent: 0.2rem;
-    border-radius: 5px;
-    border-color: #676161;
-    box-sizing: border-box;
-    z-index: 50;
-}
 
 .menu-mouse{
     position: absolute;

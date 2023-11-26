@@ -151,12 +151,169 @@ def home(request):
 def wander(request):
     neo4j_data = {'data': [], 'links': []}
     if request.method == "POST":
-        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+        if 'searchButton' in request.POST:
+            graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
 
-        StartPoint = request.POST.get("StartPoint")
-        EndPoint = request.POST.get("EndPoint")
-        if StartPoint == "" and EndPoint == "":
-            label = request.POST.get("subjectInput")
+            StartPoint = request.POST.get("StartPoint")
+            EndPoint = request.POST.get("EndPoint")
+            if StartPoint == "" and EndPoint == "":
+                label = request.POST.get("subjectInput")
+
+                print(label)
+                # 定义data数组，存放节点信息
+                data = []
+                # 定义关系数组，存放节点间的关系
+                links = []
+
+                # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+                query = f"MATCH (n:{label}) RETURN n"
+                result = graph.run(query)
+
+                for record in result:
+                    # 取出节点的name
+                    node_name = record["n"]["name"]
+                    node_detail = record["n"]["detail"]
+                    # 构造字典，存储单个节点信息
+                    dict = {
+                        'name': node_name,
+                        'symbolSize': 50,
+                        'category': '1',
+                        'des': node_detail
+                    }
+                    # 将单个节点信息存放在data数组中
+                    data.append(dict)
+
+                # 查询指定标签的所有关系，并将关系信息存放在links数组中
+                query = f"MATCH (n:{label})-[r]->() RETURN r"
+                result = graph.run(query)
+                for record in result:
+                    # 取出开始节点的name
+                    source = record["r"].start_node["name"]
+                    # 取出结束节点的name
+                    target = record["r"].end_node["name"]
+                    # 取出开始节点的结束节点之间的关系
+                    name = type(record["r"]).__name__
+                    # 构造字典存储单个关系信息
+                    dict = {
+                        'source': source,
+                        'target': target,
+                        'name': name
+                    }
+                    # 将单个关系信息存放进links数组中
+                    links.append(dict)
+
+                # 将所有的节点信息和关系信息存放在一个字典中
+                neo4j_data = {
+                    'data': data,
+                    'links': links
+                }
+                print(neo4j_data)
+                neo4j_data = json.dumps(neo4j_data)
+            else:
+                node_matcher = NodeMatcher(graph)  # 节点匹配器
+                relation_matcher = RelationshipMatcher(graph)  # 关系匹配器
+
+                # 找到查询关系中的两个节点，
+                start_node = node_matcher.match(name=StartPoint).first()
+                end_node = node_matcher.match(name=EndPoint).first()
+
+                # 定义data数组，存放节点信息
+                data = []
+                # 定义关系数组，存放节点间的关系
+                links = []
+
+                # 定义开始节点和结束节点的名称
+                start_node_name = StartPoint
+                end_node_name = EndPoint
+
+                # 获取需要查询的标签
+
+                label = start_node.labels
+
+                # 执行Cypher查询
+                query = """
+                MATCH p = (a)-[r*]-(b)
+                WHERE a.name = $start_node_name and b.name = $end_node_name
+                AND ALL(n1 in nodes(p) WHERE size([n2 in nodes(p) WHERE id(n1) = id(n2)])=1)
+                RETURN p
+                """
+                result = graph.run(query, start_node_name=start_node_name, end_node_name=end_node_name)
+
+                print(result)
+
+                # node_name = [node["name"] for record in result for node in record["p"].nodes]
+
+                # 从路径p中取出所有的节点名称
+                data1 = []
+                node_detail=[]
+                for record in result:
+                    data1= [node["name"] for node in record["p"].nodes]
+                    node_detail = [node["detail"] for node in record["p"].nodes]
+
+                # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+                for i in range(len(data1) ):
+                    # 构造字典，存储单个节点信息
+                    dict = {
+                        'name': data1[i],
+                        'symbolSize': 80 if data1[i] in [start_node_name, end_node_name] else 50,
+                        'category': 0 if data1[i] in [start_node_name, end_node_name] else 1,
+                        'des': node_detail[i]
+                    }
+                    # 将单个节点信息存放在data数组中
+                    data.append(dict)
+
+                    # 查询指定标签的所有关系，并将关系信息存放在links数组中
+                query = """
+                MATCH p = (a)-[r*]-(b)
+                WHERE a.name = $start_node_name and b.name = $end_node_name
+                AND ALL(n1 in nodes(p) WHERE size([n2 in nodes(p) WHERE id(n1) = id(n2)]) = 1)
+                RETURN relationships(p) AS relationships
+                """
+                result = graph.run(query, start_node_name=start_node_name, end_node_name=end_node_name)
+
+                # 从结果中提取关系
+                result_data = result.data()
+                if result_data:
+                    relationships_list = result_data[0]['relationships']
+
+                    # 遍历关系并提取必要的信息
+                    for relationship in relationships_list:
+                        source = relationship.start_node['name']
+                        target = relationship.end_node['name']
+                        name = type(relationship).__name__
+
+                        # 为每个关系构造字典并添加到links中
+                        dict = {
+                            'source': source,
+                            'target': target,
+                            'name': name,
+
+                        }
+                        links.append(dict)
+                # 将所有的节点信息和关系信息存放在一个字典中
+                neo4j_data = {
+                    'data': data,
+                    'links': links,
+                }
+                neo4j_data = json.dumps(neo4j_data)
+        if 'delete' in request.POST:
+            graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+            Pointname = request.POST.get("NodeName")
+            Pointtype = request.POST.get("NodeName")
+            node_matcher = NodeMatcher(graph)  # 节点匹配器
+
+            # 找到查询关系中的那个节点
+            Point_node = node_matcher.match(name=Pointname).first()
+
+            # 确定标签
+            label = Point_node.labels
+
+            if Point_node is not None:
+                # 删除节点及其相关关系
+                graph.delete(Point_node)
+            else:
+                print("没发现要删除的节点")
+
             print(label)
             # 定义data数组，存放节点信息
             data = []
@@ -164,7 +321,7 @@ def wander(request):
             links = []
 
             # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
-            query = f"MATCH (n:{label}) RETURN n"
+            query = f"MATCH (n{label}) RETURN n"
             result = graph.run(query)
 
             for record in result:
@@ -182,7 +339,7 @@ def wander(request):
                 data.append(dict)
 
             # 查询指定标签的所有关系，并将关系信息存放在links数组中
-            query = f"MATCH (n:{label})-[r]->() RETURN r"
+            query = f"MATCH (n{label})-[r]->() RETURN r"
             result = graph.run(query)
             for record in result:
                 # 取出开始节点的name
@@ -207,94 +364,76 @@ def wander(request):
             }
             print(neo4j_data)
             neo4j_data = json.dumps(neo4j_data)
-        else:
+        if 'delete2' in request.POST:
+            graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+            data = json.loads(request.body.decode('utf-8'))
+            Pointname = data.get("name")
+            print('************************************************')
+            print(Pointname)
             node_matcher = NodeMatcher(graph)  # 节点匹配器
-            relation_matcher = RelationshipMatcher(graph)  # 关系匹配器
 
-            # 找到查询关系中的两个节点，
-            start_node = node_matcher.match(name=StartPoint).first()
-            end_node = node_matcher.match(name=EndPoint).first()
+            # 找到查询关系中的那个节点
+            Point_node = node_matcher.match(name=Pointname).first()
 
+            # 确定标签
+            label = Point_node.labels
+
+            if Point_node is not None:
+                # 删除节点及其相关关系
+                graph.delete(Point_node)
+            else:
+                print("没发现要删除的节点")
+
+            print(label)
             # 定义data数组，存放节点信息
             data = []
             # 定义关系数组，存放节点间的关系
             links = []
 
-            # 定义开始节点和结束节点的名称
-            start_node_name = StartPoint
-            end_node_name = EndPoint
-
-            # 获取需要查询的标签
-
-            label = start_node.labels
-
-            # 执行Cypher查询
-            query = """
-            MATCH p = (a)-[r*]-(b)
-            WHERE a.name = $start_node_name and b.name = $end_node_name
-            AND ALL(n1 in nodes(p) WHERE size([n2 in nodes(p) WHERE id(n1) = id(n2)])=1)
-            RETURN p
-            """
-            result = graph.run(query, start_node_name=start_node_name, end_node_name=end_node_name)
-
-            print(result)
-
-            # node_name = [node["name"] for record in result for node in record["p"].nodes]
-
-            # 从路径p中取出所有的节点名称
-            data1 = []
-            node_detail=[]
-            for record in result:
-                data1= [node["name"] for node in record["p"].nodes]
-                node_detail = [node["detail"] for node in record["p"].nodes]
-
             # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
-            for i in range(len(data1) ):
+            query = f"MATCH (n{label}) RETURN n"
+            result = graph.run(query)
+
+            for record in result:
+                # 取出节点的name
+                node_name = record["n"]["name"]
+                node_detail = record["n"]["detail"]
                 # 构造字典，存储单个节点信息
                 dict = {
-                    'name': data1[i],
-                    'symbolSize': 80 if data1[i] in [start_node_name, end_node_name] else 50,
-                    'category': 0 if data1[i] in [start_node_name, end_node_name] else 1,
-                    'des': node_detail[i]
+                    'name': node_name,
+                    'symbolSize': 50,
+                    'category': '1',
+                    'des': node_detail
                 }
                 # 将单个节点信息存放在data数组中
                 data.append(dict)
 
-                # 查询指定标签的所有关系，并将关系信息存放在links数组中
-            query = """
-            MATCH p = (a)-[r*]-(b)
-            WHERE a.name = $start_node_name and b.name = $end_node_name
-            AND ALL(n1 in nodes(p) WHERE size([n2 in nodes(p) WHERE id(n1) = id(n2)]) = 1)
-            RETURN relationships(p) AS relationships
-            """
-            result = graph.run(query, start_node_name=start_node_name, end_node_name=end_node_name)
+            # 查询指定标签的所有关系，并将关系信息存放在links数组中
+            query = f"MATCH (n{label})-[r]->() RETURN r"
+            result = graph.run(query)
+            for record in result:
+                # 取出开始节点的name
+                source = record["r"].start_node["name"]
+                # 取出结束节点的name
+                target = record["r"].end_node["name"]
+                # 取出开始节点的结束节点之间的关系
+                name = type(record["r"]).__name__
+                # 构造字典存储单个关系信息
+                dict = {
+                    'source': source,
+                    'target': target,
+                    'name': name
+                }
+                # 将单个关系信息存放进links数组中
+                links.append(dict)
 
-            # 从结果中提取关系
-            result_data = result.data()
-            if result_data:
-                relationships_list = result_data[0]['relationships']
-
-                # 遍历关系并提取必要的信息
-                for relationship in relationships_list:
-                    source = relationship.start_node['name']
-                    target = relationship.end_node['name']
-                    name = type(relationship).__name__
-
-                    # 为每个关系构造字典并添加到links中
-                    dict = {
-                        'source': source,
-                        'target': target,
-                        'name': name,
-
-                    }
-                    links.append(dict)
             # 将所有的节点信息和关系信息存放在一个字典中
             neo4j_data = {
                 'data': data,
-                'links': links,
+                'links': links
             }
+            print(neo4j_data)
             neo4j_data = json.dumps(neo4j_data)
-
     return render(request, './system/wander.html', {'neo4j_data': neo4j_data})
 
 
@@ -577,17 +716,72 @@ def node_new(request):
     return render(request, './system/node_new.html', {'neo4j_data': neo4j_data})
 
 def node_edit(request):
+    neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         StartPoint = request.POST.get("StartPoint")
-        EndPoint = request.POST.get("EndPoint")
-        node1 = Node(EndPoint, name=StartPoint)
-        graph.create(node1)
+        NewPoint = request.POST.get("EndPoint")
+
+        matcher = NodeMatcher(graph)
+        startnode = matcher.match(name = StartPoint).first()
+
+        startnode["name"] = NewPoint
+        graph.push(startnode)
+
         print(StartPoint)
-        print(EndPoint)
+        print(NewPoint)
+        label = startnode.labels
+        print(label)
+        # 定义data数组，存放节点信息
+        data = []
+        # 定义关系数组，存放节点间的关系
+        links = []
 
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name
+            node_name = record["n"]["name"]
+            node_detail = record["n"]["detail"]
+            # 构造字典，存储单个节点信息
+            dict = {
+                'name': node_name,
+                'symbolSize': 80 if node_name == NewPoint else 50,
+                'category': 0 if node_name == NewPoint else 1,
+                'des': node_detail
+            }
+            # 将单个节点信息存放在data数组中
+            data.append(dict)
 
-    return render(request, './system/node_edit.html')
+        # 查询指定标签的所有关系，并将关系信息存放在links数组中
+        query = f"MATCH (n{label})-[r]->() RETURN r"
+        result = graph.run(query)
+        for record in result:
+            # 取出开始节点的name
+            source = record["r"].start_node["name"]
+            # 取出结束节点的name
+            target = record["r"].end_node["name"]
+            # 取出开始节点的结束节点之间的关系
+            name = type(record["r"]).__name__
+            # 构造字典存储单个关系信息
+            dict = {
+                'source': source,
+                'target': target,
+                'name': name
+            }
+            # 将单个关系信息存放进links数组中
+            links.append(dict)
+
+        # 将所有的节点信息和关系信息存放在一个字典中
+
+        neo4j_data = {
+            'data': data,
+            'links': links,
+        }
+        neo4j_data = json.dumps(neo4j_data)
+
+    return render(request, './system/node_edit.html',{'neo4j_data': neo4j_data})
 
 def relationship_edit(request):
     neo4j_data = {'data': [], 'links': []}

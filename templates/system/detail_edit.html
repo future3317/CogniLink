@@ -215,15 +215,16 @@
         var pointnameInput = document.getElementById('Pointname1');
         var pointtypeInput = document.getElementById('Pointtype1');
 
-        // 获取保存按钮元素
+        // 获取保存和清除按钮元素
         var saveButton = document.getElementById('save');
-        console.log(pointnameInput, pointtypeInput, saveButton);
-        // 添加点击事件监听器
+        var clearButton = document.getElementById('clear');
+        console.log(pointnameInput, pointtypeInput, saveButton, clearButton);
+
+        // 添加点击事件监听器 - 保存
         saveButton.addEventListener('click', function () {
             // 保存输入框的值到本地存储
             localStorage.setItem('savedPointname', pointnameInput.value);
             localStorage.setItem('savedPointtype', pointtypeInput.value);
-
         });
 
         // 页面加载时从本地存储获取保存的值并设置到输入框

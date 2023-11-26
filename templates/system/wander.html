@@ -10,7 +10,7 @@
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/css/iconfont.css">
     <link rel="stylesheet" href="/static/css/wander.css">
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <script src="/static/js/echarts.js"></script>
 
 </head>
 
@@ -100,24 +100,26 @@
                 </label>
             </div>
         </div>
+<form method="POST" action="{% url 'wander' %}">
         <div class="container">
-  <input type="text" id="subjectInput" placeholder="请选择学科">
+  <input type="text" id="subjectInput" name="subjectInput" placeholder="请选择学科">
   <div class="overlay"></div>
 </div>
 
 <script>
   // 从sessionStorage中获取InitNodeType的值
-    var initNodeType = sessionStorage.getItem('InitNodeType');
-    var initNode = sessionStorage.getItem('InitNode');
-    console.log(initNodeType)
-    console.log(initNode)
-  // 设置subjectInput元素的值
-    document.getElementById('subjectInput').value = initNodeType;
+  var initNodeType = sessionStorage.getItem('InitNodeType');
+  console.log(initNodeType);
 
-  // 发送异步请求以使用InitNodeType值更新后端
-    var xhr = new XMLHttpRequest();
-    xhr.open('GET', '{% url "wander" %}?init_node_name=' + encodeURIComponent(initNode), true);
-    xhr.send();
+  // 设置subjectInput元素的值
+  var subjectInput = document.getElementById('subjectInput');
+  subjectInput.value = initNodeType;
+
+  // 添加事件监听器，当输入框的值改变时更新sessionStorage
+  subjectInput.addEventListener('input', function() {
+    var newValue = subjectInput.value;
+    sessionStorage.setItem('InitNodeType', newValue);
+  });
 </script>
         <div class="TUPU">
             <div class="text-part1">
@@ -139,8 +141,11 @@
             </div>
 
             <div class="containerlim">
+                <div class="panel-body" style="height: 800px; overflow-y:scroll">
+                <div style="border: 1px  #000000; width: 90%; margin: 0 auto;">
+                <span>
 
-                <form method="POST" action="{% url 'wander' %}">
+
 
                     <div class="container-0">
                         <label for="title0">
@@ -151,7 +156,7 @@
                     </div>
 
                     <div class="container-1">
-                        <form method="POST" action="{% url 'wander' %}">
+
                             {% csrf_token %}
                             <label for="title1">
                                 <p id="begin">开始节点</p>
@@ -160,9 +165,9 @@
                                 <input type="text" id="EndPoint" name="EndPoint" placeholder="请输入内容">
                                 <button type="submit" id="searchButton">查询</button>
                             </label>
-                        </form>
-                    </div>
 
+                    </div>
+</form>
                     <div class="container-2-0">
                         <span>图谱展示 </span>
                     </div>
@@ -195,6 +200,9 @@
                     </div>
 
                 </form>
+                </span>
+            </div>
+            </div>
             </div>
 
 
@@ -237,7 +245,6 @@
     </div>
 
 
-
     <script type="text/javascript">
         // 在代码1的脚本中初始化 ECharts 图表
         var myChart = echarts.init(document.getElementById('echarts-container'));
@@ -261,10 +268,11 @@
 
         //提示框的配置
         tooltip: {
-            formatter: function (x) {
-                return x.data.des;
-           }
-       },
+    formatter: function (params) {
+        var data = params.data;
+        return '名称：' + data.name + '<br/>详情：' + data.des;
+    }
+},
         // 工具箱
         toolbox: {
             // 显示工具箱

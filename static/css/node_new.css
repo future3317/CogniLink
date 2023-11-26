@@ -333,14 +333,14 @@ form option{
   }
 
   .TUPU{
-    position: fixed;
+    position: relative;
     font-size: 1.5rem;
-    top:19px;
-    left: 350px;
+    top:-25px;
+    left: 310px;
     width: 150px;
     height: 9px;
-    background:rgba(208, 208, 208,0.5);
-    padding:50px,50px;
+    background:rgba(208, 208, 208,0.2);
+    padding:50px 50px;
     margin-left: 0;
     z-index: 1;
     
@@ -376,35 +376,33 @@ form option{
 
 
 .containerlim {
-    
     position: fixed;
     top:100px;
     bottom:100px;
     left:340px;
     right:100px;
     width: 1290px;
-    height:1500px;
+    height:800px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #FCFDFD;
+    background-color: rgba(252, 253, 253, 0.5);
     border-radius: 15px;
     border-style: solid;
     border-color: #5f5d5d;
     z-index: 999;
-
 }
 
 
 .container-1{
-    top:100px;
+    top:-105px;
     bottom:150px;
-    left:340px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 600px;
     margin: 30px;
-    position: fixed;
+    position: relative;
     display: flex;
     background-color: #F5F8F8;
     box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
@@ -451,7 +449,6 @@ form option{
     outline: none;
     padding: 0 15px;
     color: #606266;
-    box-shadow:none;
     z-index: 50;
 
 
@@ -471,7 +468,6 @@ form option{
     border-radius: 4px;
     outline: none;
     padding: 0 15px;
-    box-shadow:none;
     color: #606266;
     z-index: 50;
 }
@@ -502,9 +498,6 @@ form option{
     outline: none;
     padding: 0 15px;
     color: #606266;
-    -webkit-appearance: none;
-    -webkit-user-select: text;
-    box-shadow:none;
     z-index: 50;
 }
 
@@ -550,14 +543,14 @@ form option{
 }
 
 .container-0{
-    top:100px;
+    top:-5px;
     bottom:150px;
-    left:340px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 70px;
     margin: 30px;
-    position: fixed;
+    position: relative;
     display: flex;
     background-color: #DEEBF5;
     border-radius: 15px;
@@ -605,13 +598,13 @@ form option{
 }
 
 .container-2-0 {
-    top:635px;
-    left:-3px;
+    top:-100px;
+    bottom:150px;
+    left:-70px;
     right:15px;
     width: 1225px;
     height: 70px;
     margin: 30px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #DEEBF5;
@@ -621,13 +614,12 @@ form option{
 }
 
 .container-2 {
-    top:250px;
-    left:-3px;
+     top:-200px;
+    left:-70px;
     right:15px;
     width: 1225px;
     height: 800px;
     margin: 30px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #F5F8F8;

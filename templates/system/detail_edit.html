@@ -9,7 +9,7 @@
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/css/iconfont-basic.css">
     <link rel="stylesheet" href="/static/css/detail_edit.css">
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <script src="/static/js/echarts.js"></script>
 </head>
 <body>
     <div class="content">
@@ -24,39 +24,61 @@
                     <h1>Cognilink</h1>
                 </div>
                 <!-- 侧边栏的标题 结束-->
-                <div class="set-line"></div>
-                <!-- 每一项导航 -->
                 <div class="menu-item">
-                    <label for="menu-item1">
-                        <a href="{%url 'home'%}"><i class="fa-solid fa-home"></i> </a>
-                        <a href="{%url 'home'%}"> <span>首页</span>  </a>
+                    <input type="checkbox" id="menu-item1">
+                    <label for="menu-item1" onclick="homeToURL()">
+                        <i class="fa-solid fa-home"></i>
+                        <span>首页</span>
                     </label>
                 </div>
+
+                <script>
+                    function homeToURL() {
+                        window.location.href = "{%url 'home'%}";
+                    }
+                </script>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item2">
-                    <label for="menu-item2">
-
-                        <a href="{%url 'node_edit'%}"><i class="fa-solid fa-edit"></i></a>
-                        <a href="{%url 'node_edit'%}"><span>图谱编辑</span></a>
+                    <label for="menu-item2" onclick="redirectToURL()">
+                        <i class="fa-solid fa-edit"></i>
+                        <span>图谱编辑</span>
                     </label>
                 </div>
-
-                <div class="menu-item">
-                    <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
-                        <a href="{%url 'wander'%}"> <i class="fa-solid fa-eye"></i> </a>
-                        <a href="{%url 'wander'%}"> <span>图谱漫游</span></a>
-                    </label>
-                </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function redirectToURL() {
+                        window.location.href = "{%url 'node_edit'%}";
+                    }
+                </script>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
-                    <label for="menu-item3">
-                        <a href="{%url 'add_book'%}"> <i class="fa-solid fa-book"></i></a>
-                        <a href="{%url 'add_book'%}"> <span>新增图谱</span></a>
+                    <label for="menu-item3"  onclick="roamToURL()">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>图谱漫游</span>
                     </label>
                 </div>
+                  <!-- js实现的页面重定向 -->
+                <script>
+                    function roamToURL() {
+                        window.location.href = "{%url 'wander'%}";
+                    }
+                </script>
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item3">
+                    <label for="menu-item3" onclick="addbookToURL()">
+                        <i class="fa-solid fa-book"></i>
+                        <span>新增图谱</span>
+                    </label>
+                </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function addbookToURL() {
+                        window.location.href = "{%url 'add_book'%}";
+                    }
+                </script>
 
                 <div class="set-line"></div>
             </div>
@@ -86,11 +108,7 @@
 
           </div>
 
-          <div class="container">
-            <input type="text" placeholder="Search...">
-            <div class="overlay"></div>
 
-          </div>
 
 
           <div class="TUPU">
@@ -100,6 +118,7 @@
                   <span>图谱笔记</span>
                     </label>
             </div>
+          </div>
 
             <div class="container1">
                 <div class="card">
@@ -114,6 +133,9 @@
             </div>
 
             <div class="containerlim">
+                <div class="panel-body" style="height: 800px; overflow-y:scroll">
+                <div style="border: 1px  #000000; width: 90%; margin: 0 auto;">
+                <span>
               <form method="POST" action="{% url 'detail_edit' %}" >
                 <div class="container-0">
                     <label for="title0">
@@ -130,18 +152,20 @@
                 </div>
 
 
+
+<form method="POST" action="{% url 'detail_edit' %}" >
                     <div class="container-1">
-                        <form method="POST" action="{% url 'detail_edit' %}" >
+
                             {% csrf_token %}
                         <label for="title1">
                             <p id="Pointname">节点名称</p>
-                             <input type="text"  id="Pointname" name="Pointname"  placeholder="请输入内容">
+                             <input type="text"  id="Pointname1" name="Pointname1"  placeholder="请输入内容">
                              <p id="Pointtype">节点类型</p>
-                             <input type="text"  id="Pointtype"  name="Pointtype"   placeholder="请输入内容">
-                             <button type="submit" id="save">保存</button> <!-- 用于保存节点名称和节点类型 -->
+                             <input type="text"  id="Pointtype1"  name="Pointtype1"   placeholder="请输入内容">
+                             <button type="submit" id="save" name="save1">保存</button> <!-- 用于保存节点名称和节点类型 -->
                              <button type="submit" id="cancel">取消</button> <!-- 用于返回上级  -->
                         </label>
-                            <form>
+
                     </div>
 
 
@@ -152,7 +176,7 @@
 
 
                     <div class="container-2">
-                        <form method="POST" action="{% url 'detail_edit' %}" >
+
                         <label for="title2">
 
                             <div class="container-2-1">
@@ -161,6 +185,7 @@
 
 
                         </label>
+
                     </div>
 
                     <div class="container-4-0">
@@ -168,22 +193,51 @@
                     </div>
 
                     <div class="container-4">
-                        <form method="POST" action="{% url 'detail_edit' %}" >
+
+                            {% csrf_token %}
                         <label for="title4">
                             <input type="text" id="detail" name="detail"  >
-                            <button type="submit" id="save">保存</button> <!-- 用于保存节点详情并返回查看详情 -->
+                            <button type="submit" id="save" name="save2">保存</button> <!-- 用于保存节点详情并返回查看详情 -->
                             <button type="submit" id="cancel">取消</button> <!-- 用于返回查看详情 -->
                         </label>
+
                     </div>
-
-
-
-
+              </form>
+                </span>
             </div>
+            </div>
+            </div>
+
+<script>
+    // 在页面加载完成时执行的脚本
+    document.addEventListener('DOMContentLoaded', function () {
+        // 获取节点名称和节点类型的输入框元素
+        var pointnameInput = document.getElementById('Pointname1');
+        var pointtypeInput = document.getElementById('Pointtype1');
+
+        // 获取保存按钮元素
+        var saveButton = document.getElementById('save');
+        console.log(pointnameInput, pointtypeInput, saveButton);
+        // 添加点击事件监听器
+        saveButton.addEventListener('click', function () {
+            // 保存输入框的值到本地存储
+            localStorage.setItem('savedPointname', pointnameInput.value);
+            localStorage.setItem('savedPointtype', pointtypeInput.value);
+
+        });
+
+        // 页面加载时从本地存储获取保存的值并设置到输入框
+        pointnameInput.value = localStorage.getItem('savedPointname') || '';
+        pointtypeInput.value = localStorage.getItem('savedPointtype') || '';
+    });
+</script>
+
 <script type="text/javascript">
         // 在代码1的脚本中初始化 ECharts 图表
         var myChart = echarts.init(document.getElementById('echarts-container'));
+        console.log('wojinlail')
         var neo4j_data = [{{ neo4j_data|safe }}]
+        console.log(neo4j_data)
         var data1 = neo4j_data[0]['data']
         var links1 = neo4j_data[0]['links']
         console.log(data1)
@@ -201,10 +255,11 @@
 
         //提示框的配置
         tooltip: {
-            formatter: function (x) {
-                return x.data.des;
-           }
-       },
+    formatter: function (params) {
+        var data = params.data;
+        return '名称：' + data.name + '<br/>详情：' + data.des;
+    }
+},
         // 工具箱
         toolbox: {
             // 显示工具箱
@@ -223,7 +278,7 @@
                 }
             }
         },
-            series: [{
+        series: [{
             type: 'graph', // 类型:关系图
             layout: 'force', //图的布局，类型为力导图
             symbolSize: 40, // 调整节点的大小
@@ -233,7 +288,7 @@
             edgeLabel: {
                 normal: {
                     textStyle: {
-                        fontSize: 20
+                        fontSize: 40
                     }
                 }
             },
@@ -273,9 +328,9 @@
     myChart.on('dblclick', function (params) {
      if (params.seriesType === 'graph' && params.dataType === 'node') {
         var nodeName = params.data.name;
-
+        var nodedetail = params.data.des;
         // 弹出选择框
-        var option = prompt(nodeName + '：选项：\n1. 编辑\n2. 删除', '1');
+        var option = prompt('名称：'+nodeName+'\n详情:' + nodedetail+'\n选项：\n1. 编辑\n2. 删除', '1');
 
         if (option === '1') {
             // 存储 nodeName 到 sessionStorage

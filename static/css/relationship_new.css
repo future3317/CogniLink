@@ -623,8 +623,8 @@
     width: 1120px;
     height: 750px;
     margin: 20px;
-
-    position:fixed;
+    position: fixed;
+    position:relative;
     display: flex;
     background-color: #FFFFFF;
     box-shadow: none;
@@ -696,6 +696,7 @@
     width: 1225px;
     height: 70px;
     margin: 30px;
+    position: fixed;
     position:relative;
     display: flex;
     background-color: #DEEBF5;

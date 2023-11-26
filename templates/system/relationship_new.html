@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <!-- 导入阿里的图标样式文件 -->
-    <script src="https://cdn.jsdelivr.net/npm/echarts@5.2.2/dist/echarts.min.js"></script>
+    <script src="/static/js/echarts.js"></script>
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="iconfont.css">
     <link rel="stylesheet" href="/static/css/relationship_new.css">
@@ -35,7 +35,7 @@
 
                 <script>
                     function homeToURL() {
-                        window.location.href = "http://127.0.0.1:8000/system/home/";
+                        window.location.href = "/system/home/";
                     }
                 </script>
 
@@ -49,7 +49,7 @@
 
                 <script>
                     function redirectToURL() {
-                        window.location.href = "http://127.0.0.1:8000/system/detail_edit/";
+                        window.location.href = "/system/detail_edit/";
                     }
                 </script>
 
@@ -63,7 +63,7 @@
 
                 <script>
                     function roamToURL() {
-                        window.location.href = "http://127.0.0.1:8000/system/wander/";
+                        window.location.href = "/system/wander/";
                     }
                 </script>
 
@@ -77,7 +77,7 @@
 
                 <script>
                     function addBook() {
-                        window.location.href = "http://127.0.0.1:8000/system/add_book/";
+                        window.location.href = "/system/add_book/";
                     }
                 </script>
 
@@ -144,7 +144,9 @@
 
             <div class="containerlim">
                 <form method="POST" action="{% url 'relationship_new' %}" >
-
+                <div class="panel-body" style="height: 800px; overflow-y:scroll">
+                <div style="border: 1px  #000000; width: 90%; margin: 0 auto;">
+                <span>
                 <div class="container-0">
 
                     <label for="title0">
@@ -201,12 +203,16 @@
 
                         </label>
                     </div>
-
+</span>
+            </div>
+            </div>
              </div>
 <script type="text/javascript">
         // 在代码1的脚本中初始化 ECharts 图表
         var myChart = echarts.init(document.getElementById('echarts-container'));
+        console.log('wojinlail')
         var neo4j_data = [{{ neo4j_data|safe }}]
+        console.log(neo4j_data)
         var data1 = neo4j_data[0]['data']
         var links1 = neo4j_data[0]['links']
         console.log(data1)
@@ -221,16 +227,14 @@
         };
     }
     option = {
-        // 图的标题
-        title: {
-            text: 'ECharts 关系图'
-        },
-        // 提示框的配置
-        //tooltip: {
-           // formatter: function (x) {
-            //    return x.data.des;
-          //  }
-      //  },
+
+        //提示框的配置
+        tooltip: {
+    formatter: function (params) {
+        var data = params.data;
+        return '名称：' + data.name + '<br/>详情：' + data.des;
+    }
+},
         // 工具箱
         toolbox: {
             // 显示工具箱
@@ -249,12 +253,6 @@
                 }
             }
         },
-        legend: [{
-            // selectedMode: 'single',
-            data: categories.map(function (a) {
-                return a.name;
-            })
-        }],
         series: [{
             type: 'graph', // 类型:关系图
             layout: 'force', //图的布局，类型为力导图
@@ -265,7 +263,7 @@
             edgeLabel: {
                 normal: {
                     textStyle: {
-                        fontSize: 20
+                        fontSize: 40
                     }
                 }
             },
@@ -301,7 +299,78 @@
             categories: categories,
         }]
     };
+
+    myChart.on('dblclick', function (params) {
+     if (params.seriesType === 'graph' && params.dataType === 'node') {
+        var nodeName = params.data.name;
+        var nodedetail = params.data.des;
+        // 弹出选择框
+        var option = prompt('名称：'+nodeName+'\n详情:' + nodedetail+'\n选项：\n1. 编辑\n2. 删除', '1');
+
+        if (option === '1') {
+            // 存储 nodeName 到 sessionStorage
+            sessionStorage.setItem('StartPoint', nodeName);
+
+            // 构建跳转的 URL
+            var url = '{% url "node_edit" %}';
+
+            // 跳转到 'node_edit' 页面
+            window.location.href = url;
+
+        } else if (option === '2') {
+            // 处理删除操作
+            deleteNode(nodeName);
+        }
+     }
+        else if (params.seriesType === 'graph' && params.dataType === 'edge') {
+        var linkName = params.data.name;
+        var linkDes = params.data.des;
+
+        var content = linkName + ':' + linkDes + '\n\nOptions:\n1. Edit\n2. Delete';
+
+        // Display alert with options
+        var option = prompt(content, '1');
+
+        if (option === '1') {
+            editEdge(linkName);
+        } else if (option === '2') {
+            deleteEdge(linkName);
+        }
+    }
+});
+
+function editNode(nodeName) {
+    window.location.href = 'node_edit_page?nodeName=' + nodeName;
+}
+
+function deleteNode(nodeName) {
+    console.log('Deleting node: ' + nodeName);
+}
+
+function editEdge(linkName) {
+    window.location.href = 'relationship_edit_page?linkName=' + linkName;
+}
+
+function deleteEdge(linkName) {
+    console.log('Deleting edge: ' + linkName);
+}
+
     myChart.setOption(option);
+
+    </script>
+
+    <script>
+        function closeDialog(dialogId) {
+            // 隐藏对应的对话框
+            document.getElementById(dialogId).style.display = 'none';
+        }
+    </script>
+
+    <script>
+        function openDialog(dialogId) {
+            // 隐藏对应的对话
+            document.getElementById(dialogId).style.display = 'block';
+        }
     </script>
 
 </div>

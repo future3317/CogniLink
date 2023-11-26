@@ -361,36 +361,35 @@
 
 
 
+
 .containerlim {
-    
     position: fixed;
     top:100px;
     bottom:100px;
     left:340px;
     right:100px;
     width: 1290px;
-    height:1500px;
+    height:800px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #FCFDFD;
+    background-color: rgba(252, 253, 253, 0.5);
     border-radius: 15px;
     border-style: solid;
     border-color: #5f5d5d;
     z-index: 999;
-
 }
 
 
 .container-1{
-    top:100px;
+    top:-30px;
     bottom:150px;
-    left:340px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 400px;
     margin: 30px;
-    position: fixed;
+    position: relative;
     display: flex;
     background-color: #F5F8F8;
     box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
@@ -501,14 +500,14 @@
 
 
 .container-0{
-    top:100px;
+    top:70px;
     bottom:150px;
-    left:340px;
+    left:-70px;
     right:10px;
     width: 1225px;
     height: 70px;
     margin: 30px;
-    position: fixed;
+    position: relative;
     display: flex;
     background-color: #DEEBF5;
     border-radius: 15px;
@@ -556,14 +555,13 @@
 }
 
 .container-2-0 {
-    top:435px;
+    top:0px;
     bottom:150px;
-    left:-3px;
+    left:-70px;
     right:15px;
     width: 1225px;
     height: 70px;
     margin: 30px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #DEEBF5;
@@ -573,13 +571,12 @@
 }
 
 .container-2 {
-    top:150px;
-    left:-3px;
+    top:-90px;
+    left:-70px;
     right:15px;
     width: 1225px;
     height: 1000px;
     margin: 30px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #F5F8F8;
@@ -594,7 +591,6 @@
     width: 1120px;
     height: 850px;
     margin: 20px;
-    position: fixed;
     position:relative;
     display: flex;
     background-color: #FFFFFF;

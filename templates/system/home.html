@@ -8,9 +8,18 @@
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/css/iconfont.css">
     <link rel="stylesheet" href="/static/css/index.css">
+    <script src="/static/js/jquery.js"></script>
+
+     <script>
+        const csrf_token = "{{ csrf_token|escapejs }}";
+    </script>
+
+
+
 </head>
 <body>
     <div class="content">
+
         <div class="menu-box">
             <!-- 展示与隐藏侧边栏 开始-->
             <input type="checkbox" id="menu-btn">
@@ -48,7 +57,7 @@
 
                 <script>
                     function redirectToURL() {
-                        window.location.href = "/system/detail_edit/";
+                        window.location.href = "/system/node_edit/";
                     }
                 </script>
 
@@ -131,94 +140,114 @@
             </div>
 
 
-
             <div class="containerlim">
-                <a href="#">
-                    <div class="contentboxx">
-                        <h2></h2>
-                        <p></p>
-                    </div>
-                </a>
+                <div id="subjects-container" class="subjects-container"></div>
             </div>
 
             <div id="app">
-                <button class="add-note" type="button">+</button>
-            </div>
+                {% csrf_token %}
+    <button class="add-note" type="button" onclick="redirectToAddBook()">+</button>
+</div>
+
+<script>
+    function redirectToAddBook() {
+        window.location.href = "{%url 'add_book'%}"; // 替换 "/add_book" 为实际的路径
+    }
+</script>
+
+<script>
+    const notesContainer = document.getElementById("app");
+    const addNoteButton = notesContainer.querySelector(".add-note");
+
+    // 根据从后端获取的 subjects_data 初始化笔记
+    const subjectsData = {{ subjects_data|safe }};
+    subjectsData.forEach((subject) => {
+        const content = `学科：${subject.name}\n详情：${subject.introduction}`;
+        const noteElement = createNoteElement(subject.name, content);
+        notesContainer.insertBefore(noteElement, addNoteButton);
+    });
 
 
-              <script>
-                const notesContainer = document.getElementById("app");
-        const addNoteButton = notesContainer.querySelector(".add-note");
 
-        getNotes().forEach((note) => {
-          const noteElement = createNoteElement(note.id, note.content);
-          notesContainer.insertBefore(noteElement, addNoteButton);
+    function getNotes() {
+        return JSON.parse(localStorage.getItem("stickynotes-notes") || "[]");
+    }
+
+    function saveNotes(notes) {
+        localStorage.setItem("stickynotes-notes", JSON.stringify(notes));
+    }
+
+    function createNoteElement(name, content) {
+        const element = document.createElement("textarea");
+
+        element.classList.add("note");
+        element.value = content;
+        element.placeholder = "笔记";
+
+        element.addEventListener("change", () => {
+            // 假设学科名称能唯一标识一条笔记
+            updateNote(name, element.value);
         });
 
-        addNoteButton.addEventListener("click", () => addNote());
+        element.addEventListener("contextmenu", (event) => {
+    event.preventDefault(); // 阻止默认右键菜单
 
-        function getNotes() {
-          return JSON.parse(localStorage.getItem("stickynotes-notes") || "[]");
-        }
+    const doDelete = confirm("确定删除这条笔记吗?");
+    if (doDelete) {
+        deleteNote(name, element);
+    }
+});
 
-        function saveNotes(notes) {
-          localStorage.setItem("stickynotes-notes", JSON.stringify(notes));
-        }
+        element.addEventListener("click", () => {
+        saveAndRedirect(name);
+    });
 
-        function createNoteElement(id, content) {
-          const element = document.createElement("textarea");
+        return element;
+    }
 
-          element.classList.add("note");
-          element.value = content;
-          element.placeholder = "笔记";
+function saveAndRedirect(subjectName) {
+    // Store the subject name in sessionStorage
+    sessionStorage.setItem('InitNodeType', subjectName);
 
-          element.addEventListener("change", () => {
-            updateNote(id, element.value);
-          });
+    // Construct the redirect URL (modify this based on your actual URL structure)
+    var data = {
+        subjectName: subjectName
+        // 添加其他需要传递的数据
+    };
 
-          element.addEventListener("dblclick", () => {
-            const doDelete = confirm(
-              "确定删除这条笔记吗?"
-            );
+    // 使用Fetch API发送POST请求
+    $.ajax({
+        type: 'POST',
+        url: '/system/home/',  // 后端处理函数的URL
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", csrf_token); // csrf_token 是从Cookie中获取的CSRF令牌
+    },
 
-            if (doDelete) {
-              deleteNote(id, element);
-            }
-          });
+    });
 
-          return element;
-        }
+    // Redirect to the Wander webpage
+    window.location.href = "{%url 'wander'%}";
 
-        function addNote() {
-          const notes = getNotes();
-          const noteObject = {
-            id: Math.floor(Math.random() * 100000),
-            content: ""
-          };
 
-          const noteElement = createNoteElement(noteObject.id, noteObject.content);
-          notesContainer.insertBefore(noteElement, addNoteButton);
+}
 
-          notes.push(noteObject);
-          saveNotes(notes);
-          window.location.href = "/system/add_book/"
-        }
+    function updateNote(name, newContent) {
+        const notes = getNotes();
+        const targetNote = notes.filter((note) => note.name === name)[0];
 
-        function updateNote(id, newContent) {
-          const notes = getNotes();
-          const targetNote = notes.filter((note) => note.id == id)[0];
+        targetNote.content = newContent;
+        saveNotes(notes);
+    }
 
-          targetNote.content = newContent;
-          saveNotes(notes);
-        }
+    function deleteNote(name, element) {
+        const notes = getNotes().filter((note) => note.name !== name);
 
-        function deleteNote(id, element) {
-          const notes = getNotes().filter((note) => note.id != id);
-
-          saveNotes(notes);
-          notesContainer.removeChild(element);
-        }
-            </script>
+        saveNotes(notes);
+        notesContainer.removeChild(element);
+    }
+</script>
 
 
 </body>

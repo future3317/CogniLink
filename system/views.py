@@ -5,7 +5,7 @@ import py2neo
 from py2neo import Graph, Node, Relationship, RelationshipMatcher, NodeMatcher
 import pandas as pd
 from django.shortcuts import render
-from util.pre_load import neo4jconn, course_dict
+
 import json
 
 
@@ -945,8 +945,5 @@ def relationship_new(request):
 
     return render(request, './system/relationship_new.html', {'neo4j_data': neo4j_data})
 
-def wander_1(request):
-    if request.method == 'POST':
-        graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
-
-    return render(request, './system/wander_1.html')
+def person(request):
+    return render(request, './system/person.html')

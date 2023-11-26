@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/static/css/iconfont.css">
+    <link rel="stylesheet" href="/static/css/person.css">
+</head>
+<body>
+    <div class="content">
+        <div class="menu-box">
+            <input type="checkbox" id="menu-btn">
+            <label for="menu-btn"><i class="iconfont icon-yemianfanhui"></i></label>
+            <div class="menu">
+                <div class="menu-title">
+                    <h1>Cognilink</h1>
+                </div>
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item1">
+                    <label for="menu-item1" onclick="homeToURL()">
+                        <i class="fa-solid fa-home"></i>
+                        <span>首页</span>
+                    </label>
+                </div>
+
+                <script>
+                    function homeToURL() {
+                        window.location.href = "{%url 'home'%}";
+                    }
+                </script>
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item2">
+                    <label for="menu-item2" onclick="redirectToURL()">
+                        <i class="fa-solid fa-edit"></i>
+                        <span>图谱编辑</span>
+                    </label>
+                </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function redirectToURL() {
+                        window.location.href = "{%url 'node_edit'%}";
+                    }
+                </script>
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item3">
+                    <label for="menu-item3"  onclick="roamToURL()">
+                        <i class="fa-solid fa-eye"></i>
+                        <span>图谱漫游</span>
+                    </label>
+                </div>
+                  <!-- js实现的页面重定向 -->
+                <script>
+                    function roamToURL() {
+                        window.location.href = "{%url 'wander'%}";
+                    }
+                </script>
+
+                <div class="menu-item">
+                    <input type="checkbox" id="menu-item3">
+                    <label for="menu-item3" onclick="addbookToURL()">
+                        <i class="fa-solid fa-book"></i>
+                        <span>新增图谱</span>
+                    </label>
+                </div>
+                <!-- js实现的页面重定向 -->
+                <script>
+                    function addbookToURL() {
+                        window.location.href = "{%url 'add_book'%}";
+                    }
+                </script>
+
+                <div class="set-line"></div>
+            </div>
+        </div>
+        <div class="tabs">
+            <input type="radio" id="home" name="tabsMenu"  />
+            <input type="radio" id="profile" name="tabsMenu" checked />
+            <input type="radio" id="likes" name="tabsMenu" />
+            <input type="radio" id="settings" name="tabsMenu" />
+            <input type="radio" id="notifications" name="tabsMenu" />
+
+            <div class="buttons">
+                <label for="home">
+                    <a href="{%url 'home'%}"> <i class="fa-solid fa-house"></i> </a>
+
+                </label>
+                <label for="profile"><a href="{%url 'person'%}"><i class="fa-solid fa-user"></i></label>
+                <label for="likes"><i class="fa-solid fa-bell"></i></label>
+                <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
+                <label for="notifications">
+
+                   <a href="{%url 'login'%}"><i class="fa-solid fa-power-off"></i></a>
+
+                </label>
+            </div>
+
+
+
+          </div>
+
+          <div class="container">
+            <input type="text" placeholder="Search...">
+            <div class="overlay"></div>
+
+          </div>
+
+
+          <div class="TUPU">
+            <div class="text-part1">
+                <label for="menu-item1">
+                 <i class="fa-solid  fa-list-ul"></i>
+                  <span>个人中心</span>
+                    </label>
+            </div>
+
+            <div class="container1">
+                <div class="card">
+                </div>
+            </div>
+
+            <div class="card1">
+                <span style="--i:0"> </span>
+                <span style="--i:1"> </span>
+                <span style="--i:2"> </span>
+                <span style="--i:3"> </span>
+            </div>
+
+
+
+            <div class="containerlim">
+                <div class="main">
+                    <table width="100%" border="1" align="center" cellpadding="0" cellspacing="0" id="tab">
+                        <tr style="height: 200px;">
+                            <td width="500px" align="center" style="font-family: 'Microsoft YaHei', sans-serif;">个人头像</td>
+                            <td style="text-align: center;" width="20%">
+                                <img src="static/image/head.jpg" width="300">
+                            </td>
+                            <td width="20%" align="center" style="font-family: 'Microsoft YaHei', sans-serif;">基本信息</td>
+                            <td colspan="2">
+                                <p id="username_display" style="line-height: 40px;padding: 10px 20px;">用户名：Anthony_🍐 </p>
+                                <p style="line-height: 40px;padding: 10px 20px;">专业：自动化</p>
+                                <p style="line-height: 40px;padding: 10px 20px;">电话: 13380982292</p>
+                                <p style="line-height: 40px;padding: 10px 20px;">工作单位: 北京理工大学</p>   
+                            </td>
+                        </tr>
+
+                        <tr style="height: 200px;"> 
+                            <td width="500px" align="center">个人简介</td>
+                            <td colspan="3" style="max-height: 120px; overflow: auto;width: 80%;">
+                                <div>
+                                    哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈哈
+                                </div>
+                            </td>
+                        </tr>
+                        
+                        
+                        
+
+                        <tr style="height: 310px;">
+                            <td width="500px" align="center">密码修改</td>
+                            <td colspan="4" style="text-align: left;">
+                                <form id="account-form" style="text-align: left;">
+                                    
+                                    <p id="tip1" for="old_password">原密码:</p>
+                                    <input type="password" id="old_password" name="new-username" required>
+                            
+                                    <p id="tip2" for="new_password">新密码:</p>
+                                    <input type="password" id="new_password" name="new-id" required>
+                            
+                                    <p id="tip3" for="confirm_password">确认密码:</p>
+                                    <input type="password" id="confirm_password" name="new-password" required>
+                            
+                                    <button id="save" type="button" onclick="changePassword()">保存修改</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+    </div>
+
+    <!-- Add the SweetAlert2 library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    storedPassword = "123"; // Replace with the actual hashed password
+    function changePassword() {
+        // Retrieve form data
+        const oldPassword = document.getElementById("old_password").value;
+        const newPassword = document.getElementById("new_password").value;
+        const confirmPassword = document.getElementById("confirm_password").value;
+
+        // Perform validation
+        // You can add more complex validation logic as needed
+
+        // Example: Check if the old password is correct
+        if (!checkOldPassword(oldPassword)) {
+            showErrorMessage("密码错误");
+            return;
+        }
+
+        // Check if the new password and confirm password match
+        if (newPassword !== confirmPassword) {
+            showErrorMessage("新密码不一致");
+            return;
+        }
+
+        // If all validation passes, show success message
+        showSuccessMessage("修改成功",newPassword);
+
+        // You can also send the updated information to a server for permanent storage
+    }
+
+    function checkOldPassword(oldPassword) {
+        // Replace this with your actual logic to check the old password
+        // For example, you might compare it with a stored password hash
+        // You can use a secure password hashing library like bcrypt for this
+
+        // For simplicity, this example uses a plain comparison
+        return oldPassword === storedPassword;
+    }
+
+    function showErrorMessage(message) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: message,
+        });
+    }
+
+    function showSuccessMessage(message,newPassword) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: message,
+        });
+
+        storedPassword=newPassword;
+    }
+</script>
+
+    
+
+</body>
+</html>

@@ -152,6 +152,7 @@ def home(request):
 #输入两个节点的名字，漫游查询他们的路径
 def wander(request):
     neo4j_data = {'data': [], 'links': []}
+    existing_names={}
     if request.method == "POST":
         if 'searchButton' in request.POST:
             graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
@@ -160,57 +161,73 @@ def wander(request):
             EndPoint = request.POST.get("EndPoint")
             if StartPoint == "" and EndPoint == "":
                 label = request.POST.get("subjectInput")
+                if(label):
+                    print(label)
+                    # 定义data数组，存放节点信息
+                    data = []
+                    # 定义关系数组，存放节点间的关系
+                    links = []
 
-                print(label)
-                # 定义data数组，存放节点信息
-                data = []
-                # 定义关系数组，存放节点间的关系
-                links = []
+                    # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+                    query = f"MATCH (n:{label}) RETURN n"
+                    result = graph.run(query)
 
-                # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
-                query = f"MATCH (n:{label}) RETURN n"
-                result = graph.run(query)
+                    print(result)
+                    for record in result:
+                        # 取出节点的name和其他属性
+                        node_name = record["n"]["name"]
+                        node_detail = record["n"]["detail"]
 
-                for record in result:
-                    # 取出节点的name
-                    node_name = record["n"]["name"]
-                    node_detail = record["n"]["detail"]
-                    # 构造字典，存储单个节点信息
-                    dict = {
-                        'name': node_name,
-                        'symbolSize': 50,
-                        'category': '1',
-                        'des': node_detail
+                        # 如果名称已经存在于字典中，执行相应操作
+                        if node_name in existing_names:
+                            message = '有重复名称的节点：'+node_name
+                            return render(request, './system/wander.html', {'message': message})
+                        else:
+                            # 如果名称不存在，构造新的字典，并将其存储在data数组中
+                            dict = {
+                                'name': node_name,
+                                'symbolSize': 50,
+                                'category': '1',
+                                'des': node_detail
+                            }
+                            data.append(dict)
+
+                            # 同时更新字典，将新节点名称添加到已存在的字典中
+                            existing_names[node_name] = dict
+                    # 查询指定标签的所有关系，并将关系信息存放在links数组中
+                    if not data:
+                            # 如果结果为空，返回包含消息的页面
+                            message = "请先建立学科图谱"
+                            return render(request, './system/wander.html', {'message': message})
+
+                    query = f"MATCH (n:{label})-[r]->() RETURN r"
+                    result = graph.run(query)
+                    for record in result:
+                        # 取出开始节点的name
+                        source = record["r"].start_node["name"]
+                        # 取出结束节点的name
+                        target = record["r"].end_node["name"]
+                        # 取出开始节点的结束节点之间的关系
+                        name = type(record["r"]).__name__
+                        # 构造字典存储单个关系信息
+                        dict = {
+                            'source': source,
+                            'target': target,
+                            'name': name
+                        }
+                        # 将单个关系信息存放进links数组中
+                        links.append(dict)
+
+                    # 将所有的节点信息和关系信息存放在一个字典中
+                    neo4j_data = {
+                        'data': data,
+                        'links': links
                     }
-                    # 将单个节点信息存放在data数组中
-                    data.append(dict)
-
-                # 查询指定标签的所有关系，并将关系信息存放在links数组中
-                query = f"MATCH (n:{label})-[r]->() RETURN r"
-                result = graph.run(query)
-                for record in result:
-                    # 取出开始节点的name
-                    source = record["r"].start_node["name"]
-                    # 取出结束节点的name
-                    target = record["r"].end_node["name"]
-                    # 取出开始节点的结束节点之间的关系
-                    name = type(record["r"]).__name__
-                    # 构造字典存储单个关系信息
-                    dict = {
-                        'source': source,
-                        'target': target,
-                        'name': name
-                    }
-                    # 将单个关系信息存放进links数组中
-                    links.append(dict)
-
-                # 将所有的节点信息和关系信息存放在一个字典中
-                neo4j_data = {
-                    'data': data,
-                    'links': links
-                }
-                print(neo4j_data)
-                neo4j_data = json.dumps(neo4j_data)
+                    print(neo4j_data)
+                    neo4j_data = json.dumps(neo4j_data)
+                else:
+                    message = "请先输入学科图谱"
+                    return render(request, './system/wander.html', {'message': message})
             else:
                 node_matcher = NodeMatcher(graph)  # 节点匹配器
                 relation_matcher = RelationshipMatcher(graph)  # 关系匹配器
@@ -586,13 +603,44 @@ def add_book(request):
         return render(request, './system/wander.html', {'neo4j_data': neo4j_data})
     return render(request, './system/add_book.html')
 def node_new(request):
+    existing_names = {}
     neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         NodeName = request.POST.get("NodeName")
         NodeType = request.POST.get("NodeType")
         NodeDetail = request.POST.get("NodeDetail")
+        label=NodeType
+        data = []
+        # 定义关系数组，存放节点间的关系
 
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n:{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name和其他属性
+            node_name = record["n"]["name"]
+            node_detail = record["n"]["detail"]
+            print('########')
+            print(existing_names)
+            print(NodeName)
+            print('########')
+            # 如果名称已经存在于字典中，执行相应操作
+                # 如果名称不存在，构造新的字典，并将其存储在data数组中
+            dict = {
+                    'name': node_name,
+                    'symbolSize': 50,
+                    'category': '1',
+                    'des': node_detail
+                }
+            data.append(dict)
+
+                # 同时更新字典，将新节点名称添加到已存在的字典中
+            existing_names[node_name] = dict
+        if NodeName in existing_names:
+            message = '有重复名称的节点：' + node_name +'                        详情是:' + node_detail
+            print(message)
+            return render(request, './system/node_new.html', {'message': message})
         node1 = Node(NodeType, name=NodeName,detail=NodeDetail)
         graph.create(node1)
         print(NodeName)

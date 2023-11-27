@@ -151,13 +151,13 @@
                 <div class="container-1">
                     <label for="title1">
                       <p id="n1">图谱名称</p>
-                      <input type="text"  id="BookName" name="BookName"  placeholder="请输入内容">
+                      <input type="text"  id="BookName" name="BookName"  placeholder="请输入内容" oninput="updateInitNodeType()">
                       <p id="n2">图谱介绍</p>
                       <input type="text"  id="BookIntro"  name="BookIntro"   placeholder="请输入内容">
                       <p id="n3">初始节点名称</p>
                       <input type="text"  id="InitNode"  name="InitNode"   placeholder="请输入内容">
                       <p id="n4">初始节点类型</p>
-                      <input type="text"  id="InitNodeType"  name="InitNodeType"   placeholder="请输入内容">
+                      <input type="text"  id="InitNodeType"  name="InitNodeType"   placeholder="请输入与图谱名称相同的内容">
                       <p id="n5">初始节点详情</p>
                       <input type="text"  id="InitNodeDetail"  name="InitNodeDetail"   placeholder="请输入内容">
                     </label>
@@ -167,7 +167,16 @@
                     </label>
                 </div>
 
+                <script>
+        // 定义一个函数，用于在图谱名称输入框内容变化时更新初始节点类型输入框的值
+        function updateInitNodeType() {
+            // 获取图谱名称输入框的值
+            var bookName = document.getElementById('BookName').value;
 
+            // 将图谱名称的值填充到初始节点类型输入框中
+            document.getElementById('InitNodeType').value = bookName;
+        }
+    </script>
 
                   <script>
   function saveAndRedirect() {

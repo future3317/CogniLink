@@ -686,7 +686,7 @@
 }
 
 .container-3 button[id=editButton]{
-    left:500px;
+    margin-left:330px;
     margin-top:220px;
     width: 110px;
     height: 30px;
@@ -705,7 +705,7 @@
 }
 
 .container-3 button[id=deleteButton]{
-    margin-left:730px;
+    margin-left:630px;
     margin-top:-30px;
     width: 110px;
     height: 30px;

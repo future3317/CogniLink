@@ -30,13 +30,13 @@
     min-height: 100vh;
     background-image: url(../image/background3.jpg);
     background-color:rgba(250, 250, 250, 0.75);
-    
+
 }
 
 .menu-box {
     position:fixed;
     margin-bottom: 0;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans','Microsoft YaHei', Arial, sans-serif;
     letter-spacing: 0.5px;
     font-weight: 600;
     width: fit-content;
@@ -56,7 +56,7 @@
     position:fixed;
     display: none;
     background:rgba(208,208,208,0.75);
-    
+
 }
 
 .menu-box>label {
@@ -76,7 +76,7 @@
     align-items: center;
     overflow: hidden;
     background:rgba(208,208,208,0.75);
-    
+
 }
 
 .menu-box>label>i {
@@ -86,18 +86,18 @@
     transition: transform var(--transition-menu-time);
     transform: rotate(0deg);
     background:rgba(208,208,208,0.75);
-   
+
 }
 
 .menu-box>label:hover {
     box-shadow: 0px 0px 2px 0px #000;
     color: var(--font-color-mi-hover);
-    
+
 }
 
 .menu-box>input#menu-btn:checked+label>i {
     transform: rotate(180deg);
-    
+
 }
 
 .menu {
@@ -148,8 +148,8 @@
     margin-left:0px;
     margin-right: 30px;
     font-size: 24px;
-   
-    
+
+
 }
 
 .menu-item>label>span {
@@ -163,13 +163,13 @@
     font-weight: 900;
     transform: rotate(0deg);
     transition: transform var(--transition-menu-time);
-    
-   
+
+
 }
 
 .menu-item>input:checked+label>i:last-child {
     transform: rotate(180deg);
-    
+
 }
 
 .menu-content {
@@ -179,7 +179,7 @@
     display: flex;
     flex-wrap: wrap;
     background-color: var(--color-menu-bg);
-    
+
 }
 
 /* 选项，若 n 项，就 n * 40px */
@@ -223,7 +223,7 @@
     position: fixed;
     text-align: right;
   }
-  
+
   .buttons {
     position: fixed;
     text-align: right;
@@ -235,13 +235,6 @@
     background:rgba(208, 208, 208, 0.75);
     overflow: hidden;
   }
-  
-  .tabs a{
-
-      color:#3b3b3b;
-      border-width: 0.5px;
-
-  }
 
   .buttons label {
     position:related;
@@ -252,12 +245,12 @@
     cursor: pointer;
     transition: 0.5s;
   }
-  
+
   .buttons label:hover {
     opacity: 1;
     filter: drop-shadow(0 0 10px #0f0f0f) drop-shadow(0 0 20px #080808);
   }
-  
+
   .tabs input:nth-child(1):checked ~ .buttons label:nth-child(1),
   .tabs input:nth-child(2):checked ~ .buttons label:nth-child(2),
   .tabs input:nth-child(3):checked ~ .buttons label:nth-child(3),
@@ -268,9 +261,9 @@
     opacity: 1;
     filter: drop-shadow(0 0 10px #0a0a0a) drop-shadow(0 0 20px #020202);
   }
-  
-  
- 
+
+
+
 .container {
     position: absolute;
     top: 19px;
@@ -278,9 +271,9 @@
     height: 5px;
     display: flex;
     left:520px;
-    
+
   }
-  
+
   input {
     font-size: 15px;
     padding: 1rem ;
@@ -294,7 +287,7 @@
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     z-index: 1;
   }
-  
+
   .overlay {
     position: absolute;
     top: 0;
@@ -306,7 +299,7 @@
   }
 
 
-  
+
   input:focus + .overlay {
 
     pointer-events: auto;
@@ -369,6 +362,7 @@
     border-style: solid;
     border-color: #5f5d5d;
     z-index: 999;
+
 }
 /*
 .contentboxx {
@@ -403,8 +397,8 @@
 }
 
 .contentboxx:hover {
-    scale: 1.1;   
-} 
+    scale: 1.1;
+}
 */
 
 #app {
@@ -418,29 +412,14 @@
     grid-row-gap:130px;
     grid-auto-rows: 200px;
     z-index: 999;
-    
+
   }
 
-.note {
-    height: 200px;
-    box-sizing: border-box;
-    padding: 16px;
-    border-radius: 15px;
-    resize: none;
-    background-color: #f0f0f0;
-    font-family: sans-serif;
-    font-size: 16px;
-    box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
-    border-radius: 15px;
-    transition: 0.3s;
-    z-index: 999;
-  }
-  
   .note:hover{
-    scale: 1.1; 
+    scale: 1.1;
   }
   .add-note {
-    
+
     height: 200px;
     width:200px;
     border: none;
@@ -455,43 +434,23 @@
     display: inline-block;
     z-index: 999;
   }
-  
+
   .add-note:hover {
     background: rgba(0, 0, 0, 0.2);
     z-index: 999;
   }
 
-.note-container {
-    margin-bottom: 20px;
-    position: relative;
-}
-
-.note {
-    width: 100%;
-    height: 150px;
-    padding: 20px;
-    margin: 0;
-    border: none;
-    background-color: #f8f9fa; /* 背景颜色 */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 阴影效果 */
-    border-radius: 8px;
-    font-size: 16px;
+  .note {
+    height: 200px;
+    box-sizing: border-box;
+    padding: 16px;
     resize: none;
-    position: relative; /* 使得 ::before 伪元素相对于此元素定位 */
-    transition: box-shadow 0.3s ease; /* 添加过渡效果 */
-}
-
-.note::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -20px; /* 调整 ::before 元素的左侧位置，以创建重叠效果 */
-    width: 10px;
-    height: 100%;
-    background-color: #f8f9fa; /* 与背景颜色相同 */
-    z-index: -1; /* 将 ::before 元素放在正文之后，以创建重叠效果 */
-}
-
-.note:focus {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 获得焦点时的更强烈的阴影效果 */
-}
+    background-color: #f0f0f0;
+    box-shadow: 5px 5px 10px 0px rgb(10, 10, 10);
+    border-radius: 15px;
+    font-family: SimHei,"Microsoft YaHei"; /* 替换 "Your Chosen Font" 为你想要使用的字体 */
+    font-weight: 1000;
+    font-size: 20px;
+    transition: 0.3s;
+    z-index: 999;
+  }

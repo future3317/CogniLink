@@ -115,7 +115,7 @@
                         console.log(username)
                         if (username !== 'None') {
             // 如果用户名不为空，则跳转到 relationship_new 页面
-            window.location.href = "{%url 'add_book'%}";
+            window.location.href = "{%url 'node_edit'%}";
         } else {
             // 如果用户名为空，则执行其他逻辑，例如显示登录提示
             alert('请先登录');
@@ -232,6 +232,9 @@ document.addEventListener('DOMContentLoaded', function () {
         element.value = content;
         element.placeholder = "笔记";
 
+        // 设置随机背景图片
+        element.style.backgroundImage = `url(${getRandomBackground()})`;
+
         element.addEventListener("change", () => {
             // 假设学科名称能唯一标识一条笔记
             updateNote(name, element.value);
@@ -252,6 +255,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return element;
     }
+
+    // 获取随机整数
+          function getRandomInt(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) + min);
+          }
+
+          // 获取随机背景图片路径
+          function getRandomBackground() {
+            const backgrounds = [
+            '/static/image/img.jpg',
+              '/static/image/img1.jpg',
+              '/static/image/img2.jpg',
+              '/static/image/img3.jpg',
+              '/static/image/img4.jpg',
+              '/static/image/img5.jpg'
+              // 添加更多背景图片路径
+            ];
+            const randomIndex = getRandomInt(0, backgrounds.length - 1);
+            return backgrounds[randomIndex];
+          }
+
 
 function saveAndRedirect(subjectName) {
     // Store the subject name in sessionStorage

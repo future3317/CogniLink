@@ -6,9 +6,47 @@
         <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" href="/static/css/style_LOGIN.css">
+
+       <style>
+    /* 提醒框样式 */
+    .alert {
+        padding: 20px;
+        background-color: rgba(244, 67, 54, 0.7); /* 使用rgba设置颜色和透明度 */
+        color: white;
+        display: none;
+        position: fixed;
+        top: 5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+</style>
+
+
 	</head>
 
 	<body>
+    <div id="alert" class="alert">
+        {{ message }}
+    </div>
+    <script>
+    // 显示提醒框
+    document.addEventListener('DOMContentLoaded', function () {
+        var alertDiv = document.getElementById('alert');
+        var message = '{{ message }}'; // 获取 message 变量
+
+        // 根据 message 是否为空来设置显示状态
+        if (message) {
+            alertDiv.style.display = 'block';
+
+            // 隐藏提醒框（在这里设置了5秒后自动隐藏）
+            setTimeout(function () {
+                alertDiv.style.display = 'none';
+            }, 5000);
+        }
+    });
+</script>
+
 		<div class="wrap login_wrap">
 			<div class="content">
 
@@ -56,7 +94,13 @@
 							</div>
 							<div class="form_reg_btn">
 								<p><span>还没有帐号？</span><a href="{% url 'logon' %}">马上注册</a></p>
+
 							</div>
+                            <div class="form_reg_btn">
+								<p><a href="{% url 'home' %}">游客登陆</a></p>
+
+							</div>
+
 						</form>
 					</div>
 				</div>

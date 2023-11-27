@@ -15,6 +15,7 @@
 </head>
 
 <body>
+
     <div class="content">
         <div class="menu-box">
             <input type="checkbox" id="menu-btn">
@@ -44,10 +45,21 @@
                         <span>图谱编辑</span>
                     </label>
                 </div>
+                <div id="loginReminder" style="display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background-color: rgba(244, 67, 54, 0.7); color: white; padding: 10px; border-radius: 5px;">
+    请先登录
+</div>
                 <!-- js实现的页面重定向 -->
                 <script>
-                    function redirectToURL() {
-                        window.location.href = "{%url 'node_edit'%}";
+                    function redirectToURL()
+                    {
+                        if (username !== 'None') {window.location.href = "{%url 'node_edit'%}";}
+                        else {document.getElementById('loginReminder').style.display = 'block';
+
+            // 3秒后隐藏提示框
+            setTimeout(function() {
+                document.getElementById('loginReminder').style.display = 'none';
+            }, 3000);
+        }
                     }
                 </script>
 
@@ -74,8 +86,16 @@
                 </div>
                 <!-- js实现的页面重定向 -->
                 <script>
-                    function addbookToURL() {
-                        window.location.href = "{%url 'add_book'%}";
+                    function redirectToURL() {
+                        if (username !== 'None') {
+            // 如果用户名不为空，则跳转到 relationship_new 页面
+            window.location.href = "{%url 'add_book'%}";
+        } else {
+            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
+            alert('请先登录');
+            // 或者重定向到登录页面
+
+        }
                     }
                 </script>
 
@@ -89,6 +109,13 @@
             <input type="radio" id="settings" name="tabsMenu" />
             <input type="radio" id="notifications" name="tabsMenu" />
             <div class="buttons">
+                <span id="greeting">
+    {% if username %}
+        你好, {{ username }}
+    {% else %}
+        <a href="{% url 'login' %}">登录</a>
+    {% endif %}
+</span>
                 <label for="home">
                     <a href="{%url 'home'%}"> <i class="fa-solid fa-house"></i> </a>
 
@@ -96,11 +123,28 @@
                 <label for="profile"><a href="{%url 'person'%}"><i class="fa-solid fa-user"></i></label>
                 <label for="likes"><i class="fa-solid fa-bell"></i></label>
                 <label for="settings"><i class="fa-sharp fa-solid fa-gear"></i></label>
-                <label for="notifications">
+                <label for="notifications" id="logout-label">
+    <a href="#" id="logout-link"><i class="fa-solid fa-power-off"></i></a>
+</label>
 
-                   <a href="{%url 'login'%}"><i class="fa-solid fa-power-off"></i></a>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var logoutLink = document.getElementById('logout-link');
 
-                </label>
+    if (logoutLink) {
+        logoutLink.addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // 清空本地存储（localStorage 或 sessionStorage）
+            localStorage.clear();
+            sessionStorage.clear();
+
+            // 这里可以添加其他操作，例如重定向到登录页面
+            window.location.href = '{% url "login" %}';
+        });
+    }
+});
+</script>
             </div>
         </div>
 <form method="POST" action="{% url 'wander' %}">
@@ -188,11 +232,32 @@
 
 <script>
     function redirectToNodeNew() {
-        window.location.href = "{% url 'node_new' %}";
+        // 检查用户名是否为空
+        var username = '{{ username }}'; // 获取用户名变量
+        console.log(username)
+        if (username !== 'None') {
+            // 如果用户名不为空，则跳转到 node_new 页面
+            window.location.href = "{% url 'node_new' %}";
+        } else {
+            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
+            alert('请先登录');
+            // 或者重定向到登录页面
+
+        }
     }
 
     function redirectToRelationshipNew() {
-        window.location.href = "{% url 'relationship_new' %}";
+        // 检查用户名是否为空
+        var username = '{{ username }}'; // 获取用户名变量
+        if (username !== 'None') {
+            // 如果用户名不为空，则跳转到 relationship_new 页面
+            window.location.href = "{% url 'relationship_new' %}";
+        } else {
+            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
+            alert('请先登录');
+            // 或者重定向到登录页面
+
+        }
     }
 </script>
                             </label>
@@ -208,7 +273,7 @@
                             {% csrf_token %}
                             <label for="title3">
                                 <input type="text" id="NodeName" name="NodeName"  placeholder="输入查询节点或关系">
-                                <button type="submit" id="editButton" >编辑</button>
+                                <button type="submit" id="editButton" onclick="editNode(event)">编辑</button>
                                 <button type="submit" id="deleteButton" name="delete">删除</button>
 
                             </label>
@@ -396,7 +461,10 @@
 
     function editNode(event) {
         event.preventDefault();
-        if (nodeName) {
+        var username = '{{ username }}'; // 获取用户名变量
+        console.log(username)
+        if (username !== 'None') {
+            if (nodeName) {
             // Set the nodeName in sessionStorage
             sessionStorage.setItem('StartPoint', nodeName);
             console.log(nodeName)
@@ -405,7 +473,14 @@
             console.log(url)
             // Redirect to 'node_edit' page
             window.location.href = url;
+            }
+        } else {
+            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
+            alert('请先登录');
+            // 或者重定向到登录页面
+
         }
+
     }
     myChart.setOption(option);
 

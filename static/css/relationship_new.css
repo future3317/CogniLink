@@ -283,7 +283,21 @@
     left:520px;
     
   }
-  
+  .container-0 select[id=editpoint]{
+
+        width: 120px;                 /*宽*/
+        height: 30px;                 /*高*/
+        background-color: #ffffff;  /*元素背景颜色*/
+        border: 1px solid #242323;  /*边框线*/
+        color: #000000;             /*字体颜色*/
+        outline:none;                 /*去掉黑框*/
+        margin: 0px -20px  30px;        /*外边距*/
+        font-size: 16px;              /*字体大小*/
+    form option{
+        width: 160px;
+        height: 40px;
+      }
+}
 
 
 

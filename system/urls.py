@@ -1,4 +1,4 @@
-from .views import logout,logon,delete_nodes_by_name,login,node_new,person,node_edit,relationship_edit,relationship_new,wander,add_book,detail_edit,home,course
+from .views import logout,logon,delete_nodes_by_name,dianjimanyou,login,node_new,person,node_edit,relationship_edit,relationship_new,wander,add_book,detail_edit,home,course
 from django.urls import path
 from django.conf.urls import url
 
@@ -17,4 +17,6 @@ urlpatterns = [
     path('relationship_new/', relationship_new, name='relationship_new'),
     path('person/', person, name='person'),
     path('delete_nodes_by_name/', delete_nodes_by_name, name='delete_nodes_by_name'),
+    path('dianjimanyou/', dianjimanyou, name='dianjimanyou'),
+
 ]

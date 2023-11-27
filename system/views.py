@@ -13,7 +13,70 @@ yes = 0
 bookname = "Hello World"
 # Create your views here.
 
+def dianjimanyou(request):
+    # 从POST数据中获取学科名称
+    graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+    data = json.loads(request.body.decode('utf-8'))
+    subject_name = data.get('subjectName', '')
+    print(subject_name)
+    label = subject_name
 
+    # 定义data数组，存放节点信息
+    data = []
+    # 定义关系数组，存放节点间的关系
+    links = []
+
+    # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+    query = f"MATCH (n:{label}) RETURN n"
+    result = graph.run(query)
+
+    for record in result:
+        # 取出节点的name
+        node_name = record["n"]["name"]
+        node_detail = record["n"]["detail"]
+        # 构造字典，存储单个节点信息
+        dict = {
+            'name': node_name,
+            'symbolSize': 50,
+            'category': '1',
+            'des': node_detail
+        }
+        # 将单个节点信息存放在data数组中
+        data.append(dict)
+
+    # 查询指定标签的所有关系，并将关系信息存放在links数组中
+    query = f"MATCH (n:{label})-[r]->() RETURN r"
+    result = graph.run(query)
+    for record in result:
+        # 取出开始节点的name
+        source = record["r"].start_node["name"]
+        # 取出结束节点的name
+        target = record["r"].end_node["name"]
+        # 取出开始节点的结束节点之间的关系
+        name = type(record["r"]).__name__
+        # 构造字典存储单个关系信息
+        dict = {
+            'source': source,
+            'target': target,
+            'name': name
+        }
+        # 将单个关系信息存放进links数组中
+        links.append(dict)
+
+    # 将所有的节点信息和关系信息存放在一个字典中
+    neo4j_data = {
+        'data': data,
+        'links': links
+    }
+    print('*******************************')
+    #print(neo4j_data)
+
+    response_data = {
+        'status': 'success',
+        'message': '处理成功，打开 xxx 页面',
+        'neo4j_data': neo4j_data
+    }
+    return JsonResponse(response_data)
 def delete_nodes_by_name(request):
 
         # 从请求中获取要删除的节点名称

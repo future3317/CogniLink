@@ -303,19 +303,33 @@ function saveAndRedirect(subjectName) {
     // 使用Fetch API发送POST请求
     $.ajax({
         type: 'POST',
-        url: '/system/home/',  // 后端处理函数的URL
+        url: '/system/dianjimanyou/',  // 后端处理函数的URL
         data: JSON.stringify(data),
         contentType: 'application/json',
         beforeSend: function(xhr, settings) {
-        xhr.setRequestHeader("X-CSRFToken", csrf_token); // csrf_token 是从Cookie中获取的CSRF令牌
-    },
+            xhr.setRequestHeader("X-CSRFToken", csrf_token); // csrf_token 是从Cookie中获取的CSRF令牌
+        },
+        success: function(response) {
+            // 获取后端返回的neo4j_data
+            var neo4jData = response.neo4j_data;
 
+            // 将neo4j_data存储在sessionStorage中
+            sessionStorage.setItem('neo4jData', JSON.stringify(neo4jData));
+            console.log(neo4jData)
+            // 弹出消息框
+            var confirmation = confirm(subjectName+"图谱加载成功！ " );
+
+            // 如果用户点击了确定，重定向到Wander页面
+            if (confirmation) {
+                var redirectUrl = "{% url 'wander' %}?from=saveAndRedirect";
+                window.location.href = redirectUrl;
+            }
+        },
+        error: function(error) {
+            // 处理错误
+            console.error('Error:', error);
+        }
     });
-
-    // Redirect to the Wander webpage
-    window.location.href = "{%url 'wander'%}";
-
-
 }
 
     function updateNote(name, newContent) {

@@ -347,15 +347,36 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     <script type="text/javascript">
+        function getParameterByName(name) {
+    var url = new URL(window.location.href);
+    return url.searchParams.get(name);
+}
         // 在代码1的脚本中初始化 ECharts 图表
         var myChart = echarts.init(document.getElementById('echarts-container'));
         console.log('wojinlail')
-        var neo4j_data = [{{ neo4j_data|safe }}]
-        console.log(neo4j_data)
-        var data1 = neo4j_data[0]['data']
-        var links1 = neo4j_data[0]['links']
-        console.log(data1)
-        console.log(links1)
+        var fromParam = getParameterByName('from');
+        var neo4jDataString = sessionStorage.getItem('neo4jData');
+        var neo4j_data;
+        var data1 ;
+        var links1 ;
+        if (fromParam === 'saveAndRedirect') {
+            neo4j_data = [JSON.parse(neo4jDataString)]
+            console.log(neo4j_data)
+            data1 = neo4j_data[0]['data'];
+            links1 = neo4j_data[0]['links'];
+            console.log(data1)
+            console.log(links1)
+        }
+        else  {
+
+            neo4j_data = [{{ neo4j_data | safe }}]
+            data1 = neo4j_data[0]['data']
+            links1 = neo4j_data[0]['links']
+            console.log(neo4j_data)
+            console.log(data1)
+            console.log(links1)
+
+        }
 
         // 以下是代码2中的图表配置和数据
         var categories = [];

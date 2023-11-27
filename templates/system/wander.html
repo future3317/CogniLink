@@ -45,21 +45,15 @@
                         <span>图谱编辑</span>
                     </label>
                 </div>
-                <div id="loginReminder" style="display: none; position: fixed; top: 10px; left: 50%; transform: translateX(-50%); background-color: rgba(244, 67, 54, 0.7); color: white; padding: 10px; border-radius: 5px;">
-    请先登录
-</div>
+
                 <!-- js实现的页面重定向 -->
                 <script>
                     function redirectToURL()
                     {
+                        var username = '{{ username }}'; // 获取用户名变量
+        console.log(username)
                         if (username !== 'None') {window.location.href = "{%url 'node_edit'%}";}
-                        else {document.getElementById('loginReminder').style.display = 'block';
-
-            // 3秒后隐藏提示框
-            setTimeout(function() {
-                document.getElementById('loginReminder').style.display = 'none';
-            }, 3000);
-        }
+                        else {alert('请先登录');}
                     }
                 </script>
 
@@ -86,7 +80,9 @@
                 </div>
                 <!-- js实现的页面重定向 -->
                 <script>
-                    function redirectToURL() {
+                    function addbookToURL() {
+                        var username = '{{ username }}'; // 获取用户名变量
+        console.log(username)
                         if (username !== 'None') {
             // 如果用户名不为空，则跳转到 relationship_new 页面
             window.location.href = "{%url 'add_book'%}";

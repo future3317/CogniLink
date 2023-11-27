@@ -55,19 +55,7 @@
                     </label>
                 </div>
 
-                <script>
-                    function redirectToURL() {
-                        if (username !== 'None') {
-            // 如果用户名不为空，则跳转到 relationship_new 页面
-            window.location.href = "{%url 'node_edit'%}";
-        } else {
-            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
-            alert('请先登录');
-            // 或者重定向到登录页面
 
-        }
-                    }
-                </script>
 
                 <div class="menu-item">
                     <input type="checkbox" id="menu-item3">
@@ -91,19 +79,7 @@
                     </label>
                 </div>
 
-                <script>
-                    function redirectToURL() {
-                        if (username !== 'None') {
-            // 如果用户名不为空，则跳转到 relationship_new 页面
-            window.location.href = "{%url 'add_book'%}";
-        } else {
-            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
-            alert('请先登录');
-            // 或者重定向到登录页面
 
-        }
-                    }
-                </script>
 
                 <div class="set-line"></div>
             </div>
@@ -133,6 +109,36 @@
                 <label for="notifications" id="logout-label">
     <a href="#" id="logout-link"><i class="fa-solid fa-power-off"></i></a>
 </label>
+<script>
+                    function redirectToURL() {
+                        var username = '{{ username }}';
+                        console.log(username)
+                        if (username !== 'None') {
+            // 如果用户名不为空，则跳转到 relationship_new 页面
+            window.location.href = "{%url 'add_book'%}";
+        } else {
+            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
+            alert('请先登录');
+            // 或者重定向到登录页面
+
+        }
+                    }
+                </script>
+            <script>
+                    function addBook() {
+                        var username = '{{ username }}';
+                        console.log(username)
+                        if (username !== 'None') {
+            // 如果用户名不为空，则跳转到 relationship_new 页面
+            window.location.href = "{%url 'add_book'%}";
+        } else {
+            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
+            alert('请先登录');
+            // 或者重定向到登录页面
+
+        }
+                    }
+                </script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {

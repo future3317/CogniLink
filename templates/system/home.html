@@ -243,7 +243,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const doDelete = confirm("确定删除这条笔记吗?");
     if (doDelete) {
-        var data = {
+        var username = '{{ username }}'; // 获取用户名变量
+        console.log(username)
+        if (username !== 'None') {
+            var data = {
         subjectName: name
         // 添加其他需要传递的数据
     };
@@ -259,6 +262,13 @@ document.addEventListener('DOMContentLoaded', function () {
     },
         });
         deleteNote(name, element);
+        } else {
+            // 如果用户名为空，则执行其他逻辑，例如显示登录提示
+            alert('请先登录');
+            // 或者重定向到登录页面
+
+        }
+
     }
 });
 

@@ -329,6 +329,7 @@
     padding:50px 50px;
     margin-left: 0;
     z-index: 1;
+
 }
 
   .container-0 select[id=editpoint]{
@@ -396,7 +397,7 @@
 
 
 .container-1{
-    top:-50px;
+    top:-105px;
     bottom:150px;
     left:-70px;
     right:10px;
@@ -544,7 +545,7 @@
 
 
 .container-0{
-    top:50px;
+    top:-5px;
     bottom:150px;
     left:-70px;
     right:10px;

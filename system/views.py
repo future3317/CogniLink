@@ -110,8 +110,9 @@ def login(request):
 
             return render(request, './system/home.html',{'username': email})
         else:
-            print('登录失败')
-            return HttpResponse('登录失败')
+            message = '登陆失败：'
+            print(message)
+            return render(request, './system/login.html', {'message': message})
 
     return render(request, './system/login.html')
 
@@ -603,11 +604,44 @@ def detail_edit(request):
 
 
 def add_book(request):
+    existing_names = {}
     neo4j_data = {'data': [], 'links': []}
     if request.method == 'POST':
         graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
         BookName = request.POST.get("BookName")
-        bookname = BookName;
+
+
+        label = 'subject'
+        data = []
+        # 定义关系数组，存放节点间的关系
+
+        # 查询指定标签的所有节点，并将节点信息取出存放在data数组中
+        query = f"MATCH (n:{label}) RETURN n"
+        result = graph.run(query)
+        for record in result:
+            # 取出节点的name和其他属性
+            node_name = record["n"]["name"]
+            node_detail = record["n"]["detail"]
+            print('########')
+            print(existing_names)
+
+            print('########')
+            # 如果名称已经存在于字典中，执行相应操作
+            # 如果名称不存在，构造新的字典，并将其存储在data数组中
+            dict = {
+                'name': node_name,
+                'symbolSize': 50,
+                'category': '1',
+                'des': node_detail
+            }
+            data.append(dict)
+
+            # 同时更新字典，将新节点名称添加到已存在的字典中
+            existing_names[node_name] = dict
+        if BookName in existing_names:
+            message = '有重复名称的学科图谱：' + BookName
+            print(message)
+            return render(request, './system/add_book.html', {'message': message})
         BookIntro = request.POST.get("BookIntro")
         InitNode = request.POST.get("InitNode")
         InitNodeType = request.POST.get("InitNodeType")

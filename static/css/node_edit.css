@@ -247,7 +247,7 @@
   }
 
   .buttons label {
-    position:related;
+    position:relative;
     margin-left:25px;
     font-size: 1.25em;
     -webkit-text-stroke: 1px #090909;
@@ -319,14 +319,14 @@
   }
 
   .TUPU{
-    position: fixed;
+    position: relative;
     font-size: 1.5rem;
-    top:19px;
-    left: 350px;
+    top:-25px;
+    left: 310px;
     width: 150px;
     height: 9px;
-    background:rgba(208, 208, 208,0.5);
-    padding:50px,50px;
+    background:rgba(208, 208, 208,0.2);
+    padding:50px 50px;
     margin-left: 0;
     z-index: 1;
     
@@ -382,7 +382,7 @@
 
 
 .container-1{
-    top:-30px;
+    top:-105px;
     bottom:150px;
     left:-70px;
     right:10px;
@@ -500,7 +500,7 @@
 
 
 .container-0{
-    top:70px;
+    top:-5px;
     bottom:150px;
     left:-70px;
     right:10px;
@@ -555,7 +555,7 @@
 }
 
 .container-2-0 {
-    top:0px;
+    top:-100px;
     bottom:150px;
     left:-70px;
     right:15px;
@@ -571,7 +571,7 @@
 }
 
 .container-2 {
-    top:-90px;
+    top:-200px;
     left:-70px;
     right:15px;
     width: 1225px;
@@ -599,18 +599,18 @@
     transition: 0.3s;
 }
 
-.container-0 select[id=editpoint]{
-        
-        width: 120px;                 /*宽*/
-        height: 30px;                 /*高*/
-        background-color: #ffffff;  /*元素背景颜色*/
-        border: 1px solid #242323;  /*边框线*/
-        color: #000000;             /*字体颜色*/
-        outline:none;                 /*去掉黑框*/
-        margin: 0px -20px  30px;        /*外边距*/
-        font-size: 16px;              /*字体大小*/
+.container-0 select[id=editpoint] {
+
+    width: 120px; /*宽*/
+    height: 30px; /*高*/
+    background-color: #ffffff; /*元素背景颜色*/
+    border: 1px solid #242323; /*边框线*/
+    color: #000000; /*字体颜色*/
+    outline: none; /*去掉黑框*/
+    margin: 0px -20px 30px; /*外边距*/
+    font-size: 16px; /*字体大小*/
+}
     form option{
         width: 160px;
         height: 40px;
       }
-}

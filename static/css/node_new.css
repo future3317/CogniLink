@@ -247,7 +247,7 @@
   }
 
   .buttons label {
-    position:related;
+    position:relative;
     margin-left:25px;
     font-size: 1.25em;
     -webkit-text-stroke: 1px #090909;
@@ -311,21 +311,22 @@
     pointer-events: none;
   }
 
-.container-0 select[id=editpoint]{
-        
-    width: 120px;                 /*宽*/
-    height: 32px;                 /*高*/
-    background-color: #ffffff;  /*元素背景颜色*/
-    border: 1px solid #242323;  /*边框线*/
-    color: #000000;             /*字体颜色*/
-    outline:none;                 /*去掉黑框*/
-    margin: 0px -20px  30px;        /*外边距*/
-    font-size: 16px;              /*字体大小*/
+.container-0 select[id=editpoint] {
+
+    width: 120px; /*宽*/
+    height: 32px; /*高*/
+    background-color: #ffffff; /*元素背景颜色*/
+    border: 1px solid #242323; /*边框线*/
+    color: #000000; /*字体颜色*/
+    outline: none; /*去掉黑框*/
+    margin: 0px -20px 30px; /*外边距*/
+    font-size: 16px; /*字体大小*/
+}
 form option{
     width: 160px;
     height: 40px;
   }
-}
+
   
   input:focus + .overlay {
 
@@ -614,7 +615,7 @@ form option{
 }
 
 .container-2 {
-     top:-200px;
+    top:-200px;
     left:-70px;
     right:15px;
     width: 1225px;

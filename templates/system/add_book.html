@@ -8,8 +8,42 @@
     <script src="https://kit.fontawesome.com/1a8c6dd550.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="/static/css/iconfont.css">
     <link rel="stylesheet" href="/static/css/add_book.css">
+    <style>
+    /* 提醒框样式 */
+    .alert {
+        padding: 20px;
+        background-color: rgba(244, 67, 54, 0.7); /* 使用rgba设置颜色和透明度 */
+        color: white;
+        display: none;
+        position: fixed;
+        top: 5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 1;
+    }
+</style>
 </head>
 <body>
+<div id="alert" class="alert">
+        {{ message }}
+    </div>
+    <script>
+    // 显示提醒框
+    document.addEventListener('DOMContentLoaded', function () {
+        var alertDiv = document.getElementById('alert');
+        var message = '{{ message }}'; // 获取 message 变量
+        console.log(message)
+        // 根据 message 是否为空来设置显示状态
+        if (message) {
+            alertDiv.style.display = 'block';
+
+            // 隐藏提醒框（在这里设置了5秒后自动隐藏）
+            setTimeout(function () {
+                alertDiv.style.display = 'none';
+            }, 2000);
+        }
+    });
+</script>
     <div class="content">
         <div class="menu-box">
             <!-- 展示与隐藏侧边栏 开始-->

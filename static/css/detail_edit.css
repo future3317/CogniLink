@@ -375,7 +375,7 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #FCFDFD;
+    background-color: rgba(252, 253, 253, 0.5);
     border-radius: 15px;
     border-style: solid;
     border-color: #5f5d5d;
@@ -702,21 +702,18 @@
 
 .container-4 input[id=detail]{
     margin-top:100px;
-    margin-left:-60px;
+    margin-left:30px;
     position: absolute;
-    left:100px;
-    right: 100px;
     padding: 10px;
-    width: 1140px;
-    height: 200px;
+    width: 1150px;
+    height: 180px;
     box-sizing: border-box;
-    background-color:#F5F8F8;
-    border-radius: 5px;
+    border: 1px solid #c2c6cf;
+    border-radius: 4px;
     outline: none;
     padding: 0 15px;
-    z-index: 50;
-    box-shadow:none;
-    border:solid 1px rgb(177, 175, 175);
+    color: #606266;
+    z-index: 999;
 }
 
 

@@ -234,17 +234,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // 设置随机背景图片
         element.style.backgroundImage = `url(${getRandomBackground()})`;
-
         element.addEventListener("change", () => {
             // 假设学科名称能唯一标识一条笔记
             updateNote(name, element.value);
         });
-
         element.addEventListener("contextmenu", (event) => {
     event.preventDefault(); // 阻止默认右键菜单
 
     const doDelete = confirm("确定删除这条笔记吗?");
     if (doDelete) {
+        var data = {
+        subjectName: name
+        // 添加其他需要传递的数据
+    };
+
+    // 使用Fetch API发送POST请求
+    $.ajax({
+        type: 'POST',
+        url: '/system/delete_nodes_by_name/',  // 后端处理函数的URL
+        data: JSON.stringify(data),
+        contentType: 'application/json',
+        beforeSend: function(xhr, settings) {
+        xhr.setRequestHeader("X-CSRFToken", csrf_token); // csrf_token 是从Cookie中获取的CSRF令牌
+    },
+        });
         deleteNote(name, element);
     }
 });

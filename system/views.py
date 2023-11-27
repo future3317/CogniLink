@@ -13,6 +13,22 @@ yes = 0
 bookname = "Hello World"
 # Create your views here.
 
+
+def delete_nodes_by_name(request):
+
+        # 从请求中获取要删除的节点名称
+    graph = Graph("http://localhost:7474/", auth=("neo4j", "futureneo"), name="neo4j")
+    data = json.loads(request.body.decode('utf-8'))
+    subject_name = data.get('subjectName', '')
+    print(subject_name)
+    label = subject_name
+
+    query = f"MATCH (n:{label}) DETACH DELETE n"
+    result = graph.run(query)
+    query = f"MATCH (n:subject {{name: '{label}'}}) DETACH DELETE n"
+    result = graph.run(query)
+    return redirect(reverse('home'))
+
 def login(request):
     request.session['username'] = None
     if request.method == 'POST':

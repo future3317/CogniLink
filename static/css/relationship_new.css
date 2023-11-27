@@ -362,23 +362,22 @@
 
 
 .containerlim {
-    
     position: fixed;
     top:100px;
     bottom:100px;
     left:340px;
     right:100px;
     width: 1290px;
-    height:1000px;
+    height:800px;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    background-color: #FCFDFD;
+    background-color: rgba(252, 253, 253, 0.5);
+    color: #606266;
     border-radius: 15px;
     border-style: solid;
     border-color: #5f5d5d;
     z-index: 999;
-
 }
 
 

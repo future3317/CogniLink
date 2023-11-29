@@ -70,4 +70,3 @@
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
-![输入图片说明](static/assets/1.png)![输入图片说明](static/assets/3.png)![输入图片说明](static/assets/5.png)![输入图片说明](static/assets/11.png)![输入图片说明](static/assets/12.png)![输入图片说明](static/assets/15.png)

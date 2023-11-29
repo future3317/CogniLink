@@ -1,4 +1,3 @@
-![输入图片说明](static/assets/16.png)![输入图片说明](static/assets/14.png)![输入图片说明](static/assets/13.png)![输入图片说明](static/assets/10.png)![输入图片说明](static/assets/9.png)![输入图片说明](static/assets/8.png)![输入图片说明](static/assets/7.png)![输入图片说明](static/assets/6.png)![输入图片说明](static/assets/4.png)# CogniLink
 
 #### 介绍
 多人协同的知识库图谱
